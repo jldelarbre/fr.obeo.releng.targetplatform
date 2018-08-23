@@ -67,7 +67,7 @@ public class Converter {
 	private IProvisioningAgent agent;
 	
 	public Diagnostic generateTargetDefinitionFile(URI uri, IProgressMonitor monitor) {
-		BasicDiagnostic ret = new BasicDiagnostic(TargetPlatformBundleActivator.PLUGIN_ID, 0, "Diagnostic of the generation of the target platform.", null);
+		BasicDiagnostic ret = new BasicDiagnostic(TargetPlatformBundleActivator.PLUGIN_ID, 0, "Diagnostic of the generation of the target platform (" + uri + ").", null);
 		if (!"targetplatform".equals(uri.fileExtension()) && !"tpd".equals(uri.fileExtension())) {
 			ret.merge(new BasicDiagnostic(Diagnostic.ERROR, TargetPlatformBundleActivator.PLUGIN_ID, -1, "The target platform file '" + uri + "' must ends with '.tpd' or '.targetplatform' extensions.", null));
 		} else {

@@ -98,7 +98,7 @@ class TestCompositeElementValidation {
 	
 	@Test
 	def checkImportCycleDueToVariableDefinitionOverride() {
-		val String[] args = #["compositeIncludeTarget.tpd", "urlCyclicInclude=../compositeIncludeTarget.tpd"]
+		val String[] args = #["compositeIncludeTarget.tpd", ImportVariableManager.OVERRIDE, "urlCyclicInclude=../compositeIncludeTarget.tpd"]
 		
 		preferenceSettings.useEnv = true
 		importVariableManager.processCommandLineArguments(args)

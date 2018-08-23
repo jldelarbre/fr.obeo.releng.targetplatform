@@ -38,7 +38,7 @@ class TestOverrideVariableDefinition {
 	
 	@Test
 	def testVarDefinitionOverride1() {
-		val String[] args = #["overrideDefTarget.tpd", "var1=overrideVal1", "var3=override val 3"]
+		val String[] args = #["overrideDefTarget.tpd", ImportVariableManager.OVERRIDE, "var1=overrideVal1", "var3=override val 3"]
 	
 		preferenceSettings.useEnv = true	
 		importVariableManager.processCommandLineArguments(args)
@@ -64,7 +64,7 @@ class TestOverrideVariableDefinition {
 	
 	@Test
 	def testVarDefinitionOverride2() {
-		val String[] args = #["overrideDefTarget.tpd", "subDirName=subdir", "emfVer=[2.9.2,3.0.0)"]
+		val String[] args = #["overrideDefTarget.tpd", ImportVariableManager.OVERRIDE, "subDirName=subdir", "emfVer=[2.9.2,3.0.0)"]
 		
 		preferenceSettings.useEnv = true
 		importVariableManager.processCommandLineArguments(args)
@@ -105,7 +105,7 @@ class TestOverrideVariableDefinition {
 	
 	@Test
 	def testDefinitionFromVariableCallOverride() {
-		val String[] args = #["overrideDefTarget.tpd", "subDirName=subdir", "emfVerEnd=3.0.0)"]
+		val String[] args = #["overrideDefTarget.tpd", ImportVariableManager.OVERRIDE, "subDirName=subdir", "emfVerEnd=3.0.0)"]
 		
 		preferenceSettings.useEnv = true
 		importVariableManager.processCommandLineArguments(args)

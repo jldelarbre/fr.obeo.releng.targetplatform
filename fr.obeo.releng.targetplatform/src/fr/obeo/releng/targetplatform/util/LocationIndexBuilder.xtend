@@ -120,8 +120,6 @@ class LocationIndexBuilder {
 		val acc = newLinkedHashSet();
 		val s = newLinkedList();
 		
-		compositeElementResolver.searchAndAppendDefineFromIncludedTpd(targetPlatform)
-		
 		return 
 			if (checkIncludeCycle(targetPlatform, acc, s)) {
 				s.reverse

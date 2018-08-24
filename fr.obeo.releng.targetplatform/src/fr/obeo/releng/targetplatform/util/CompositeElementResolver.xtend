@@ -96,7 +96,7 @@ class CompositeElementResolver {
 		targetPlatform.modified = true
 	}
 	
-	package def searchAndAppendDefineFromIncludedTpd(TargetPlatform targetPlatform) {
+	private def searchAndAppendDefineFromIncludedTpd(TargetPlatform targetPlatform) {
 		val alreadyVisitedTarget = newHashSet()
 		searchAndAppendDefineFromIncludedTpd(targetPlatform, alreadyVisitedTarget)
 	}
@@ -218,7 +218,7 @@ class CompositeElementResolver {
 		targetPlatform.varCallFromOnlyImportedVariable = varCallFromImpVar.toString.substring(1, varCallFromImpVar.toString.length - 1)
 	}
 	
-	protected def VarDefinition searchAlreadyIncludeVarDef(VarDefinition varDef2Find, HashSet<VarDefinition> alreadyAddedVarDefs) {
+	private def VarDefinition searchAlreadyIncludeVarDef(VarDefinition varDef2Find, HashSet<VarDefinition> alreadyAddedVarDefs) {
 		val varDefNameToFind = varDef2Find.name
 		val alreadyAddedVarDef = alreadyAddedVarDefs.findFirst[
 			val currentVarDef = it

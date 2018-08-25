@@ -20,6 +20,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.equinox.p2.core.IProvisioningAgent;
 import org.eclipse.equinox.p2.core.IProvisioningAgentProvider;
 import org.eclipse.equinox.p2.core.ProvisionException;
+import org.eclipse.equinox.p2.repository.metadata.IMetadataRepositoryManager;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
@@ -132,6 +133,7 @@ public class TargetPlatformBundleActivator extends Plugin {
 				if (agentProvider != null) {
 					try {
 						agent = agentProvider.createAgent(getStateLocation().toFile().toURI());
+						initializeServices(agent);
 					} catch (ProvisionException e) {
 						getLog().log(new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e));
 					} catch (IllegalStateException e) {
@@ -142,6 +144,10 @@ public class TargetPlatformBundleActivator extends Plugin {
 			}
 		}
 		return agent;
+	}
+	
+	private void initializeServices(IProvisioningAgent agent2) {
+		agent2.registerService(IMetadataRepositoryManager.SERVICE_NAME, new TargetPlatformRepositoryManager(agent2));
 	}
 	
 	protected Module getRuntimeModule(String grammar) {

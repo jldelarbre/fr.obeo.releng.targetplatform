@@ -266,15 +266,15 @@ This project provides an Eclipse application that you can launch from the comman
 h4(#envVar). Variable overriding from command line or environment
 
 When the generator is called from command line you can override variable value with command line arguments or environment variables.
-In the example _pom.xml_ above, the _maven_ property @targetPlatform.application.args@ holds the command line arguments. You can define them in the following order:
+In the example _pom.xml_ above, the _maven_ property @targetPlatform.application.args@ holds the command line arguments. You can define them (tpd filenames shall be first, the two last parameters are optional and case incensitive):
 
-# tpd filename
-# useEnv //Optional, case incensitive
-# list of variable redefinition
+# tpd filename list (at least one tpd file is required)
+# --useEnv
+# --override "list of variable redefinition"
 
 Variables are redefined in any target or nested target met.
 
-@useEnv@ is necessary to take into account environment variables. Command line variables have higher priority than environment variables.
+@--useEnv@ is necessary to take into account environment variables. Command line variables have higher priority than environment variables.
 
 A variable redefinition is simply:
 

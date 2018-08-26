@@ -21,7 +21,6 @@ import java.util.LinkedList
 import java.util.List
 import java.util.Set
 import org.eclipse.emf.ecore.resource.Resource
-import org.eclipse.xtext.EcoreUtil2
 import org.eclipse.xtext.scoping.impl.ImportUriResolver
 
 class LocationIndexBuilder {
@@ -103,7 +102,7 @@ class LocationIndexBuilder {
 		while(!queue.empty) {
 			val tr = newLinkedList();
 			val t = queue.removeLast
-			for(unvisited : t.includes.map[getImportedTargetPlatform(t.eResource, it)].filterNull) {
+			for(unvisited : t.includes.filter[it.resolved].map[getImportedTargetPlatform(t.eResource, it)].filterNull) {
 				if (!visited.contains(unvisited)) {
 					visited.add(unvisited)
 					queue.addLast(unvisited)
@@ -152,7 +151,7 @@ class LocationIndexBuilder {
 	def TargetPlatform getImportedTargetPlatform(Resource context, IncludeDeclaration include) {
 		var TargetPlatform ret = null;
 		include.generateImportURI
-		val resource = EcoreUtil2.getResource(context, resolver.resolve(include));
+		val resource = ResourceUtil.getResource(context, resolver.resolve(include));
 		var root = resource?.getContents()?.head;
 		if (root instanceof TargetPlatform) {
 			ret = root as TargetPlatform;

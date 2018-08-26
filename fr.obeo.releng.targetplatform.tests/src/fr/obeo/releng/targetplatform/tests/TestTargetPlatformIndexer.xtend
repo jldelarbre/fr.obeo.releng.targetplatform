@@ -24,6 +24,8 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 import static org.junit.Assert.*
+import com.google.common.collect.ListMultimap
+import fr.obeo.releng.targetplatform.Location
 
 @InjectWith(typeof(CustomTargetPlatformInjectorProviderTargetReloader))
 @RunWith(typeof(XtextRunner))
@@ -150,7 +152,24 @@ class TestTargetPlatformIndexer {
 			''', 
 			URI.createURI("tmp:/o.tpd"), resourceSet
 		)
-		val index = indexBuilder.getLocationIndex(o)
+		// Sometimes it fails to reach the remote location: retry many times (just add more chance to avoid failure for bad reasons)
+		val maxTries = 3
+		var ListMultimap<String, Location> index = null
+		for (var i = 0 ; i < maxTries ; i++) {
+			index = indexBuilder.getLocationIndex(o)
+			if (index.size != 0) {
+				//Success to reach something
+				i = maxTries //break
+			}
+			else {
+				println("Test testRemoteInclude: retry to reach remote location")
+				try {
+					Thread.sleep(200);
+				} catch (InterruptedException e2) {
+					e2.printStackTrace();
+				}
+			}
+		}
 		assertEquals(4, index.size)
 	}
 }

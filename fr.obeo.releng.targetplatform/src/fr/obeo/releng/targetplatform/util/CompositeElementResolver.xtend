@@ -143,6 +143,9 @@ class CompositeElementResolver {
 	 * target: "targetPlatform". Do not look for target imported through an imported target */
 	private def List<TargetPlatform> searchDirectlyImportedTpd(TargetPlatform targetPlatform) {
 		targetPlatform.includes
+			.filter[
+				it.isResolved
+			]
 			.map[
 				locationIndexBuilder.getImportedTargetPlatform(targetPlatform.eResource, it)
 			]

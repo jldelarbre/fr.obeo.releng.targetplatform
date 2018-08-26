@@ -282,7 +282,6 @@ class TestTargetConversion {
 		val resourceSet = resourceSetProvider.get
 		val tp1 = parser.parse('''
 			target "TP1"
-			include "tp2.tpd"
 			location "http://download.eclipse.org/modeling/emf/compare/updates/releases/2.1/R201310031412/" { 
 				org.eclipse.emf.compare.ide.ui.feature.group
 			}
@@ -546,7 +545,6 @@ class TestTargetConversion {
 		val resourceSet = resourceSetProvider.get
 		val tp1 = parser.parse('''
 			target "TP1"
-			include "tp2.tpd"
 			location "http://download.eclipse.org/tools/orbit/downloads/drops/R20130517111416/repository/" { 
 				com.google.guava
 			}
@@ -585,7 +583,6 @@ class TestTargetConversion {
 		val resourceSet = resourceSetProvider.get
 		val tp1 = parser.parse('''
 			target "TP1"
-			include "tp2.tpd"
 			location "http://download.eclipse.org/tools/orbit/downloads/drops/R20130517111416/repository/" {
 				com.google.guava;version="[11.0.0,12.0.0)"
 			}
@@ -624,7 +621,6 @@ class TestTargetConversion {
 		val resourceSet = resourceSetProvider.get
 		val tp1 = parser.parse('''
 			target "TP1"
-			include "tp2.tpd"
 			location "http://download.eclipse.org/tools/orbit/downloads/drops/R20130517111416/repository/" {
 				com.google.guava;version="[11.0.0,12.0.0)"
 				com.google.guava
@@ -661,7 +657,6 @@ class TestTargetConversion {
 		val resourceSet = resourceSetProvider.get
 		val tp1 = parser.parse('''
 			target "TP1"
-			include "tp2.tpd"
 			location "http://download.eclipse.org/tools/orbit/downloads/drops/R20130517111416/repository/" {
 				com.google.guava
 				com.google.guava;version="[11.0.0,12.0.0)"

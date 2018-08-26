@@ -240,6 +240,13 @@ class CompositeString {
 		]
 		return output
 	}
+	
+	/** Check if any components (and sub components) are resolved => any variable call are resolved: a value can be computed */
+	op boolean isResolved() {
+		return stringParts.forall[
+			it.isResolved
+		]
+	}
 }
 
 interface CompositeStringPart {
@@ -253,7 +260,9 @@ interface CompositeStringPart {
 	
 	op VarDefList getVarDefCycle()
 	
-	op CompositeStringPart getCopy()	
+	op CompositeStringPart getCopy()
+	
+	op boolean isResolved()
 }
 
 class VarCall extends CompositeStringPart {
@@ -303,6 +312,20 @@ class VarCall extends CompositeStringPart {
 		output.varName = varName
 		return output
 	}
+	
+	op boolean isResolved() {
+		if (varName === null) {
+			return false
+		}
+		if (varName.name === null || varName.value === null) {
+			return false
+		}
+		this.actualString // Force to check cycle if exist
+		if (variableDefinitionCycleDetected) {
+			return false
+		}
+		return varName.value.isResolved
+	}
 }
 
 class StaticString extends CompositeStringPart {
@@ -323,6 +346,10 @@ class StaticString extends CompositeStringPart {
 		val output = TargetPlatformFactory.eINSTANCE.createStaticString
 		output.value = value
 		return output
+	}
+	
+	op boolean isResolved() {
+		return true
 	}
 }
 
@@ -362,6 +389,10 @@ class IncludeDeclaration extends TargetContent {
 	
 	op void generateImportURI() {
 		importURI = compositeImportURI.computeActualString
+	}
+	
+	op boolean isResolved() {
+		return compositeImportURI.isResolved
 	}
 }
 

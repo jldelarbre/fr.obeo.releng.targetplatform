@@ -105,6 +105,7 @@ public class ConverterApplication implements IApplication {
 	}
 	
     private Diagnostic convert(String path, Converter converter) {
+    	System.out.println("Start generation: " + path);
         URI uri = normalize(org.eclipse.emf.common.util.URI.createURI(path));
 		
 		Diagnostic diagnostic = converter.generateTargetDefinitionFile(uri, createPrintingMonitor());

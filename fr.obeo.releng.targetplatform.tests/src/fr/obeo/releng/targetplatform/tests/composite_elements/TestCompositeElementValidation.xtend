@@ -9,6 +9,7 @@ import fr.obeo.releng.targetplatform.VarDefinition
 import fr.obeo.releng.targetplatform.tests.util.CustomTargetPlatformInjectorProviderTargetReloader
 import fr.obeo.releng.targetplatform.util.ImportVariableManager
 import fr.obeo.releng.targetplatform.util.LocationIndexBuilder
+import fr.obeo.releng.targetplatform.util.PreferenceSettings
 import fr.obeo.releng.targetplatform.validation.TargetPlatformValidator
 import org.eclipse.emf.common.util.Diagnostic
 import org.eclipse.emf.common.util.URI
@@ -25,7 +26,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 import static org.junit.Assert.*
-import fr.obeo.releng.targetplatform.util.PreferenceSettings
 
 @InjectWith(typeof(CustomTargetPlatformInjectorProviderTargetReloader))
 @RunWith(typeof(XtextRunner))
@@ -67,7 +67,6 @@ class TestCompositeElementValidation {
 		''', URI.createURI("tmp:/compositeIncludeTarget.tpd"), resourceSet)
 		parser.parse('''
 			target "subTpd"
-			include "subsubTpd.tpd"
 			define subDirName="subdir"
 		''', URI.createURI("tmp:/subTpd.tpd"), resourceSet);
 		val subIncludeCircular = parser.parse('''
@@ -112,7 +111,6 @@ class TestCompositeElementValidation {
 		''', URI.createURI("tmp:/compositeIncludeTarget.tpd"), resourceSet)
 		parser.parse('''
 			target "subTpd"
-			include "subsubTpd.tpd"
 			define subDirName="subdir"
 		''', URI.createURI("tmp:/subTpd.tpd"), resourceSet);
 		val subIncludeCircular = parser.parse('''

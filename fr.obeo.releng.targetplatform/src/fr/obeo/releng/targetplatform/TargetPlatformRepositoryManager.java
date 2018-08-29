@@ -17,6 +17,8 @@ public class TargetPlatformRepositoryManager extends MetadataRepositoryManager {
 		super(agent);
 	}
 
+	// Copied from AbstractRepositoryManager
+	// Hope the implementation will not changed :-)
 	private String getKey(URI location) {
 		String key = location.toString().replace('/', '_');
 		// remove trailing slash
@@ -41,13 +43,22 @@ public class TargetPlatformRepositoryManager extends MetadataRepositoryManager {
 
 				removeRepository(location);
 
-				if (unavailableRepositories != null) {
-					if (unavailableRepositories.get() != null) {
-						unavailableRepositories.get().remove(location);
+				// TargetPlatformRepositoryManager is implementation specific since it inherits from MetadataRepositoryManager
+				// (inner element ofOSGi bundle => @SuppressWarnings("restriction") annotation on this class), if anything changes,
+				// it may fail. Put in try/catch part which is implementation specific: unavailableRepositories, repositories
+				// Other things depend on IMetadataRepositoryManager or IRepositoryManager (interface)
+				try {
+					if (unavailableRepositories != null) {
+						if (unavailableRepositories.get() != null) {
+							unavailableRepositories.get().remove(location);
+						}
 					}
+					repositories.remove(getKey(location));
+					// flushCache();
+				} catch (Exception e2) {
+					System.out.println("[WARNING] Retry attempt problem (exception = " +
+							e2.getClass().getSimpleName() + ", " + e2.getMessage() + ")");
 				}
-				repositories.remove(getKey(location));
-				// flushCache();
 				try {
 					Thread.sleep(i * 500 + 100); // 100 600 1100 1600 2100 ms
 				} catch (InterruptedException e) {

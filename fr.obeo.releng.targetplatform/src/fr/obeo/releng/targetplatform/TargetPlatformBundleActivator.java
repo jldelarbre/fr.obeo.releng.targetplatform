@@ -147,7 +147,14 @@ public class TargetPlatformBundleActivator extends Plugin {
 	}
 	
 	private void initializeServices(IProvisioningAgent agent2) {
-		agent2.registerService(IMetadataRepositoryManager.SERVICE_NAME, new TargetPlatformRepositoryManager(agent2));
+		// TargetPlatformRepositoryManager is implementation specific since it inherits from MetadataRepositoryManager
+		// (inner element ofOSGi bundle), if anything changes it may fail => working without retry attempts but not crashed
+		try {
+			agent2.registerService(IMetadataRepositoryManager.SERVICE_NAME, new TargetPlatformRepositoryManager(agent2));
+		} catch (Exception e) {
+			System.out.println("[WARNING] Retry attempts when loading repository may not work (exception = " +
+					e.getClass().getSimpleName() + ", " + e.getMessage() + ")");
+		}
 	}
 	
 	protected Module getRuntimeModule(String grammar) {

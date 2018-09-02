@@ -11,6 +11,7 @@
 package fr.obeo.releng.targetplatform.ui.labeling;
 
 import com.google.inject.Inject;
+import fr.obeo.releng.targetplatform.CompositeString;
 import fr.obeo.releng.targetplatform.Environment;
 import fr.obeo.releng.targetplatform.IU;
 import fr.obeo.releng.targetplatform.IncludeDeclaration;
@@ -18,6 +19,7 @@ import fr.obeo.releng.targetplatform.Location;
 import fr.obeo.releng.targetplatform.Option;
 import fr.obeo.releng.targetplatform.Options;
 import fr.obeo.releng.targetplatform.TargetPlatform;
+import fr.obeo.releng.targetplatform.VarCall;
 import fr.obeo.releng.targetplatform.VarDefinition;
 import fr.obeo.releng.targetplatform.util.CompositeElementResolver;
 import org.eclipse.emf.ecore.EObject;
@@ -123,6 +125,19 @@ public class TargetPlatformLabelProvider extends DefaultEObjectLabelProvider {
   
   public String image(final IncludeDeclaration object) {
     return "obj16/inc_obj.gif";
+  }
+  
+  public String text(final CompositeString object) {
+    String _name = object.getName();
+    String _plus = (_name + " = ");
+    String _computeActualString = object.computeActualString();
+    return (_plus + _computeActualString);
+  }
+  
+  public String text(final VarCall object) {
+    String _name = object.getVarName().getName();
+    String _plus = ("${" + _name);
+    return (_plus + "}");
   }
   
   public String image(final Option object) {

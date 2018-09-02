@@ -31,6 +31,10 @@ import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 
+import org.eclipse.xtext.xbase.lib.Functions.Function1;
+
+import org.eclipse.xtext.xbase.lib.IterableExtensions;
+
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Composite String</b></em>'.
@@ -260,6 +264,20 @@ public class CompositeStringImpl extends MinimalEObjectImpl.Container implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public boolean isResolved() {
+		final Function1<CompositeStringPart, Boolean> _function = new Function1<CompositeStringPart, Boolean>() {
+			public Boolean apply(final CompositeStringPart it) {
+				return Boolean.valueOf(it.isResolved());
+			}
+		};
+		return IterableExtensions.<CompositeStringPart>forall(this.getStringParts(), _function);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
@@ -389,6 +407,8 @@ public class CompositeStringImpl extends MinimalEObjectImpl.Container implements
 				return computeActualString((List<VarDefinition>)arguments.get(0));
 			case TargetPlatformPackage.COMPOSITE_STRING___GET_COPY:
 				return getCopy();
+			case TargetPlatformPackage.COMPOSITE_STRING___IS_RESOLVED:
+				return isResolved();
 		}
 		return super.eInvoke(operationID, arguments);
 	}

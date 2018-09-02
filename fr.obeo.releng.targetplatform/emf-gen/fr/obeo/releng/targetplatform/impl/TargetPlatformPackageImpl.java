@@ -615,6 +615,15 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EOperation getCompositeString__IsResolved() {
+		return compositeStringEClass.getEOperations().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getCompositeStringPart() {
 		return compositeStringPartEClass;
 	}
@@ -671,6 +680,15 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 	 */
 	public EOperation getCompositeStringPart__GetCopy() {
 		return compositeStringPartEClass.getEOperations().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getCompositeStringPart__IsResolved() {
+		return compositeStringPartEClass.getEOperations().get(5);
 	}
 
 	/**
@@ -750,6 +768,15 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EOperation getVarCall__IsResolved() {
+		return varCallEClass.getEOperations().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getStaticString() {
 		return staticStringEClass;
 	}
@@ -806,6 +833,15 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 	 */
 	public EOperation getStaticString__GetCopy() {
 		return staticStringEClass.getEOperations().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getStaticString__IsResolved() {
+		return staticStringEClass.getEOperations().get(3);
 	}
 
 	/**
@@ -923,6 +959,15 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 	 */
 	public EOperation getIncludeDeclaration__GenerateImportURI() {
 		return includeDeclarationEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getIncludeDeclaration__IsResolved() {
+		return includeDeclarationEClass.getEOperations().get(1);
 	}
 
 	/**
@@ -1091,6 +1136,7 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 		createEOperation(compositeStringEClass, COMPOSITE_STRING___COMPUTE_ACTUAL_STRING);
 		createEOperation(compositeStringEClass, COMPOSITE_STRING___COMPUTE_ACTUAL_STRING__LIST);
 		createEOperation(compositeStringEClass, COMPOSITE_STRING___GET_COPY);
+		createEOperation(compositeStringEClass, COMPOSITE_STRING___IS_RESOLVED);
 
 		compositeStringPartEClass = createEClass(COMPOSITE_STRING_PART);
 		createEReference(compositeStringPartEClass, COMPOSITE_STRING_PART__COMPOSITE_STRING);
@@ -1099,6 +1145,7 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 		createEOperation(compositeStringPartEClass, COMPOSITE_STRING_PART___IS_VARIABLE_DEFINITION_CYCLE_DETECTED);
 		createEOperation(compositeStringPartEClass, COMPOSITE_STRING_PART___GET_VAR_DEF_CYCLE);
 		createEOperation(compositeStringPartEClass, COMPOSITE_STRING_PART___GET_COPY);
+		createEOperation(compositeStringPartEClass, COMPOSITE_STRING_PART___IS_RESOLVED);
 
 		varCallEClass = createEClass(VAR_CALL);
 		createEReference(varCallEClass, VAR_CALL__VAR_NAME);
@@ -1108,6 +1155,7 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 		createEOperation(varCallEClass, VAR_CALL___GET_ACTUAL_STRING);
 		createEOperation(varCallEClass, VAR_CALL___GET_ACTUAL_STRING__LIST);
 		createEOperation(varCallEClass, VAR_CALL___GET_COPY);
+		createEOperation(varCallEClass, VAR_CALL___IS_RESOLVED);
 
 		staticStringEClass = createEClass(STATIC_STRING);
 		createEAttribute(staticStringEClass, STATIC_STRING__VALUE);
@@ -1116,6 +1164,7 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 		createEOperation(staticStringEClass, STATIC_STRING___GET_ACTUAL_STRING);
 		createEOperation(staticStringEClass, STATIC_STRING___GET_ACTUAL_STRING__LIST);
 		createEOperation(staticStringEClass, STATIC_STRING___GET_COPY);
+		createEOperation(staticStringEClass, STATIC_STRING___IS_RESOLVED);
 
 		locationEClass = createEClass(LOCATION);
 		createEAttribute(locationEClass, LOCATION__ID);
@@ -1131,6 +1180,7 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 		createEReference(includeDeclarationEClass, INCLUDE_DECLARATION__COMPOSITE_IMPORT_URI);
 		createEAttribute(includeDeclarationEClass, INCLUDE_DECLARATION__IMPORT_URI);
 		createEOperation(includeDeclarationEClass, INCLUDE_DECLARATION___GENERATE_IMPORT_URI);
+		createEOperation(includeDeclarationEClass, INCLUDE_DECLARATION___IS_RESOLVED);
 
 		iuEClass = createEClass(IU);
 		createEAttribute(iuEClass, IU__ID);
@@ -1244,6 +1294,8 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 
 		initEOperation(getCompositeString__GetCopy(), this.getCompositeString(), "getCopy", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
+		initEOperation(getCompositeString__IsResolved(), theEcorePackage.getEBoolean(), "isResolved", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
 		initEClass(compositeStringPartEClass, CompositeStringPart.class, "CompositeStringPart", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getCompositeStringPart_CompositeString(), this.getCompositeString(), this.getCompositeString_StringParts(), "compositeString", null, 0, 1, CompositeStringPart.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -1258,6 +1310,8 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 
 		initEOperation(getCompositeStringPart__GetCopy(), this.getCompositeStringPart(), "getCopy", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
+		initEOperation(getCompositeStringPart__IsResolved(), theEcorePackage.getEBoolean(), "isResolved", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
 		initEClass(varCallEClass, VarCall.class, "VarCall", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getVarCall_VarName(), this.getVarDefinition(), null, "varName", null, 0, 1, VarCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getVarCall_OriginalVarName(), this.getVarDefinition(), null, "originalVarName", null, 0, 1, VarCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1271,6 +1325,8 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 
 		initEOperation(getVarCall__GetCopy(), this.getVarCall(), "getCopy", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
+		initEOperation(getVarCall__IsResolved(), theEcorePackage.getEBoolean(), "isResolved", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
 		initEClass(staticStringEClass, StaticString.class, "StaticString", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getStaticString_Value(), theEcorePackage.getEString(), "value", null, 0, 1, StaticString.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getStaticString_VariableDefinitionCycleDetected(), theEcorePackage.getEBoolean(), "variableDefinitionCycleDetected", "false", 0, 1, StaticString.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1282,6 +1338,8 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 		addEParameter(op, this.getVarDefList(), "alreadyCalledVariable", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
 		initEOperation(getStaticString__GetCopy(), this.getStaticString(), "getCopy", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getStaticString__IsResolved(), theEcorePackage.getEBoolean(), "isResolved", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
 		initEClass(locationEClass, Location.class, "Location", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getLocation_ID(), theEcorePackage.getEString(), "ID", null, 0, 1, Location.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1300,6 +1358,8 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 		initEAttribute(getIncludeDeclaration_ImportURI(), theEcorePackage.getEString(), "importURI", null, 0, 1, IncludeDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEOperation(getIncludeDeclaration__GenerateImportURI(), null, "generateImportURI", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getIncludeDeclaration__IsResolved(), theEcorePackage.getEBoolean(), "isResolved", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
 		initEClass(iuEClass, fr.obeo.releng.targetplatform.IU.class, "IU", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getIU_ID(), theEcorePackage.getEString(), "ID", null, 0, 1, fr.obeo.releng.targetplatform.IU.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

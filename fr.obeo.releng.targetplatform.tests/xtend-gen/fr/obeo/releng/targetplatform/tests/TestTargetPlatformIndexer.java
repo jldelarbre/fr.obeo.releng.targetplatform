@@ -28,6 +28,7 @@ import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Conversions;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
+import org.eclipse.xtext.xbase.lib.InputOutput;
 import org.eclipse.xtext.xbase.lib.ListExtensions;
 import org.junit.Assert;
 import org.junit.Test;
@@ -257,7 +258,30 @@ public class TestTargetPlatformIndexer {
       _builder.newLine();
       final TargetPlatform o = this.parser.parse(_builder, 
         URI.createURI("tmp:/o.tpd"), resourceSet);
-      final ListMultimap<String, Location> index = this.indexBuilder.getLocationIndex(o);
+      final int maxTries = 3;
+      ListMultimap<String, Location> index = null;
+      for (int i = 0; (i < maxTries); i++) {
+        {
+          index = this.indexBuilder.getLocationIndex(o);
+          int _size = index.size();
+          boolean _notEquals = (_size != 0);
+          if (_notEquals) {
+            i = maxTries;
+          } else {
+            InputOutput.<String>println("Test testRemoteInclude: retry to reach remote location");
+            try {
+              Thread.sleep(200);
+            } catch (final Throwable _t) {
+              if (_t instanceof InterruptedException) {
+                final InterruptedException e2 = (InterruptedException)_t;
+                e2.printStackTrace();
+              } else {
+                throw Exceptions.sneakyThrow(_t);
+              }
+            }
+          }
+        }
+      }
       Assert.assertEquals(4, index.size());
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);

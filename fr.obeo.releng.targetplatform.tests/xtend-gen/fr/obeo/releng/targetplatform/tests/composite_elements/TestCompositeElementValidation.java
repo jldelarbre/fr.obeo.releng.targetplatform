@@ -12,7 +12,6 @@ import fr.obeo.releng.targetplatform.VarDefinition;
 import fr.obeo.releng.targetplatform.tests.util.CustomTargetPlatformInjectorProviderTargetReloader;
 import fr.obeo.releng.targetplatform.util.ImportVariableManager;
 import fr.obeo.releng.targetplatform.util.LocationIndexBuilder;
-import fr.obeo.releng.targetplatform.util.PreferenceSettings;
 import fr.obeo.releng.targetplatform.validation.TargetPlatformValidator;
 import java.util.List;
 import java.util.function.Consumer;
@@ -59,9 +58,6 @@ public class TestCompositeElementValidation {
   private ImportVariableManager importVariableManager;
   
   @Inject
-  private PreferenceSettings preferenceSettings;
-  
-  @Inject
   @Named(Constants.LANGUAGE_NAME)
   private String languageName;
   
@@ -80,8 +76,6 @@ public class TestCompositeElementValidation {
       final TargetPlatform compositeIncludeTarget = this.parser.parse(_builder, URI.createURI("tmp:/compositeIncludeTarget.tpd"), resourceSet);
       StringConcatenation _builder_1 = new StringConcatenation();
       _builder_1.append("target \"subTpd\"");
-      _builder_1.newLine();
-      _builder_1.append("include \"subsubTpd.tpd\"");
       _builder_1.newLine();
       _builder_1.append("define subDirName=\"subdir\"");
       _builder_1.newLine();
@@ -142,8 +136,7 @@ public class TestCompositeElementValidation {
   @Test
   public void checkImportCycleDueToVariableDefinitionOverride() {
     try {
-      final String[] args = { "compositeIncludeTarget.tpd", "urlCyclicInclude=../compositeIncludeTarget.tpd" };
-      this.preferenceSettings.setUseEnv(true);
+      final String[] args = { "compositeIncludeTarget.tpd", ImportVariableManager.OVERRIDE, "urlCyclicInclude=../compositeIncludeTarget.tpd" };
       this.importVariableManager.processCommandLineArguments(args);
       final ValidatorTester<TargetPlatformValidator> tester = new ValidatorTester<TargetPlatformValidator>(this.validator, this.validatorRegistrar, this.languageName);
       final XtextResourceSet resourceSet = this.resourceSetProvider.get();
@@ -157,8 +150,6 @@ public class TestCompositeElementValidation {
       final TargetPlatform compositeIncludeTarget = this.parser.parse(_builder, URI.createURI("tmp:/compositeIncludeTarget.tpd"), resourceSet);
       StringConcatenation _builder_1 = new StringConcatenation();
       _builder_1.append("target \"subTpd\"");
-      _builder_1.newLine();
-      _builder_1.append("include \"subsubTpd.tpd\"");
       _builder_1.newLine();
       _builder_1.append("define subDirName=\"subdir\"");
       _builder_1.newLine();
@@ -214,7 +205,6 @@ public class TestCompositeElementValidation {
       };
       diagnotics.forEach(_function_3);
       this.importVariableManager.clear();
-      this.preferenceSettings.setUseEnv(false);
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }

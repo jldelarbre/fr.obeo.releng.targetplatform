@@ -20,6 +20,7 @@ import fr.obeo.releng.targetplatform.Location;
 import fr.obeo.releng.targetplatform.TargetContent;
 import fr.obeo.releng.targetplatform.TargetPlatform;
 import fr.obeo.releng.targetplatform.util.CompositeElementResolver;
+import fr.obeo.releng.targetplatform.util.ResourceUtil;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -29,7 +30,6 @@ import java.util.function.Consumer;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.scoping.impl.ImportUriResolver;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
@@ -140,13 +140,19 @@ public class LocationIndexBuilder {
       {
         final LinkedList<TargetPlatform> tr = CollectionLiterals.<TargetPlatform>newLinkedList();
         final TargetPlatform t = queue.removeLast();
-        final Function1<IncludeDeclaration, TargetPlatform> _function = new Function1<IncludeDeclaration, TargetPlatform>() {
+        final Function1<IncludeDeclaration, Boolean> _function = new Function1<IncludeDeclaration, Boolean>() {
+          @Override
+          public Boolean apply(final IncludeDeclaration it) {
+            return Boolean.valueOf(it.isResolved());
+          }
+        };
+        final Function1<IncludeDeclaration, TargetPlatform> _function_1 = new Function1<IncludeDeclaration, TargetPlatform>() {
           @Override
           public TargetPlatform apply(final IncludeDeclaration it) {
             return LocationIndexBuilder.this.getImportedTargetPlatform(t.eResource(), it);
           }
         };
-        Iterable<TargetPlatform> _filterNull = IterableExtensions.<TargetPlatform>filterNull(ListExtensions.<IncludeDeclaration, TargetPlatform>map(t.getIncludes(), _function));
+        Iterable<TargetPlatform> _filterNull = IterableExtensions.<TargetPlatform>filterNull(IterableExtensions.<IncludeDeclaration, TargetPlatform>map(IterableExtensions.<IncludeDeclaration>filter(t.getIncludes(), _function), _function_1));
         for (final TargetPlatform unvisited : _filterNull) {
           boolean _contains = visited.contains(unvisited);
           boolean _not = (!_contains);
@@ -166,7 +172,6 @@ public class LocationIndexBuilder {
     this.compositeElementResolver.resolveCompositeElements(targetPlatform);
     final LinkedHashSet<TargetPlatform> acc = CollectionLiterals.<TargetPlatform>newLinkedHashSet();
     final LinkedList<TargetPlatform> s = CollectionLiterals.<TargetPlatform>newLinkedList();
-    this.compositeElementResolver.searchAndAppendDefineFromIncludedTpd(targetPlatform);
     List<TargetPlatform> _xifexpression = null;
     boolean _checkIncludeCycle = this.checkIncludeCycle(targetPlatform, acc, s);
     if (_checkIncludeCycle) {
@@ -208,7 +213,7 @@ public class LocationIndexBuilder {
   public TargetPlatform getImportedTargetPlatform(final Resource context, final IncludeDeclaration include) {
     TargetPlatform ret = null;
     include.generateImportURI();
-    final Resource resource = EcoreUtil2.getResource(context, this.resolver.resolve(include));
+    final Resource resource = ResourceUtil.getResource(context, this.resolver.resolve(include));
     EList<EObject> _contents = null;
     if (resource!=null) {
       _contents=resource.getContents();

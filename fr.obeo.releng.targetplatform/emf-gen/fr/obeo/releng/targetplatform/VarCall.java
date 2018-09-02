@@ -156,4 +156,13 @@ public interface VarCall extends CompositeStringPart {
 	 */
 	VarCall getCopy();
 
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" unique="false"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='&lt;%fr.obeo.releng.targetplatform.VarDefinition%&gt; _varName = this.getVarName();\nboolean _tripleEquals = (_varName == null);\nif (_tripleEquals)\n{\n\treturn false;\n}\nif (((this.getVarName().getName() == null) || (this.getVarName().getValue() == null)))\n{\n\treturn false;\n}\nthis.getActualString();\nboolean _isVariableDefinitionCycleDetected = this.isVariableDefinitionCycleDetected();\nif (_isVariableDefinitionCycleDetected)\n{\n\treturn false;\n}\nreturn this.getVarName().getValue().isResolved();'"
+	 * @generated
+	 */
+	boolean isResolved();
+
 } // VarCall

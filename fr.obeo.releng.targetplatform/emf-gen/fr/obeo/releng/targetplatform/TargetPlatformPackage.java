@@ -580,13 +580,22 @@ public interface TargetPlatformPackage extends EPackage {
 	int COMPOSITE_STRING___GET_COPY = 2;
 
 	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOSITE_STRING___IS_RESOLVED = 3;
+
+	/**
 	 * The number of operations of the '<em>Composite String</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int COMPOSITE_STRING_OPERATION_COUNT = 3;
+	int COMPOSITE_STRING_OPERATION_COUNT = 4;
 
 	/**
 	 * The meta object id for the '{@link fr.obeo.releng.targetplatform.CompositeStringPart <em>Composite String Part</em>}' class.
@@ -662,13 +671,22 @@ public interface TargetPlatformPackage extends EPackage {
 	int COMPOSITE_STRING_PART___GET_COPY = 4;
 
 	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOSITE_STRING_PART___IS_RESOLVED = 5;
+
+	/**
 	 * The number of operations of the '<em>Composite String Part</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int COMPOSITE_STRING_PART_OPERATION_COUNT = 5;
+	int COMPOSITE_STRING_PART_OPERATION_COUNT = 6;
 
 	/**
 	 * The meta object id for the '{@link fr.obeo.releng.targetplatform.impl.VarCallImpl <em>Var Call</em>}' class.
@@ -780,13 +798,22 @@ public interface TargetPlatformPackage extends EPackage {
 	int VAR_CALL___GET_COPY = COMPOSITE_STRING_PART_OPERATION_COUNT + 2;
 
 	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VAR_CALL___IS_RESOLVED = COMPOSITE_STRING_PART_OPERATION_COUNT + 3;
+
+	/**
 	 * The number of operations of the '<em>Var Call</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int VAR_CALL_OPERATION_COUNT = COMPOSITE_STRING_PART_OPERATION_COUNT + 3;
+	int VAR_CALL_OPERATION_COUNT = COMPOSITE_STRING_PART_OPERATION_COUNT + 4;
 
 	/**
 	 * The meta object id for the '{@link fr.obeo.releng.targetplatform.impl.StaticStringImpl <em>Static String</em>}' class.
@@ -889,13 +916,22 @@ public interface TargetPlatformPackage extends EPackage {
 	int STATIC_STRING___GET_COPY = COMPOSITE_STRING_PART_OPERATION_COUNT + 2;
 
 	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int STATIC_STRING___IS_RESOLVED = COMPOSITE_STRING_PART_OPERATION_COUNT + 3;
+
+	/**
 	 * The number of operations of the '<em>Static String</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int STATIC_STRING_OPERATION_COUNT = COMPOSITE_STRING_PART_OPERATION_COUNT + 3;
+	int STATIC_STRING_OPERATION_COUNT = COMPOSITE_STRING_PART_OPERATION_COUNT + 4;
 
 	/**
 	 * The meta object id for the '{@link fr.obeo.releng.targetplatform.impl.LocationImpl <em>Location</em>}' class.
@@ -1062,13 +1098,22 @@ public interface TargetPlatformPackage extends EPackage {
 	int INCLUDE_DECLARATION___GENERATE_IMPORT_URI = TARGET_CONTENT_OPERATION_COUNT + 0;
 
 	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INCLUDE_DECLARATION___IS_RESOLVED = TARGET_CONTENT_OPERATION_COUNT + 1;
+
+	/**
 	 * The number of operations of the '<em>Include Declaration</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int INCLUDE_DECLARATION_OPERATION_COUNT = TARGET_CONTENT_OPERATION_COUNT + 1;
+	int INCLUDE_DECLARATION_OPERATION_COUNT = TARGET_CONTENT_OPERATION_COUNT + 2;
 
 	/**
 	 * The meta object id for the '{@link fr.obeo.releng.targetplatform.impl.IUImpl <em>IU</em>}' class.
@@ -1647,6 +1692,16 @@ public interface TargetPlatformPackage extends EPackage {
 	EOperation getCompositeString__GetCopy();
 
 	/**
+	 * Returns the meta object for the '{@link fr.obeo.releng.targetplatform.CompositeString#isResolved() <em>Is Resolved</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Is Resolved</em>' operation.
+	 * @see fr.obeo.releng.targetplatform.CompositeString#isResolved()
+	 * @generated
+	 */
+	EOperation getCompositeString__IsResolved();
+
+	/**
 	 * Returns the meta object for class '{@link fr.obeo.releng.targetplatform.CompositeStringPart <em>Composite String Part</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1716,6 +1771,16 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 */
 	EOperation getCompositeStringPart__GetCopy();
+
+	/**
+	 * Returns the meta object for the '{@link fr.obeo.releng.targetplatform.CompositeStringPart#isResolved() <em>Is Resolved</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Is Resolved</em>' operation.
+	 * @see fr.obeo.releng.targetplatform.CompositeStringPart#isResolved()
+	 * @generated
+	 */
+	EOperation getCompositeStringPart__IsResolved();
 
 	/**
 	 * Returns the meta object for class '{@link fr.obeo.releng.targetplatform.VarCall <em>Var Call</em>}'.
@@ -1802,6 +1867,16 @@ public interface TargetPlatformPackage extends EPackage {
 	EOperation getVarCall__GetCopy();
 
 	/**
+	 * Returns the meta object for the '{@link fr.obeo.releng.targetplatform.VarCall#isResolved() <em>Is Resolved</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Is Resolved</em>' operation.
+	 * @see fr.obeo.releng.targetplatform.VarCall#isResolved()
+	 * @generated
+	 */
+	EOperation getVarCall__IsResolved();
+
+	/**
 	 * Returns the meta object for class '{@link fr.obeo.releng.targetplatform.StaticString <em>Static String</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1873,6 +1948,16 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 */
 	EOperation getStaticString__GetCopy();
+
+	/**
+	 * Returns the meta object for the '{@link fr.obeo.releng.targetplatform.StaticString#isResolved() <em>Is Resolved</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Is Resolved</em>' operation.
+	 * @see fr.obeo.releng.targetplatform.StaticString#isResolved()
+	 * @generated
+	 */
+	EOperation getStaticString__IsResolved();
 
 	/**
 	 * Returns the meta object for class '{@link fr.obeo.releng.targetplatform.Location <em>Location</em>}'.
@@ -2011,6 +2096,16 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 */
 	EOperation getIncludeDeclaration__GenerateImportURI();
+
+	/**
+	 * Returns the meta object for the '{@link fr.obeo.releng.targetplatform.IncludeDeclaration#isResolved() <em>Is Resolved</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Is Resolved</em>' operation.
+	 * @see fr.obeo.releng.targetplatform.IncludeDeclaration#isResolved()
+	 * @generated
+	 */
+	EOperation getIncludeDeclaration__IsResolved();
 
 	/**
 	 * Returns the meta object for class '{@link fr.obeo.releng.targetplatform.IU <em>IU</em>}'.
@@ -2500,6 +2595,14 @@ public interface TargetPlatformPackage extends EPackage {
 		EOperation COMPOSITE_STRING___GET_COPY = eINSTANCE.getCompositeString__GetCopy();
 
 		/**
+		 * The meta object literal for the '<em><b>Is Resolved</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation COMPOSITE_STRING___IS_RESOLVED = eINSTANCE.getCompositeString__IsResolved();
+
+		/**
 		 * The meta object literal for the '{@link fr.obeo.releng.targetplatform.CompositeStringPart <em>Composite String Part</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2556,6 +2659,14 @@ public interface TargetPlatformPackage extends EPackage {
 		 * @generated
 		 */
 		EOperation COMPOSITE_STRING_PART___GET_COPY = eINSTANCE.getCompositeStringPart__GetCopy();
+
+		/**
+		 * The meta object literal for the '<em><b>Is Resolved</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation COMPOSITE_STRING_PART___IS_RESOLVED = eINSTANCE.getCompositeStringPart__IsResolved();
 
 		/**
 		 * The meta object literal for the '{@link fr.obeo.releng.targetplatform.impl.VarCallImpl <em>Var Call</em>}' class.
@@ -2624,6 +2735,14 @@ public interface TargetPlatformPackage extends EPackage {
 		EOperation VAR_CALL___GET_COPY = eINSTANCE.getVarCall__GetCopy();
 
 		/**
+		 * The meta object literal for the '<em><b>Is Resolved</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation VAR_CALL___IS_RESOLVED = eINSTANCE.getVarCall__IsResolved();
+
+		/**
 		 * The meta object literal for the '{@link fr.obeo.releng.targetplatform.impl.StaticStringImpl <em>Static String</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2680,6 +2799,14 @@ public interface TargetPlatformPackage extends EPackage {
 		 * @generated
 		 */
 		EOperation STATIC_STRING___GET_COPY = eINSTANCE.getStaticString__GetCopy();
+
+		/**
+		 * The meta object literal for the '<em><b>Is Resolved</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation STATIC_STRING___IS_RESOLVED = eINSTANCE.getStaticString__IsResolved();
 
 		/**
 		 * The meta object literal for the '{@link fr.obeo.releng.targetplatform.impl.LocationImpl <em>Location</em>}' class.
@@ -2788,6 +2915,14 @@ public interface TargetPlatformPackage extends EPackage {
 		 * @generated
 		 */
 		EOperation INCLUDE_DECLARATION___GENERATE_IMPORT_URI = eINSTANCE.getIncludeDeclaration__GenerateImportURI();
+
+		/**
+		 * The meta object literal for the '<em><b>Is Resolved</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation INCLUDE_DECLARATION___IS_RESOLVED = eINSTANCE.getIncludeDeclaration__IsResolved();
 
 		/**
 		 * The meta object literal for the '{@link fr.obeo.releng.targetplatform.impl.IUImpl <em>IU</em>}' class.

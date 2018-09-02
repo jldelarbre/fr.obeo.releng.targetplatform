@@ -6,8 +6,10 @@ import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.RadioGroupFieldEditor;
+import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -20,26 +22,15 @@ import fr.obeo.releng.targetplatform.ui.internal.TargetPlatformActivator;
 import fr.obeo.releng.targetplatform.util.ImportVariableManager;
 import fr.obeo.releng.targetplatform.util.PreferenceSettings;
 
-/**
- * This class represents a preference page that
- * is contributed to the Preferences dialog. By 
- * subclassing <samp>FieldEditorPreferencePage</samp>, we
- * can use the field support built into JFace that allows
- * us to create a page that is small and knows how to 
- * save, restore and apply itself.
- * <p>
- * This page is used to modify preferences only. They
- * are stored in the preference store that belongs to
- * the main plug-in class. That way, preferences can
- * be accessed directly via the preference store.
- */
-
 public class TPDPreferencePage
 	extends FieldEditorPreferencePage
 	implements IWorkbenchPreferencePage {
 	
 	private String duplicatedIUWarnPreference2BeSet;
 	private boolean useEnvSetting2BeSet;
+	private String variableOverridList;
+	
+	private Label labelErr;
 	
 	public TPDPreferencePage() {
 		super(GRID);
@@ -66,32 +57,52 @@ public class TPDPreferencePage
 		
 		addField(new BooleanFieldEditor(
 				TPDPreferenceConstants.P_CHOICE_USE_ENV,
-				"Use &environment variables to override variable values in tpd files\n(need restart only if environment change)",
+				"\nUse &environment variables to override variable values in tpd files\n(need restart only if environment change)",
 				getFieldEditorParent()));
 		
 		showLoadedEnvironmentVariables();
+		showVariableOverride();
 	}
 
 	private void showLoadedEnvironmentVariables() {
 		Composite parent= getFieldEditorParent();
-		Label label1 = new Label(parent,SWT.BORDER);
+		Label label1 = new Label(parent,SWT.NONE);
+		new Label(parent,SWT.NONE); // Dirty trick to get widget align in FieldEditorPreferencePage
 		label1.setText("Environment variables found at startup for TPD");
 		Text labelLoadedTPDEnvVar = new Text(parent, SWT.READ_ONLY | SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
 		GridData gridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
 		gridData.heightHint = 10 * labelLoadedTPDEnvVar.getLineHeight();
 		gridData.widthHint = (3*gridData.heightHint)/2;
 		labelLoadedTPDEnvVar.setLayoutData(gridData);
+		new Label(parent,SWT.NONE);
 		
 		String varEnvList = "";
-		TargetPlatformBundleActivator instance = TargetPlatformBundleActivator.getInstance();
-		ImportVariableManager importVariableManager = instance.getImportVariableManager();
-		Map<String, String> overrideVarDefMap = importVariableManager.getOverrideVarDefMap();
-		for (String varName : overrideVarDefMap.keySet()) {
-			String varValue = overrideVarDefMap.get(varName);
-			varEnvList += varName + " = " + varValue + "\n";
+		Map<String, String> env = System.getenv();
+		for (String envName : env.keySet()) {
+			if (envName.startsWith(ImportVariableManager.TPD_VAR_PREFIX)) {
+				String tpdOverrideVar = env.get(envName);
+				String[] varImport = tpdOverrideVar.split("=");
+				if (varImport.length != 2) {
+					continue;
+				}
+				varEnvList += envName + ": " + varImport[0] + " = " + varImport[1] + "\n";
+			}
 		}
 		
 		labelLoadedTPDEnvVar.setText(varEnvList);
+	}
+	
+	private void showVariableOverride() {
+		Composite parent= getFieldEditorParent();
+		Label label1 = new Label(parent,SWT.NONE);
+		label1.setText("\nVariable &override list (same as in command line without: " + ImportVariableManager.OVERRIDE + ")\n" +
+				"example: var1=value1 var2=\"value with space\" var3=\"\"");
+		addField(new StringFieldEditor(TPDPreferenceConstants.P_LIST_OVERRIDE, "", getFieldEditorParent()));
+		new Label(parent,SWT.NONE);
+		labelErr = new Label(parent,SWT.NONE);
+		labelErr.setForeground(new Color(parent.getDisplay(), 255, 0, 0));
+		labelErr.setText("Invalid variable override list");
+		displayOverrideListWarning();
 	}
 	
 	public void propertyChange(PropertyChangeEvent event) {
@@ -111,7 +122,23 @@ public class TPDPreferencePage
         			useEnvSetting2BeSet = (Boolean) event.getNewValue();
         		}
         	}
-        }        
+        	else if (source instanceof StringFieldEditor) {
+        		StringFieldEditor stringEditor = (StringFieldEditor) source;
+        		if (stringEditor.getPreferenceName().equals(TPDPreferenceConstants.P_LIST_OVERRIDE)) {
+        			variableOverridList = (String) event.getNewValue();
+        			displayOverrideListWarning();
+        		}
+        	}
+        }
+	}
+
+	private void displayOverrideListWarning() {
+		if (PreferenceSettings.checkOverrideList(variableOverridList)) {
+			labelErr.setVisible(false);
+		}
+		else {
+			labelErr.setVisible(true);
+		}
 	}
 	
 	private void updateSettings() {
@@ -119,6 +146,7 @@ public class TPDPreferencePage
 		PreferenceSettings preferenceSettings = instance.getPreferenceSettings();
 		preferenceSettings.setDuplicatedIUWarnPreference(duplicatedIUWarnPreference2BeSet);
 		preferenceSettings.setUseEnv(useEnvSetting2BeSet);
+		preferenceSettings.setOverrideList(variableOverridList);
 	}
 	
 	@Override
@@ -138,6 +166,7 @@ public class TPDPreferencePage
 		super.performDefaults();
 		duplicatedIUWarnPreference2BeSet = PreferenceSettings.DUPLICATED_IU_IMPORT_DEFAULT;
 		useEnvSetting2BeSet = PreferenceSettings.USE_ENV_DEFAULT_SETTING;
+		variableOverridList = PreferenceSettings.OVERRIDE_LIST_DEFAULT;
 	}
 
 	/* (non-Javadoc)
@@ -148,6 +177,8 @@ public class TPDPreferencePage
 				.getPreferenceStore().getString(TPDPreferenceConstants.P_CHOICE_DUPLICATED_IU_WARNING);
 		useEnvSetting2BeSet = TargetPlatformActivator.getInstance()
 				.getPreferenceStore().getBoolean(TPDPreferenceConstants.P_CHOICE_USE_ENV);
+		variableOverridList = TargetPlatformActivator.getInstance()
+				.getPreferenceStore().getString(TPDPreferenceConstants.P_LIST_OVERRIDE);
 	}
 	
 }

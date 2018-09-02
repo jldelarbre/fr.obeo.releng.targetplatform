@@ -6,6 +6,7 @@ import fr.obeo.releng.targetplatform.TargetPlatform
 import fr.obeo.releng.targetplatform.VarCall
 import fr.obeo.releng.targetplatform.tests.util.CustomTargetPlatformInjectorProviderTargetReloader
 import fr.obeo.releng.targetplatform.util.LocationIndexBuilder
+import fr.obeo.releng.targetplatform.util.ResourceUtil
 import org.eclipse.emf.common.util.URI
 import org.eclipse.xtext.junit4.InjectWith
 import org.eclipse.xtext.junit4.XtextRunner
@@ -14,6 +15,7 @@ import org.eclipse.xtext.resource.XtextResourceSet
 import org.junit.Test
 import org.junit.runner.RunWith
 
+import static fr.obeo.releng.targetplatform.util.ResourceUtil.*
 import static org.junit.Assert.*
 
 @InjectWith(typeof(CustomTargetPlatformInjectorProviderTargetReloader))
@@ -263,6 +265,9 @@ class TestCompositeLocation {
 			}
 		''', URI.createURI("tmp:/subdir/subInclude.tpd"), resourceSet)
 		
+		//Dirty way to avoid (with good probability) retry of include expected to fail: just run test faster
+		ResourceUtil.MAX_TRIES = 1
+		
 		val locationIndex = indexBuilder.getLocationIndex(compositeIncludeTarget)
 		assertEquals(0, locationIndex.size)
 		
@@ -274,6 +279,9 @@ class TestCompositeLocation {
 		val importedTargetPlatforms = indexBuilder.getImportedTargetPlatforms(compositeIncludeTarget)
 		val varDef = importedTargetPlatforms.last.varDefinition.head
 		assertEquals("subdir", varDef.value.computeActualString)
+		
+		ResourceUtil.MAX_TRIES = ResourceUtil.DEFAULT_MAX_TRIES
+		return
 	}
 	
 	@Test
@@ -300,11 +308,17 @@ class TestCompositeLocation {
 			}
 		''', URI.createURI("tmp:/subdir/subInclude.tpd"), resourceSet)
 		
+		//Dirty way to avoid (with good probability) retry of include expected to fail: just run test faster
+		ResourceUtil.MAX_TRIES = 1
+		
 		val locationIndex = indexBuilder.getLocationIndex(compositeIncludeTarget)
 		assertEquals(0, locationIndex.size)
 		
 		val compositeImportURI = compositeIncludeTarget.includes.last.compositeImportURI
 		assertEquals("wrongSubdir", compositeImportURI.stringParts.head.actualString)
+		
+		ResourceUtil.MAX_TRIES = ResourceUtil.DEFAULT_MAX_TRIES
+		return
 	}
 	
 	@Test

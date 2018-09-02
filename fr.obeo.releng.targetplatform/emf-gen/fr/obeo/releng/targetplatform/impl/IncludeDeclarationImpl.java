@@ -258,6 +258,15 @@ public class IncludeDeclarationImpl extends MinimalEObjectImpl.Container impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public boolean isResolved() {
+		return this.getCompositeImportURI().isResolved();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -399,6 +408,8 @@ public class IncludeDeclarationImpl extends MinimalEObjectImpl.Container impleme
 			case TargetPlatformPackage.INCLUDE_DECLARATION___GENERATE_IMPORT_URI:
 				generateImportURI();
 				return null;
+			case TargetPlatformPackage.INCLUDE_DECLARATION___IS_RESOLVED:
+				return isResolved();
 		}
 		return super.eInvoke(operationID, arguments);
 	}

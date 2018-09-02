@@ -25,7 +25,6 @@ import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Conversions;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
-import org.eclipse.xtext.xbase.lib.ListExtensions;
 
 @SuppressWarnings("all")
 public class CompositeElementResolver {
@@ -132,7 +131,7 @@ public class CompositeElementResolver {
     targetPlatform.setModified(true);
   }
   
-  void searchAndAppendDefineFromIncludedTpd(final TargetPlatform targetPlatform) {
+  private void searchAndAppendDefineFromIncludedTpd(final TargetPlatform targetPlatform) {
     final HashSet<TargetPlatform> alreadyVisitedTarget = CollectionLiterals.<TargetPlatform>newHashSet();
     this.searchAndAppendDefineFromIncludedTpd(targetPlatform, alreadyVisitedTarget);
   }
@@ -198,19 +197,25 @@ public class CompositeElementResolver {
    * target: "targetPlatform". Do not look for target imported through an imported target
    */
   private List<TargetPlatform> searchDirectlyImportedTpd(final TargetPlatform targetPlatform) {
-    final Function1<IncludeDeclaration, TargetPlatform> _function = new Function1<IncludeDeclaration, TargetPlatform>() {
+    final Function1<IncludeDeclaration, Boolean> _function = new Function1<IncludeDeclaration, Boolean>() {
+      @Override
+      public Boolean apply(final IncludeDeclaration it) {
+        return Boolean.valueOf(it.isResolved());
+      }
+    };
+    final Function1<IncludeDeclaration, TargetPlatform> _function_1 = new Function1<IncludeDeclaration, TargetPlatform>() {
       @Override
       public TargetPlatform apply(final IncludeDeclaration it) {
         return CompositeElementResolver.this.locationIndexBuilder.getImportedTargetPlatform(targetPlatform.eResource(), it);
       }
     };
-    final Function1<TargetPlatform, Boolean> _function_1 = new Function1<TargetPlatform, Boolean>() {
+    final Function1<TargetPlatform, Boolean> _function_2 = new Function1<TargetPlatform, Boolean>() {
       @Override
       public Boolean apply(final TargetPlatform it) {
         return Boolean.valueOf((it != null));
       }
     };
-    return IterableExtensions.<TargetPlatform>toList(IterableExtensions.<TargetPlatform>filter(ListExtensions.<IncludeDeclaration, TargetPlatform>map(targetPlatform.getIncludes(), _function), _function_1));
+    return IterableExtensions.<TargetPlatform>toList(IterableExtensions.<TargetPlatform>filter(IterableExtensions.<IncludeDeclaration, TargetPlatform>map(IterableExtensions.<IncludeDeclaration>filter(targetPlatform.getIncludes(), _function), _function_1), _function_2));
   }
   
   /**
@@ -296,7 +301,7 @@ public class CompositeElementResolver {
     targetPlatform.setVarCallFromOnlyImportedVariable(_string.substring(1, _minus));
   }
   
-  protected VarDefinition searchAlreadyIncludeVarDef(final VarDefinition varDef2Find, final HashSet<VarDefinition> alreadyAddedVarDefs) {
+  private VarDefinition searchAlreadyIncludeVarDef(final VarDefinition varDef2Find, final HashSet<VarDefinition> alreadyAddedVarDefs) {
     VarDefinition _xblockexpression = null;
     {
       final String varDefNameToFind = varDef2Find.getName();

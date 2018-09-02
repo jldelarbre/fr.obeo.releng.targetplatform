@@ -20,6 +20,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.equinox.p2.core.IProvisioningAgent;
 import org.eclipse.equinox.p2.core.IProvisioningAgentProvider;
 import org.eclipse.equinox.p2.core.ProvisionException;
+import org.eclipse.equinox.p2.repository.metadata.IMetadataRepositoryManager;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
@@ -28,7 +29,6 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 
-import fr.obeo.releng.targetplatform.util.ImportVariableManager;
 import fr.obeo.releng.targetplatform.util.PreferenceSettings;
 
 
@@ -87,11 +87,6 @@ public class TargetPlatformBundleActivator extends Plugin {
 		return preferenceSettings;
 	}
 	
-	public ImportVariableManager getImportVariableManager() {
-		Injector injector = getInjector(TargetPlatformBundleActivator.TARGET_PLATFORM_LANGUAGE_NAME);
-		return injector.getInstance(ImportVariableManager.class);
-	}
-
 	public Injector getInjector(String language) {
 		synchronized (injectors) {
 			Injector injector = injectors.get(language);
@@ -132,6 +127,7 @@ public class TargetPlatformBundleActivator extends Plugin {
 				if (agentProvider != null) {
 					try {
 						agent = agentProvider.createAgent(getStateLocation().toFile().toURI());
+						initializeServices(agent);
 					} catch (ProvisionException e) {
 						getLog().log(new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e));
 					} catch (IllegalStateException e) {
@@ -142,6 +138,17 @@ public class TargetPlatformBundleActivator extends Plugin {
 			}
 		}
 		return agent;
+	}
+	
+	private void initializeServices(IProvisioningAgent agent2) {
+		// TargetPlatformRepositoryManager is implementation specific since it inherits from MetadataRepositoryManager
+		// (inner element ofOSGi bundle), if anything changes it may fail => working without retry attempts but not crashed
+		try {
+			agent2.registerService(IMetadataRepositoryManager.SERVICE_NAME, new TargetPlatformRepositoryManager(agent2));
+		} catch (Exception e) {
+			System.out.println("[WARNING] Retry attempts when loading repository may not work (exception = " +
+					e.getClass().getSimpleName() + ", " + e.getMessage() + ")");
+		}
 	}
 	
 	protected Module getRuntimeModule(String grammar) {

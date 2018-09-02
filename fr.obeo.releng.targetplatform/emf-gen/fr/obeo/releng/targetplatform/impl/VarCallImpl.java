@@ -350,6 +350,28 @@ public class VarCallImpl extends MinimalEObjectImpl.Container implements VarCall
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public boolean isResolved() {
+		VarDefinition _varName = this.getVarName();
+		boolean _tripleEquals = (_varName == null);
+		if (_tripleEquals) {
+			return false;
+		}
+		if (((this.getVarName().getName() == null) || (this.getVarName().getValue() == null))) {
+			return false;
+		}
+		this.getActualString();
+		boolean _isVariableDefinitionCycleDetected = this.isVariableDefinitionCycleDetected();
+		if (_isVariableDefinitionCycleDetected) {
+			return false;
+		}
+		return this.getVarName().getValue().isResolved();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -506,6 +528,8 @@ public class VarCallImpl extends MinimalEObjectImpl.Container implements VarCall
 				return getActualString((List<VarDefinition>)arguments.get(0));
 			case TargetPlatformPackage.VAR_CALL___GET_COPY:
 				return getCopy();
+			case TargetPlatformPackage.VAR_CALL___IS_RESOLVED:
+				return isResolved();
 		}
 		return super.eInvoke(operationID, arguments);
 	}

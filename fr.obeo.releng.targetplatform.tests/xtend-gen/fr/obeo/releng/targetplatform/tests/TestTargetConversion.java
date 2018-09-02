@@ -462,8 +462,6 @@ public class TestTargetConversion {
       StringConcatenation _builder = new StringConcatenation();
       _builder.append("target \"TP1\"");
       _builder.newLine();
-      _builder.append("include \"tp2.tpd\"");
-      _builder.newLine();
       _builder.append("location \"http://download.eclipse.org/modeling/emf/compare/updates/releases/2.1/R201310031412/\" { ");
       _builder.newLine();
       _builder.append("\t");
@@ -982,8 +980,6 @@ public class TestTargetConversion {
       StringConcatenation _builder = new StringConcatenation();
       _builder.append("target \"TP1\"");
       _builder.newLine();
-      _builder.append("include \"tp2.tpd\"");
-      _builder.newLine();
       _builder.append("location \"http://download.eclipse.org/tools/orbit/downloads/drops/R20130517111416/repository/\" { ");
       _builder.newLine();
       _builder.append("\t");
@@ -1063,8 +1059,6 @@ public class TestTargetConversion {
       final XtextResourceSet resourceSet = this.resourceSetProvider.get();
       StringConcatenation _builder = new StringConcatenation();
       _builder.append("target \"TP1\"");
-      _builder.newLine();
-      _builder.append("include \"tp2.tpd\"");
       _builder.newLine();
       _builder.append("location \"http://download.eclipse.org/tools/orbit/downloads/drops/R20130517111416/repository/\" {");
       _builder.newLine();
@@ -1146,8 +1140,6 @@ public class TestTargetConversion {
       StringConcatenation _builder = new StringConcatenation();
       _builder.append("target \"TP1\"");
       _builder.newLine();
-      _builder.append("include \"tp2.tpd\"");
-      _builder.newLine();
       _builder.append("location \"http://download.eclipse.org/tools/orbit/downloads/drops/R20130517111416/repository/\" {");
       _builder.newLine();
       _builder.append("\t");
@@ -1223,8 +1215,6 @@ public class TestTargetConversion {
       final XtextResourceSet resourceSet = this.resourceSetProvider.get();
       StringConcatenation _builder = new StringConcatenation();
       _builder.append("target \"TP1\"");
-      _builder.newLine();
-      _builder.append("include \"tp2.tpd\"");
       _builder.newLine();
       _builder.append("location \"http://download.eclipse.org/tools/orbit/downloads/drops/R20130517111416/repository/\" {");
       _builder.newLine();

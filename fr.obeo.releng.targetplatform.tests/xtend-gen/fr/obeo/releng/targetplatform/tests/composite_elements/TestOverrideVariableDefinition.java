@@ -12,7 +12,7 @@ import fr.obeo.releng.targetplatform.TargetPlatform;
 import fr.obeo.releng.targetplatform.tests.util.CustomTargetPlatformInjectorProviderTargetReloader;
 import fr.obeo.releng.targetplatform.util.ImportVariableManager;
 import fr.obeo.releng.targetplatform.util.LocationIndexBuilder;
-import fr.obeo.releng.targetplatform.util.PreferenceSettings;
+import fr.obeo.releng.targetplatform.util.ResourceUtil;
 import java.util.LinkedList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.xtend2.lib.StringConcatenation;
@@ -42,14 +42,10 @@ public class TestOverrideVariableDefinition {
   @Inject
   private ImportVariableManager importVariableManager;
   
-  @Inject
-  private PreferenceSettings preferenceSettings;
-  
   @Test
   public void testVarDefinitionOverride1() {
     try {
-      final String[] args = { "overrideDefTarget.tpd", "var1=overrideVal1", "var3=override val 3" };
-      this.preferenceSettings.setUseEnv(true);
+      final String[] args = { "overrideDefTarget.tpd", ImportVariableManager.OVERRIDE, "var1=overrideVal1", "var3=override val 3" };
       this.importVariableManager.processCommandLineArguments(args);
       final XtextResourceSet resourceSet = this.resourceSetProvider.get();
       StringConcatenation _builder = new StringConcatenation();
@@ -64,12 +60,14 @@ public class TestOverrideVariableDefinition {
       _builder.append("include ${var1} + ${var2} + ${var3}");
       _builder.newLine();
       final TargetPlatform overrideDefTarget = this.parser.parse(_builder, URI.createURI("tmp:/overrideDefTarget.tpd"), resourceSet);
+      ResourceUtil.MAX_TRIES = 1;
       final ListMultimap<String, Location> locationIndex = this.indexBuilder.getLocationIndex(overrideDefTarget);
       Assert.assertEquals(0, locationIndex.size());
       final IncludeDeclaration include = IterableExtensions.<IncludeDeclaration>head(overrideDefTarget.getIncludes());
       Assert.assertEquals("overrideVal1val2override val 3", include.getImportURI());
       this.importVariableManager.clear();
-      this.preferenceSettings.setUseEnv(false);
+      ResourceUtil.MAX_TRIES = ResourceUtil.DEFAULT_MAX_TRIES;
+      return;
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -78,8 +76,7 @@ public class TestOverrideVariableDefinition {
   @Test
   public void testVarDefinitionOverride2() {
     try {
-      final String[] args = { "overrideDefTarget.tpd", "subDirName=subdir", "emfVer=[2.9.2,3.0.0)" };
-      this.preferenceSettings.setUseEnv(true);
+      final String[] args = { "overrideDefTarget.tpd", ImportVariableManager.OVERRIDE, "subDirName=subdir", "emfVer=[2.9.2,3.0.0)" };
       this.importVariableManager.processCommandLineArguments(args);
       final XtextResourceSet resourceSet = this.resourceSetProvider.get();
       StringConcatenation _builder = new StringConcatenation();
@@ -119,7 +116,6 @@ public class TestOverrideVariableDefinition {
       final Location location = IterableExtensions.<Location>last(targetPlatform.getLocations());
       Assert.assertEquals("[2.9.2,3.0.0)", IterableExtensions.<IU>head(location.getIus()).getVersion());
       this.importVariableManager.clear();
-      this.preferenceSettings.setUseEnv(false);
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -128,8 +124,7 @@ public class TestOverrideVariableDefinition {
   @Test
   public void testDefinitionFromVariableCallOverride() {
     try {
-      final String[] args = { "overrideDefTarget.tpd", "subDirName=subdir", "emfVerEnd=3.0.0)" };
-      this.preferenceSettings.setUseEnv(true);
+      final String[] args = { "overrideDefTarget.tpd", ImportVariableManager.OVERRIDE, "subDirName=subdir", "emfVerEnd=3.0.0)" };
       this.importVariableManager.processCommandLineArguments(args);
       final XtextResourceSet resourceSet = this.resourceSetProvider.get();
       StringConcatenation _builder = new StringConcatenation();
@@ -187,7 +182,6 @@ public class TestOverrideVariableDefinition {
       final Location location = IterableExtensions.<Location>last(targetPlatform.getLocations());
       Assert.assertEquals("[2.9.2,3.0.0)", IterableExtensions.<IU>head(location.getIus()).getVersion());
       this.importVariableManager.clear();
-      this.preferenceSettings.setUseEnv(false);
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }

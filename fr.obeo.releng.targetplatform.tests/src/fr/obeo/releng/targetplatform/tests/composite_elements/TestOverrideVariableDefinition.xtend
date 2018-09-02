@@ -6,6 +6,7 @@ import fr.obeo.releng.targetplatform.TargetPlatform
 import fr.obeo.releng.targetplatform.tests.util.CustomTargetPlatformInjectorProviderTargetReloader
 import fr.obeo.releng.targetplatform.util.ImportVariableManager
 import fr.obeo.releng.targetplatform.util.LocationIndexBuilder
+import fr.obeo.releng.targetplatform.util.ResourceUtil
 import org.eclipse.emf.common.util.URI
 import org.eclipse.xtext.junit4.InjectWith
 import org.eclipse.xtext.junit4.XtextRunner
@@ -14,8 +15,8 @@ import org.eclipse.xtext.resource.XtextResourceSet
 import org.junit.Test
 import org.junit.runner.RunWith
 
+import static fr.obeo.releng.targetplatform.util.ResourceUtil.*
 import static org.junit.Assert.*
-import fr.obeo.releng.targetplatform.util.PreferenceSettings
 
 @InjectWith(typeof(CustomTargetPlatformInjectorProviderTargetReloader))
 @RunWith(typeof(XtextRunner))
@@ -33,14 +34,9 @@ class TestOverrideVariableDefinition {
 	@Inject
 	ImportVariableManager importVariableManager;
 	
-	@Inject
-	PreferenceSettings preferenceSettings;
-	
 	@Test
 	def testVarDefinitionOverride1() {
-		val String[] args = #["overrideDefTarget.tpd", "var1=overrideVal1", "var3=override val 3"]
-	
-		preferenceSettings.useEnv = true	
+		val String[] args = #["overrideDefTarget.tpd", ImportVariableManager.OVERRIDE, "var1=overrideVal1", "var3=override val 3"]
 		importVariableManager.processCommandLineArguments(args)
 		
 		val resourceSet = resourceSetProvider.get
@@ -52,6 +48,9 @@ class TestOverrideVariableDefinition {
 			include ${var1} + ${var2} + ${var3}
 		''', URI.createURI("tmp:/overrideDefTarget.tpd"), resourceSet)
 		
+		//Dirty way to avoid (with good probability) retry of include expected to fail: just run test faster
+		ResourceUtil.MAX_TRIES = 1
+		
 		val locationIndex = indexBuilder.getLocationIndex(overrideDefTarget)
 		assertEquals(0, locationIndex.size)
 		
@@ -59,14 +58,14 @@ class TestOverrideVariableDefinition {
 		assertEquals("overrideVal1val2override val 3", include.importURI)
 		
 		importVariableManager.clear
-		preferenceSettings.useEnv = false
+		
+		ResourceUtil.MAX_TRIES = ResourceUtil.DEFAULT_MAX_TRIES
+		return
 	}
 	
 	@Test
 	def testVarDefinitionOverride2() {
-		val String[] args = #["overrideDefTarget.tpd", "subDirName=subdir", "emfVer=[2.9.2,3.0.0)"]
-		
-		preferenceSettings.useEnv = true
+		val String[] args = #["overrideDefTarget.tpd", ImportVariableManager.OVERRIDE, "subDirName=subdir", "emfVer=[2.9.2,3.0.0)"]
 		importVariableManager.processCommandLineArguments(args)
 		
 		val resourceSet = resourceSetProvider.get
@@ -100,14 +99,11 @@ class TestOverrideVariableDefinition {
 		assertEquals("[2.9.2,3.0.0)", location.ius.head.version)
 		
 		importVariableManager.clear
-		preferenceSettings.useEnv = false
 	}
 	
 	@Test
 	def testDefinitionFromVariableCallOverride() {
-		val String[] args = #["overrideDefTarget.tpd", "subDirName=subdir", "emfVerEnd=3.0.0)"]
-		
-		preferenceSettings.useEnv = true
+		val String[] args = #["overrideDefTarget.tpd", ImportVariableManager.OVERRIDE, "subDirName=subdir", "emfVerEnd=3.0.0)"]
 		importVariableManager.processCommandLineArguments(args)
 		
 		val resourceSet = resourceSetProvider.get
@@ -151,6 +147,5 @@ class TestOverrideVariableDefinition {
 		assertEquals("[2.9.2,3.0.0)", location.ius.head.version)
 		
 		importVariableManager.clear
-		preferenceSettings.useEnv = false
 	}
 }

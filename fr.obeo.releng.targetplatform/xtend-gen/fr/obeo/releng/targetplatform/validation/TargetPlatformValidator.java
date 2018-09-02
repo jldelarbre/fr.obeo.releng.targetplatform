@@ -181,12 +181,12 @@ public class TargetPlatformValidator extends AbstractTargetPlatformValidator {
   private void doReportAllEnvAndRequiredAreSelfExluding(final EObject optionOwner, final List<Option> options, final EStructuralFeature feature) {
     boolean _contains = options.contains(Option.INCLUDE_REQUIRED);
     if (_contains) {
-      this.error("All environments can not be included along with required artifacts, you must choose one of the two options.", optionOwner, feature, 
+      this.error("All environments cannot be included along with required artifacts, you must choose one of the two options.", optionOwner, feature, 
         options.indexOf(Option.INCLUDE_REQUIRED), TargetPlatformValidator.CHECK__OPTIONS_SELF_EXCLUDING_ALL_ENV_REQUIRED);
     }
     boolean _contains_1 = options.contains(Option.INCLUDE_ALL_ENVIRONMENTS);
     if (_contains_1) {
-      this.error("All environments can not be included along with required artifacts, you must choose one of the two options.", optionOwner, feature, 
+      this.error("All environments cannot be included along with required artifacts, you must choose one of the two options.", optionOwner, feature, 
         options.indexOf(Option.INCLUDE_ALL_ENVIRONMENTS), TargetPlatformValidator.CHECK__OPTIONS_SELF_EXCLUDING_ALL_ENV_REQUIRED);
     }
   }
@@ -245,7 +245,7 @@ public class TargetPlatformValidator extends AbstractTargetPlatformValidator {
       int _endOffset = lastOption.getEndOffset();
       int _offset_1 = withKeyword.getOffset();
       int _minus = (_endOffset - _offset_1);
-      this.acceptError("You can not define options on location and on target platform.", location, _offset, _minus, TargetPlatformValidator.CHECK__NO_OPTIONS_ON_LOCATIONS_IF_GLOBAL_OPTIONS);
+      this.acceptError("You cannot define options on location and on target platform.", location, _offset, _minus, TargetPlatformValidator.CHECK__NO_OPTIONS_ON_LOCATIONS_IF_GLOBAL_OPTIONS);
     }
   }
   
@@ -282,10 +282,10 @@ public class TargetPlatformValidator extends AbstractTargetPlatformValidator {
               int _endOffset = lastOption.getEndOffset();
               int _offset_1 = withKeyword.getOffset();
               int _minus = (_endOffset - _offset_1);
-              TargetPlatformValidator.this.acceptError("Options of every locations must be the same", _, _offset, _minus, TargetPlatformValidator.CHECK__OPTIONS_EQUALS_ALL_LOCATIONS);
+              TargetPlatformValidator.this.acceptError("Options of all locations must be the same", _, _offset, _minus, TargetPlatformValidator.CHECK__OPTIONS_EQUALS_ALL_LOCATIONS);
             } else {
               final ICompositeNode node = NodeModelUtils.getNode(_);
-              TargetPlatformValidator.this.acceptError("Options of every locations must be the same", _, node.getOffset(), node.getLength(), TargetPlatformValidator.CHECK__OPTIONS_EQUALS_ALL_LOCATIONS);
+              TargetPlatformValidator.this.acceptError("Options of all locations must be the same", _, node.getOffset(), node.getLength(), TargetPlatformValidator.CHECK__OPTIONS_EQUALS_ALL_LOCATIONS);
             }
           }
         };
@@ -857,7 +857,7 @@ public class TargetPlatformValidator extends AbstractTargetPlatformValidator {
         @Override
         public void accept(final Environment it) {
           StringConcatenation _builder = new StringConcatenation();
-          _builder.append("Environment definition should not be splitted accros the file.");
+          _builder.append("Environment definition should not be split accros the file.");
           TargetPlatformValidator.this.warning(_builder.toString(), tp, TargetPlatformPackage.Literals.TARGET_PLATFORM__CONTENTS, tp.getContents().indexOf(it), TargetPlatformValidator.CHECK__ENVIRONMENT_UNICITY);
         }
       };
@@ -875,7 +875,7 @@ public class TargetPlatformValidator extends AbstractTargetPlatformValidator {
         @Override
         public void accept(final Options it) {
           StringConcatenation _builder = new StringConcatenation();
-          _builder.append("Options definition should not be splitted accros the file.");
+          _builder.append("Options definition should not be split accros the file.");
           TargetPlatformValidator.this.warning(_builder.toString(), tp, TargetPlatformPackage.Literals.TARGET_PLATFORM__CONTENTS, tp.getContents().indexOf(it), TargetPlatformValidator.CHECK__OPTIONS_UNICITY);
         }
       };
@@ -996,11 +996,11 @@ public class TargetPlatformValidator extends AbstractTargetPlatformValidator {
       }
     };
     final LinkedHashMultiset<String> allEE = LinkedHashMultiset.<String>create(IterableExtensions.<String>filter(envList, _function_13));
-    this.reportDuplicatedEnvironmentOptions(tp, allOS, "Cannot define multiple operating system.");
-    this.reportDuplicatedEnvironmentOptions(tp, allWS, "Cannot define multiple windowing system.");
-    this.reportDuplicatedEnvironmentOptions(tp, allArch, "Cannot define multiple processor architecture.");
-    this.reportDuplicatedEnvironmentOptions(tp, allLocale, "Cannot define multiple localization.");
-    this.reportDuplicatedEnvironmentOptions(tp, allEE, "Cannot define multiple execution environment.");
+    this.reportDuplicatedEnvironmentOptions(tp, allOS, "Cannot define multiple operating systems.");
+    this.reportDuplicatedEnvironmentOptions(tp, allWS, "Cannot define multiple windowing systems.");
+    this.reportDuplicatedEnvironmentOptions(tp, allArch, "Cannot define multiple processor architectures.");
+    this.reportDuplicatedEnvironmentOptions(tp, allLocale, "Cannot define multiple localizations.");
+    this.reportDuplicatedEnvironmentOptions(tp, allEE, "Cannot define multiple execution environments.");
   }
   
   private void reportDuplicatedEnvironmentOptions(final TargetPlatform targetPlatform, final Multiset<String> valuesInFile, final String msg) {

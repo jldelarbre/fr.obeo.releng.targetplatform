@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
@@ -26,7 +27,6 @@ import com.google.inject.Injector;
 import fr.obeo.releng.targetplatform.TargetPlatformBundleActivator;
 import fr.obeo.releng.targetplatform.TargetPlatformStandaloneSetup;
 import fr.obeo.releng.targetplatform.util.ImportVariableManager;
-import fr.obeo.releng.targetplatform.util.PreferenceSettings;
 
 
 /**
@@ -55,11 +55,6 @@ public class ConverterApplication implements IApplication {
 		Converter converter = new Converter();
 		injector.injectMembers(converter);
 		
-		PreferenceSettings prefSettings = tpdBundleActivator.getPreferenceSettings();
-		// If launched through command line or maven always try to use environment variables
-		// (if some are defined) to override target variable.
-		prefSettings.setUseEnv(true);
-		
 		ImportVariableManager importVariableManager = injector.getInstance(ImportVariableManager.class);
 
 		Map<?,?> arguments = context.getArguments();
@@ -67,13 +62,45 @@ public class ConverterApplication implements IApplication {
 		
 		importVariableManager.processCommandLineArguments(args);
 		
-		String path = importVariableManager.getFileToProcess();
-		if (path == null) {
+		String[] pathArgument = importVariableManager.getFilesToProcess();
+		if (pathArgument.length == 0) {
 			System.out.println("Must provide path to a target form file");
 			return -256;
 		}
 		
-		URI uri = normalize(org.eclipse.emf.common.util.URI.createURI(path));
+		BasicDiagnostic diagnostic = new BasicDiagnostic();
+		for (String filePath : pathArgument) {
+		    Diagnostic d = convert(filePath.trim(), converter);
+		    diagnostic.merge(d);
+        }
+		
+		System.out.println(diagnostic.getChildren().size() + " target platform definition file(s) has been processed");
+		System.out.println();
+		
+		for (Diagnostic diag : diagnostic.getChildren()) {
+			System.out.println(diag.getMessage());
+			if (diag.getSeverity() == Diagnostic.ERROR) {
+				System.out.println("Problems occurred during generation of target platform definition file.");
+			} else if (diag.getSeverity() == Diagnostic.CANCEL) {
+				System.out.println("Operation cancelled.");
+			} else {
+				System.out.println("The target platform definition file has been successfully generated.");
+			}
+			System.out.println();
+		}
+		
+		if (diagnostic.getSeverity() == Diagnostic.ERROR) {
+			return -1;
+		} else if (diagnostic.getSeverity() == Diagnostic.CANCEL) {
+			return -2;
+		} else {
+			return 0;
+		}
+	}
+	
+    private Diagnostic convert(String path, Converter converter) {
+    	System.out.println("Start generation: " + path);
+        URI uri = normalize(org.eclipse.emf.common.util.URI.createURI(path));
 		
 		Diagnostic diagnostic = converter.generateTargetDefinitionFile(uri, createPrintingMonitor());
 		
@@ -82,18 +109,8 @@ public class ConverterApplication implements IApplication {
 				printDiagnostic(child, "");
 			}
 		}
-		
-		if (diagnostic.getSeverity() == Diagnostic.ERROR) {
-			System.out.println("Problems occurred during generation of target platform definition file.");
-			return -1;
-		} else if (diagnostic.getSeverity() == Diagnostic.CANCEL) {
-			System.out.println("Operation cancelled.");
-			return -2;
-		} else {
-			System.out.println("The target platform definition file has been successfully generated.");
-			return 0;
-		}
-	}
+        return diagnostic;
+    }
 
 	private static IProgressMonitor createPrintingMonitor() {
 		return BasicMonitor.toIProgressMonitor(new BasicMonitor.Printing(System.out));

@@ -25,7 +25,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 import static org.junit.Assert.*
-import fr.obeo.releng.targetplatform.util.PreferenceSettings
 
 @InjectWith(typeof(CustomTargetPlatformInjectorProviderTargetReloader))
 @RunWith(typeof(XtextRunner))
@@ -50,9 +49,6 @@ class TestCompositeElementValidation {
 	ImportVariableManager importVariableManager;
 	
 	@Inject
-	PreferenceSettings preferenceSettings;
-	
-	@Inject
 	@Named(Constants::LANGUAGE_NAME)
 	String languageName
 	
@@ -67,7 +63,6 @@ class TestCompositeElementValidation {
 		''', URI.createURI("tmp:/compositeIncludeTarget.tpd"), resourceSet)
 		parser.parse('''
 			target "subTpd"
-			include "subsubTpd.tpd"
 			define subDirName="subdir"
 		''', URI.createURI("tmp:/subTpd.tpd"), resourceSet);
 		val subIncludeCircular = parser.parse('''
@@ -98,9 +93,8 @@ class TestCompositeElementValidation {
 	
 	@Test
 	def checkImportCycleDueToVariableDefinitionOverride() {
-		val String[] args = #["compositeIncludeTarget.tpd", "urlCyclicInclude=../compositeIncludeTarget.tpd"]
+		val String[] args = #["compositeIncludeTarget.tpd", ImportVariableManager.OVERRIDE, "urlCyclicInclude=../compositeIncludeTarget.tpd"]
 		
-		preferenceSettings.useEnv = true
 		importVariableManager.processCommandLineArguments(args)
 		
 		val tester = new ValidatorTester(validator, validatorRegistrar, languageName)
@@ -112,7 +106,6 @@ class TestCompositeElementValidation {
 		''', URI.createURI("tmp:/compositeIncludeTarget.tpd"), resourceSet)
 		parser.parse('''
 			target "subTpd"
-			include "subsubTpd.tpd"
 			define subDirName="subdir"
 		''', URI.createURI("tmp:/subTpd.tpd"), resourceSet);
 		val subIncludeCircular = parser.parse('''
@@ -142,7 +135,6 @@ class TestCompositeElementValidation {
 		]
 		
 		importVariableManager.clear
-		preferenceSettings.useEnv = false
 	}
 	
 	@Test

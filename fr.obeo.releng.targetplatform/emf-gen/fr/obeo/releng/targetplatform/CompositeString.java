@@ -153,4 +153,16 @@ public interface CompositeString extends EObject {
 	 */
 	CompositeString getCopy();
 
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * * Check if any components (and sub components) are resolved => any variable call are resolved: a value can be computed
+	 * <!-- end-model-doc -->
+	 * @model kind="operation" unique="false"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='final &lt;%org.eclipse.xtext.xbase.lib.Functions.Function1%&gt;&lt;&lt;%fr.obeo.releng.targetplatform.CompositeStringPart%&gt;, &lt;%java.lang.Boolean%&gt;&gt; _function = new &lt;%org.eclipse.xtext.xbase.lib.Functions.Function1%&gt;&lt;&lt;%fr.obeo.releng.targetplatform.CompositeStringPart%&gt;, &lt;%java.lang.Boolean%&gt;&gt;()\n{\n\tpublic &lt;%java.lang.Boolean%&gt; apply(final &lt;%fr.obeo.releng.targetplatform.CompositeStringPart%&gt; it)\n\t{\n\t\treturn &lt;%java.lang.Boolean%&gt;.valueOf(it.isResolved());\n\t}\n};\nreturn &lt;%org.eclipse.xtext.xbase.lib.IterableExtensions%&gt;.&lt;&lt;%fr.obeo.releng.targetplatform.CompositeStringPart%&gt;&gt;forall(this.getStringParts(), _function);'"
+	 * @generated
+	 */
+	boolean isResolved();
+
 } // CompositeString

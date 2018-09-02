@@ -91,4 +91,12 @@ public interface CompositeStringPart extends EObject {
 	 */
 	CompositeStringPart getCopy();
 
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" unique="false"
+	 * @generated
+	 */
+	boolean isResolved();
+
 } // CompositeStringPart

@@ -257,24 +257,25 @@ h3. TPD preferences page
 
 @TPD preferences page@ allows to:
 * Active overriding of @tpd@ variables with environment variables (it also shows the list of environment variables usable by @TPD@), see also "this section":#envVar
+* Define variable override for the current eclipse session (same format as command line arguments)
 * Modify warning behavior of duplicated IU (when you have defined the same IU than in an imported tpd)
 
 h3. Call the generator from the command line
 
-This project provides an Eclipse application that you can launch from the command line. The ID of the application is @fr.obeo.releng.targetplatform.pde.ConverterApplication@ and is provided by the plugin @fr.obeo.releng.targetplatform@. You can use this app in shell scripts, ant or maven build. If you use Tycho, you may have a look at "this example pom.xml file":https://github.com/hmarchadour/fr.obeo.releng.targetplatform/blob/78e0d470f57bfd82ba6fe7e1c09bfeb2fdfb0180/fr.obeo.releng.targetplatform-parent/targetdefinitions/pom.xml
+This project provides an Eclipse application that you can launch from the command line. The ID of the application is @fr.obeo.releng.targetplatform.pde.ConverterApplication@ and is provided by the plugin @fr.obeo.releng.targetplatform@. You can use this app in shell scripts, ant or maven build. If you use Tycho, you may have a look at "this example pom.xml file":https://github.com/jldelarbre/fr.obeo.releng.targetplatform/blob/gh-pages/doc/pom.xml
 
 h4(#envVar). Variable overriding from command line or environment
 
 When the generator is called from command line you can override variable value with command line arguments or environment variables.
-In the example _pom.xml_ above, the _maven_ property @targetPlatform.application.args@ holds the command line arguments. You can define them in the following order:
+In the example _pom.xml_ above, the _maven_ property @targetPlatform.application.args@ holds the command line arguments. You can define them (tpd filenames shall be first, the two last parameters are optional and case incensitive):
 
-# tpd filename
-# useEnv //Optional, case incensitive
-# list of variable redefinition
+# tpd filename list (at least one tpd file is required)
+# --useEnv
+# --override "list of variable redefinition"
 
 Variables are redefined in any target or nested target met.
 
-@useEnv@ is necessary to take into account environment variables. Command line variables have higher priority than environment variables.
+@--useEnv@ is necessary to take into account environment variables. Command line variables have higher priority than environment variables.
 
 A variable redefinition is simply:
 
@@ -284,10 +285,12 @@ or
 varName2="new value with space"
 </pre>
 
-Command line arguments example:
+Command line arguments examples:
 
 <pre>
-myTpd.tpd useEnv var1=someValue var2=otherValue
+myTpd.tpd --useEnv --override var1=someValue var2=otherValue
+myTpd.tpd myTpd2.tpd --override var1=someValue var2=otherValue
+myTpd.tpd myTpd2.tpd --useEnv
 </pre>
 
 h5. Environment variable format

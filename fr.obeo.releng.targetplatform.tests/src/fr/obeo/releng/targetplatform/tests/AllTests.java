@@ -19,6 +19,7 @@ import fr.obeo.releng.targetplatform.tests.composite_elements.TestCompositeEleme
 import fr.obeo.releng.targetplatform.tests.composite_elements.TestCompositeLocation;
 import fr.obeo.releng.targetplatform.tests.composite_elements.TestOverrideVariableDefinition;
 import fr.obeo.releng.targetplatform.tests.composite_elements.TestVariableVariableDefinition;
+import fr.obeo.releng.targetplatform.tests.util.TestOverrideListPrefPageChecker;
 import fr.obeo.releng.targetplatform.ui.tests.TestContentAssist;
 
 /**
@@ -38,7 +39,8 @@ import fr.obeo.releng.targetplatform.ui.tests.TestContentAssist;
 	TestVariableVariableDefinition.class,
 	TestCompositeElementValidation.class,
 	TestContentAssist.class,
-	TestDiscoveredBugs.class
+	TestDiscoveredBugs.class,
+	TestOverrideListPrefPageChecker.class
 })
 public class AllTests {
 	

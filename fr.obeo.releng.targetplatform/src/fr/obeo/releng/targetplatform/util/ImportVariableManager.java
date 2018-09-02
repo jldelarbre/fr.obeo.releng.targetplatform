@@ -1,23 +1,25 @@
 package fr.obeo.releng.targetplatform.util;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import com.google.inject.Inject;
 import com.google.inject.Singleton;
+
+import fr.obeo.releng.targetplatform.TargetPlatformBundleActivator;
 
 @Singleton
 public class ImportVariableManager {
 	
+	private static final String ENV = "environment";
 	private static final String USE_ENV = "--useenv";
 	public static final String OVERRIDE = "--override";
+	public static final String TPD_VAR_PREFIX = "TPD_VAR_";
 
 	private String[] filesToProcess = new String[0];
 	private Map<String, String> overrideVarDefMap = new HashMap<String, String>();
 
-	@Inject
-	private PreferenceSettings preferenceSettings;
-	
 	private int useEnvPos;
 	private int overridePos;
 	private int numOverrideVar;
@@ -31,6 +33,7 @@ public class ImportVariableManager {
 	 * 			   - "--override" list of pair "variable definition name", "variable value" varname=varvalue
 	 */
 	public void processCommandLineArguments(String[] args) {
+		clear();
 
 		if (isUseEnvPresent(args)) {
 			// We scan environment variables to extract those for TPD
@@ -39,9 +42,9 @@ public class ImportVariableManager {
 			// it may leads to error
 			Map<String, String> env = System.getenv();
 			for (String envName : env.keySet()) {
-				if (envName.startsWith("TPD_VAR_")) {
+				if (envName.startsWith(TPD_VAR_PREFIX)) {
 					String tpdOverrideVar = env.get(envName);
-					importOverridingVariable(tpdOverrideVar, "environment");
+					importOverridingVariable(tpdOverrideVar, ENV, envName);
 				}
 			}
 		}
@@ -49,7 +52,7 @@ public class ImportVariableManager {
 		computeOverrideVarPositions(args);
 		for (int i = 1 ; i <= numOverrideVar ; i++) {
 			String curImport = args[overridePos + i];
-			importOverridingVariable(curImport, "command line");
+			importOverridingVariable(curImport, "command line", null);
 		}
 		
 		int numTpdFile = getNumTpdFile(args);
@@ -61,14 +64,20 @@ public class ImportVariableManager {
 		isLoaded = true;
 	}
 
-	private void importOverridingVariable(String curImport, String source) {
+	private void importOverridingVariable(String curImport, String source, String varEnvName) {
 		String[] varImport = curImport.split("=");
+		
+		String envVarString = "";
+		if (source.compareTo(ENV) == 0) {
+			envVarString = " (" + varEnvName + ") ";
+		}
+		
 		if (varImport.length != 2) {
-			System.out.println("[WARNING] - TPD - Wrong variable definition from " + source + ": " + curImport
+			System.out.println("[WARNING] - TPD - Wrong variable definition from " + source + envVarString + ": " + curImport
 					+ " (format: varName=varValue or varName=\"varValue with space\")");
 			return;
 		}
-		System.out.println("[INFO] - TPD - Imported variable from " + source + ": " + curImport);
+		System.out.println("[INFO] - TPD - Imported variable from " + source + envVarString + ": " + curImport);
 		overrideVarDefMap.put(varImport[0], varImport[1]);
 	}
 	
@@ -80,10 +89,7 @@ public class ImportVariableManager {
 	 * @return Variable value or null if variable does not exist in imported variable
 	 */
 	public String getVariableValue(String variableName) {
-		checkLoad();
-		if (!preferenceSettings.isUseEnv()) {
-			return null;
-		}
+		checkReload();
 		return overrideVarDefMap.get(variableName);
 	}
 
@@ -91,25 +97,31 @@ public class ImportVariableManager {
 	 * @return tpd filename list passed in argument
 	 */
 	public String[] getFilesToProcess() {
-		checkLoad();
+		checkReload();
 		return filesToProcess;
 	}
 	
-	private void checkLoad() {
-		if (isLoaded) {
+	private void checkReload() {
+		TargetPlatformBundleActivator instance = TargetPlatformBundleActivator.getInstance();
+		PreferenceSettings preferenceSettings = instance.getPreferenceSettings();
+		if (isLoaded && !preferenceSettings.isUpdated()) {
 			return;
 		}
 		//If not already loaded => we are under eclipse otherwise if launched from
 		//command line/maven, command line arguments are already processed at startup
-		String[] args = {null, USE_ENV};
-		processCommandLineArguments(args);
-	}
-	
-	public Map<String, String> getOverrideVarDefMap() {
-		checkLoad();
-		HashMap<String, String> out = new HashMap<String, String>();
-		out.putAll(overrideVarDefMap);
-		return out;
+		//Other case under eclipse but preference page has been updated
+		List<String> args = new ArrayList<String>();
+		args.add(null);
+		if (preferenceSettings.isUseEnv()) {
+			args.add(USE_ENV);
+		}
+		List<String> overrideList = preferenceSettings.getOverrideList();
+		if (!overrideList.isEmpty()) {
+			args.add(OVERRIDE);
+			args.addAll(overrideList);
+		}
+		String[] argsArray = new String[args.size()];
+		processCommandLineArguments(args.toArray(argsArray));
 	}
 	
 	private boolean isUseEnvPresent(String[] args) {
@@ -158,7 +170,7 @@ public class ImportVariableManager {
 		return numTpd;
 	}
 	
-	//Only for test: cleanup. Same instance is used across tests
+	//Only public for test: cleanup. Same instance is used across tests
 	public void clear() {
 		filesToProcess = new String[0];
 		overrideVarDefMap.clear();

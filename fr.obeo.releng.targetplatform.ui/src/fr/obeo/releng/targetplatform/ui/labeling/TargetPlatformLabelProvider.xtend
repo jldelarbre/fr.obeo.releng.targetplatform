@@ -23,6 +23,8 @@ import fr.obeo.releng.targetplatform.util.CompositeElementResolver
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider
 import org.eclipse.jface.viewers.StyledString
 import org.eclipse.xtext.ui.label.DefaultEObjectLabelProvider
+import fr.obeo.releng.targetplatform.CompositeString
+import fr.obeo.releng.targetplatform.VarCall
 
 /**
  * Provides labels for a EObjects.
@@ -90,6 +92,14 @@ class TargetPlatformLabelProvider extends DefaultEObjectLabelProvider {
 	
 	def image(IncludeDeclaration object) {
 		"obj16/inc_obj.gif"
+	}
+	
+	def text(CompositeString object) {
+		object.name + " = " + object.computeActualString
+	}
+	
+	def text(VarCall object) {
+		"${" + object.varName.name + "}"
 	}
 	
 	def image(Option object) {

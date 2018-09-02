@@ -24,5 +24,8 @@ public class TargetPlatformActivatorUI extends TargetPlatformActivator {
 		
 		boolean useEnvSetting = this.getPreferenceStore().getBoolean(TPDPreferenceConstants.P_CHOICE_USE_ENV);
 		preferenceSettings.setUseEnv(useEnvSetting);
+		
+		String overrideList = this.getPreferenceStore().getString(TPDPreferenceConstants.P_LIST_OVERRIDE);
+		preferenceSettings.setOverrideList(overrideList);
 	}
 }

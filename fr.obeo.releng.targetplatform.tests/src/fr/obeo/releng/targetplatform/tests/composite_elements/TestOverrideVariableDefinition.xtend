@@ -6,7 +6,6 @@ import fr.obeo.releng.targetplatform.TargetPlatform
 import fr.obeo.releng.targetplatform.tests.util.CustomTargetPlatformInjectorProviderTargetReloader
 import fr.obeo.releng.targetplatform.util.ImportVariableManager
 import fr.obeo.releng.targetplatform.util.LocationIndexBuilder
-import fr.obeo.releng.targetplatform.util.PreferenceSettings
 import fr.obeo.releng.targetplatform.util.ResourceUtil
 import org.eclipse.emf.common.util.URI
 import org.eclipse.xtext.junit4.InjectWith
@@ -35,14 +34,9 @@ class TestOverrideVariableDefinition {
 	@Inject
 	ImportVariableManager importVariableManager;
 	
-	@Inject
-	PreferenceSettings preferenceSettings;
-	
 	@Test
 	def testVarDefinitionOverride1() {
 		val String[] args = #["overrideDefTarget.tpd", ImportVariableManager.OVERRIDE, "var1=overrideVal1", "var3=override val 3"]
-	
-		preferenceSettings.useEnv = true	
 		importVariableManager.processCommandLineArguments(args)
 		
 		val resourceSet = resourceSetProvider.get
@@ -64,7 +58,6 @@ class TestOverrideVariableDefinition {
 		assertEquals("overrideVal1val2override val 3", include.importURI)
 		
 		importVariableManager.clear
-		preferenceSettings.useEnv = false
 		
 		ResourceUtil.MAX_TRIES = ResourceUtil.DEFAULT_MAX_TRIES
 		return
@@ -73,8 +66,6 @@ class TestOverrideVariableDefinition {
 	@Test
 	def testVarDefinitionOverride2() {
 		val String[] args = #["overrideDefTarget.tpd", ImportVariableManager.OVERRIDE, "subDirName=subdir", "emfVer=[2.9.2,3.0.0)"]
-		
-		preferenceSettings.useEnv = true
 		importVariableManager.processCommandLineArguments(args)
 		
 		val resourceSet = resourceSetProvider.get
@@ -108,14 +99,11 @@ class TestOverrideVariableDefinition {
 		assertEquals("[2.9.2,3.0.0)", location.ius.head.version)
 		
 		importVariableManager.clear
-		preferenceSettings.useEnv = false
 	}
 	
 	@Test
 	def testDefinitionFromVariableCallOverride() {
 		val String[] args = #["overrideDefTarget.tpd", ImportVariableManager.OVERRIDE, "subDirName=subdir", "emfVerEnd=3.0.0)"]
-		
-		preferenceSettings.useEnv = true
 		importVariableManager.processCommandLineArguments(args)
 		
 		val resourceSet = resourceSetProvider.get
@@ -159,6 +147,5 @@ class TestOverrideVariableDefinition {
 		assertEquals("[2.9.2,3.0.0)", location.ius.head.version)
 		
 		importVariableManager.clear
-		preferenceSettings.useEnv = false
 	}
 }

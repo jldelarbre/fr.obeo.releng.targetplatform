@@ -9,7 +9,6 @@ import fr.obeo.releng.targetplatform.VarDefinition
 import fr.obeo.releng.targetplatform.tests.util.CustomTargetPlatformInjectorProviderTargetReloader
 import fr.obeo.releng.targetplatform.util.ImportVariableManager
 import fr.obeo.releng.targetplatform.util.LocationIndexBuilder
-import fr.obeo.releng.targetplatform.util.PreferenceSettings
 import fr.obeo.releng.targetplatform.validation.TargetPlatformValidator
 import org.eclipse.emf.common.util.Diagnostic
 import org.eclipse.emf.common.util.URI
@@ -48,9 +47,6 @@ class TestCompositeElementValidation {
 	
 	@Inject
 	ImportVariableManager importVariableManager;
-	
-	@Inject
-	PreferenceSettings preferenceSettings;
 	
 	@Inject
 	@Named(Constants::LANGUAGE_NAME)
@@ -99,7 +95,6 @@ class TestCompositeElementValidation {
 	def checkImportCycleDueToVariableDefinitionOverride() {
 		val String[] args = #["compositeIncludeTarget.tpd", ImportVariableManager.OVERRIDE, "urlCyclicInclude=../compositeIncludeTarget.tpd"]
 		
-		preferenceSettings.useEnv = true
 		importVariableManager.processCommandLineArguments(args)
 		
 		val tester = new ValidatorTester(validator, validatorRegistrar, languageName)
@@ -140,7 +135,6 @@ class TestCompositeElementValidation {
 		]
 		
 		importVariableManager.clear
-		preferenceSettings.useEnv = false
 	}
 	
 	@Test

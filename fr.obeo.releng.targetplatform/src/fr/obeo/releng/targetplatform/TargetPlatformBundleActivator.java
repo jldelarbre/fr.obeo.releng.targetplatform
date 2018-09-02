@@ -29,7 +29,6 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 
-import fr.obeo.releng.targetplatform.util.ImportVariableManager;
 import fr.obeo.releng.targetplatform.util.PreferenceSettings;
 
 
@@ -88,11 +87,6 @@ public class TargetPlatformBundleActivator extends Plugin {
 		return preferenceSettings;
 	}
 	
-	public ImportVariableManager getImportVariableManager() {
-		Injector injector = getInjector(TargetPlatformBundleActivator.TARGET_PLATFORM_LANGUAGE_NAME);
-		return injector.getInstance(ImportVariableManager.class);
-	}
-
 	public Injector getInjector(String language) {
 		synchronized (injectors) {
 			Injector injector = injectors.get(language);

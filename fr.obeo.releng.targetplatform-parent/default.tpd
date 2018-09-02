@@ -2,7 +2,7 @@ target "Target Platform DSL 2.4.0"
 
 with source requirements
 
-location "http://download.eclipse.org/eclipse/updates/3.8" {
+location "http://download.eclipse.org/eclipse/updates/4.8" {
 	org.eclipse.equinox.p2.sdk.feature.group
 	org.eclipse.sdk.feature.group
 	org.eclipse.pde.core

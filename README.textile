@@ -257,6 +257,7 @@ h3. TPD preferences page
 
 @TPD preferences page@ allows to:
 * Active overriding of @tpd@ variables with environment variables (it also shows the list of environment variables usable by @TPD@), see also "this section":#envVar
+* Define variable override for the current eclipse session (same format as command line arguments)
 * Modify warning behavior of duplicated IU (when you have defined the same IU than in an imported tpd)
 
 h3. Call the generator from the command line
@@ -284,10 +285,12 @@ or
 varName2="new value with space"
 </pre>
 
-Command line arguments example:
+Command line arguments examples:
 
 <pre>
-myTpd.tpd useEnv var1=someValue var2=otherValue
+myTpd.tpd --useEnv --override var1=someValue var2=otherValue
+myTpd.tpd myTpd2.tpd --override var1=someValue var2=otherValue
+myTpd.tpd myTpd2.tpd --useEnv
 </pre>
 
 h5. Environment variable format

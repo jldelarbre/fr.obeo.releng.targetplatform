@@ -49,10 +49,10 @@ public class ReferenceResolvingErrorClearer implements Runnable {
     final IFileEditorInput editorInput = ((IFileEditorInput) _editorInput);
     final IAnnotationModel annotationModel = xtextEditor.getDocumentProvider().getAnnotationModel(editorInput);
     final ArrayList<Annotation> annotationsToRemove = CollectionLiterals.<Annotation>newArrayList();
-    final Iterator annotIter = annotationModel.getAnnotationIterator();
-    final Function1<Object, Boolean> _function = new Function1<Object, Boolean>() {
+    final Iterator<Annotation> annotIter = annotationModel.getAnnotationIterator();
+    final Function1<Annotation, Boolean> _function = new Function1<Annotation, Boolean>() {
       @Override
-      public Boolean apply(final Object it) {
+      public Boolean apply(final Annotation it) {
         boolean _xblockexpression = false;
         {
           final Annotation annotation = ((Annotation) it);
@@ -61,9 +61,9 @@ public class ReferenceResolvingErrorClearer implements Runnable {
         return Boolean.valueOf(_xblockexpression);
       }
     };
-    final Function1<Object, Boolean> _function_1 = new Function1<Object, Boolean>() {
+    final Function1<Annotation, Boolean> _function_1 = new Function1<Annotation, Boolean>() {
       @Override
-      public Boolean apply(final Object it) {
+      public Boolean apply(final Annotation it) {
         boolean _xblockexpression = false;
         {
           final Annotation annotation = ((Annotation) it);
@@ -72,9 +72,9 @@ public class ReferenceResolvingErrorClearer implements Runnable {
         return Boolean.valueOf(_xblockexpression);
       }
     };
-    final Function1<Object, Boolean> _function_2 = new Function1<Object, Boolean>() {
+    final Function1<Annotation, Boolean> _function_2 = new Function1<Annotation, Boolean>() {
       @Override
-      public Boolean apply(final Object it) {
+      public Boolean apply(final Annotation it) {
         boolean _xblockexpression = false;
         {
           final Annotation annotation = ((Annotation) it);
@@ -89,13 +89,13 @@ public class ReferenceResolvingErrorClearer implements Runnable {
         return Boolean.valueOf(_xblockexpression);
       }
     };
-    final Procedure1<Object> _function_3 = new Procedure1<Object>() {
+    final Procedure1<Annotation> _function_3 = new Procedure1<Annotation>() {
       @Override
-      public void apply(final Object it) {
+      public void apply(final Annotation it) {
         annotationsToRemove.add(((Annotation) it));
       }
     };
-    IteratorExtensions.<Object>forEach(IteratorExtensions.<Object>filter(IteratorExtensions.<Object>filter(IteratorExtensions.<Object>filter(annotIter, _function), _function_1), _function_2), _function_3);
+    IteratorExtensions.<Annotation>forEach(IteratorExtensions.<Annotation>filter(IteratorExtensions.<Annotation>filter(IteratorExtensions.<Annotation>filter(annotIter, _function), _function_1), _function_2), _function_3);
     final Consumer<Annotation> _function_4 = new Consumer<Annotation>() {
       @Override
       public void accept(final Annotation it) {

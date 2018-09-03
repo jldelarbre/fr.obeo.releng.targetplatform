@@ -1,20 +1,22 @@
 h1. Target Platform Definition DSL and Generator
 
-!https://travis-ci.org/mbarbero/fr.obeo.releng.targetplatform.png?branch=master!:https://travis-ci.org/mbarbero/fr.obeo.releng.targetplatform
+!https://travis-ci.org/jldelarbre/fr.obeo.releng.targetplatform.png?branch=master!:https://travis-ci.org/jldelarbre/fr.obeo.releng.targetplatform
+
+p=. _Fork of original Target Platform Definition DSL and Generator, but with variables usable in @tpd@ files._
 
 Target Platform Definition DSL and Generator provides a DSL with an advanced editor and a generator taking this DSL as input and generating a @.target@ file that PDE is able to read to provision a Target Platform.
 
 The greatest thing about this tool is that it avoids you to manage the links to strict versions (e.g., @3.2.5.v20093493-sfoit-v-rrel@) in @.target@ files. It lets you define the bundles and features you want to use in your target platform and it handles the generation of the @.target@ file with the most recent available version. It is possible to restrict the lookup within a version range.
 
-!http://mbarbero.github.io/fr.obeo.releng.targetplatform/screenshots/editor-outline.png(The targetplatform DSL editor)!
+!http://jldelarbre.github.io/fr.obeo.releng.targetplatform/screenshots/editor-outline.png(The targetplatform DSL editor)!
 
-!http://mbarbero.github.io/fr.obeo.releng.targetplatform/screenshots/completion.png(Content assist example)!
+!http://jldelarbre.github.io/fr.obeo.releng.targetplatform/screenshots/completion.png(Content assist example)!
 
 h2. Installation
 
 Add the following p2 repository (update-site) in your update manager (in Eclipse, @Help Menu > Install New Software...@, @Add...@ button on the top right corner)
 
-*http://mbarbero.github.io/fr.obeo.releng.targetplatform/p2/* or *http://mbarbero.github.io/fr.obeo.releng.targetplatform/p2/latest/* for the latest version only.
+*http://jldelarbre.github.io/fr.obeo.releng.targetplatform/p2/* or *http://jldelarbre.github.io/fr.obeo.releng.targetplatform/p2/latest/* for the latest version only.
 
 Then, select the _Target Platform Definition DSL and Generator_ feature and click on @Finish@.
 
@@ -36,13 +38,13 @@ h2. Basic usage
 
 * To activate the target platform, you can either use the _Set as Target Platform_ action which is available on right-clicking on a @.tpd@ file, or use the @Ctrl + R@ (@⌘ Cmd + R@ on Mac) keybinding.
 
-!http://mbarbero.github.io/fr.obeo.releng.targetplatform/screenshots/context-menu.png(The right-click command)!
+!http://jldelarbre.github.io/fr.obeo.releng.targetplatform/screenshots/context-menu.png(The right-click command)!
 
 * You can also right-click on an opened file and choose @Validate@, it will look for any error and will also check if all repositories are available and if all specified installation unit are available within the repository (and respecting the version range if any).
 
-!http://mbarbero.github.io/fr.obeo.releng.targetplatform/screenshots/validate-action.png(The right-click validate command)!
+!http://jldelarbre.github.io/fr.obeo.releng.targetplatform/screenshots/validate-action.png(The right-click validate command)!
 
-!http://mbarbero.github.io/fr.obeo.releng.targetplatform/screenshots/validation-error.png(The validation result)!
+!http://jldelarbre.github.io/fr.obeo.releng.targetplatform/screenshots/validation-error.png(The validation result)!
 
 h3. Syntax
 

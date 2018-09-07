@@ -11,6 +11,8 @@
 package fr.obeo.releng.targetplatform.ui.handler;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
@@ -38,9 +40,23 @@ public class PDEIntegration {
 	private Optional<ITargetPlatformService> service;
 
 	public PDEIntegration() {
-		service = Optional.fromNullable(
-			(ITargetPlatformService) PDECore.getDefault().acquireService(ITargetPlatformService.class)
-		);
+		PDECore defaultPDECore = PDECore.getDefault();
+		ITargetPlatformService acquiredService = null;
+		try {
+			acquiredService = (ITargetPlatformService) defaultPDECore.acquireService(ITargetPlatformService.class);
+		} catch (NoSuchMethodError e) {
+			String className = ITargetPlatformService.class.getName();
+			try {
+				Method method = defaultPDECore.getClass().getMethod("acquireService", String.class);
+				acquiredService = (ITargetPlatformService) method.invoke(defaultPDECore, className);
+			} catch (NoSuchMethodException e1) {
+			} catch (SecurityException e1) {
+			} catch (IllegalAccessException e1) {
+			} catch (IllegalArgumentException e1) {
+			} catch (InvocationTargetException e1) {
+			}
+		}
+		service = Optional.fromNullable(acquiredService);
 	}
 
 	public void setTargetPlatform(URI targetFileURIToSet, IProgressMonitor monitor) throws CoreException {

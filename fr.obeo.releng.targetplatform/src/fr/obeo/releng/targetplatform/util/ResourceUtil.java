@@ -1,12 +1,16 @@
 package fr.obeo.releng.targetplatform.util;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 
+import fr.obeo.releng.targetplatform.TargetPlatformBundleActivator;
+
 public class ResourceUtil {
 
-	public static final int DEFAULT_MAX_TRIES = 10;
-	public static int MAX_TRIES = DEFAULT_MAX_TRIES;
+	public static final int DEFAULT_MAX_RETRIES = 5;
+	public static int MAX_RETRIES = DEFAULT_MAX_RETRIES;
 
 	private static URI getResolvedImportUri(Resource context, URI uri) {
 		URI contextURI = context.getURI();
@@ -20,7 +24,8 @@ public class ResourceUtil {
 
 		URI newURI = getResolvedImportUri(context, URI.createURI(uri));
 
-		for (int i = 1; i <= MAX_TRIES; i++) {
+		int numTries = MAX_RETRIES+1;
+		for (int i = 1; i <= numTries; i++) {
 			try {
 				Resource resource = context.getResourceSet().getResource(newURI, true);
 				if (!resource.getErrors().isEmpty()) {
@@ -30,11 +35,12 @@ public class ResourceUtil {
 				return resource;
 
 			} catch (RuntimeException e) {
-				if (i < MAX_TRIES) {
-					System.out.println("Error while retrieving location:" + uri);
-					System.out.println("Retry:" + (i+1) + "/" + MAX_TRIES);
+				if (i < numTries) {
+					String errStr = "Error while retrieving \"include\" tpd: " + uri + " -- Retry: " + i + "/" + MAX_RETRIES;
+					TargetPlatformBundleActivator.getInstance().getLog()
+					.log(new Status(IStatus.INFO, TargetPlatformBundleActivator.PLUGIN_ID, errStr));
 					try {
-						Thread.sleep(500);
+						Thread.sleep(Math.min(800, i*150));
 					} catch (InterruptedException e2) {
 						e2.printStackTrace();
 					}

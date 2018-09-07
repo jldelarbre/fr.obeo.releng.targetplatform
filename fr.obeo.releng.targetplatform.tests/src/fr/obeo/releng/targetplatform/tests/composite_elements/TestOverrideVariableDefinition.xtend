@@ -49,7 +49,7 @@ class TestOverrideVariableDefinition {
 		''', URI.createURI("tmp:/overrideDefTarget.tpd"), resourceSet)
 		
 		//Dirty way to avoid (with good probability) retry of include expected to fail: just run test faster
-		ResourceUtil.MAX_TRIES = 1
+		ResourceUtil.MAX_RETRIES = 0
 		
 		val locationIndex = indexBuilder.getLocationIndex(overrideDefTarget)
 		assertEquals(0, locationIndex.size)
@@ -59,7 +59,7 @@ class TestOverrideVariableDefinition {
 		
 		importVariableManager.clear
 		
-		ResourceUtil.MAX_TRIES = ResourceUtil.DEFAULT_MAX_TRIES
+		ResourceUtil.MAX_RETRIES = ResourceUtil.DEFAULT_MAX_RETRIES
 		return
 	}
 	

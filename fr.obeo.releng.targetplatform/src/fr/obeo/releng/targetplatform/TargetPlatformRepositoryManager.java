@@ -3,6 +3,8 @@ package fr.obeo.releng.targetplatform;
 import java.net.URI;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager;
 import org.eclipse.equinox.p2.core.IProvisioningAgent;
 import org.eclipse.equinox.p2.core.ProvisionException;
@@ -11,7 +13,7 @@ import org.eclipse.equinox.p2.repository.metadata.IMetadataRepository;
 @SuppressWarnings("restriction")
 public class TargetPlatformRepositoryManager extends MetadataRepositoryManager {
 
-	public static final int MAX_TRIES = 5;
+	public static final int MAX_RETRIES = 5;
 
 	public TargetPlatformRepositoryManager(IProvisioningAgent agent) {
 		super(agent);
@@ -32,7 +34,8 @@ public class TargetPlatformRepositoryManager extends MetadataRepositoryManager {
 			throws ProvisionException {
 
 		ProvisionException result = null;
-		for (int i = 0; i < MAX_TRIES; i++) {
+		int numTries = MAX_RETRIES+1;
+		for (int i = 0 ; i < numTries ; i++) {
 			try {
 				IMetadataRepository repository = super.loadRepository(location, flags, monitor);
 				if (repository != null) {
@@ -60,11 +63,15 @@ public class TargetPlatformRepositoryManager extends MetadataRepositoryManager {
 							e2.getClass().getSimpleName() + ", " + e2.getMessage() + ")");
 				}
 				try {
-					Thread.sleep(i * 500 + 100); // 100 600 1100 1600 2100 ms
+					Thread.sleep(Math.min(800, (i+1)*150));
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				System.out.println("Retry (" + (i+1) + "/" + MAX_TRIES + ") to load repository: " + location);
+				if (i+1 < numTries) {
+					String errStr = "Retry (" + (i+1) + "/" + MAX_RETRIES + ") to load location: " + location;
+					TargetPlatformBundleActivator.getInstance().getLog()
+					.log(new Status(IStatus.INFO, TargetPlatformBundleActivator.PLUGIN_ID, errStr));
+				}
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}

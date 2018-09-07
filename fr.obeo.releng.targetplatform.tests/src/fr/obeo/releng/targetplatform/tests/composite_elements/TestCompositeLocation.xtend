@@ -266,7 +266,7 @@ class TestCompositeLocation {
 		''', URI.createURI("tmp:/subdir/subInclude.tpd"), resourceSet)
 		
 		//Dirty way to avoid (with good probability) retry of include expected to fail: just run test faster
-		ResourceUtil.MAX_TRIES = 1
+		ResourceUtil.MAX_RETRIES = 0
 		
 		val locationIndex = indexBuilder.getLocationIndex(compositeIncludeTarget)
 		assertEquals(0, locationIndex.size)
@@ -280,7 +280,7 @@ class TestCompositeLocation {
 		val varDef = importedTargetPlatforms.last.varDefinition.head
 		assertEquals("subdir", varDef.value.computeActualString)
 		
-		ResourceUtil.MAX_TRIES = ResourceUtil.DEFAULT_MAX_TRIES
+		ResourceUtil.MAX_RETRIES = ResourceUtil.DEFAULT_MAX_RETRIES
 		return
 	}
 	
@@ -309,7 +309,7 @@ class TestCompositeLocation {
 		''', URI.createURI("tmp:/subdir/subInclude.tpd"), resourceSet)
 		
 		//Dirty way to avoid (with good probability) retry of include expected to fail: just run test faster
-		ResourceUtil.MAX_TRIES = 1
+		ResourceUtil.MAX_RETRIES = 0
 		
 		val locationIndex = indexBuilder.getLocationIndex(compositeIncludeTarget)
 		assertEquals(0, locationIndex.size)
@@ -317,7 +317,7 @@ class TestCompositeLocation {
 		val compositeImportURI = compositeIncludeTarget.includes.last.compositeImportURI
 		assertEquals("wrongSubdir", compositeImportURI.stringParts.head.actualString)
 		
-		ResourceUtil.MAX_TRIES = ResourceUtil.DEFAULT_MAX_TRIES
+		ResourceUtil.MAX_RETRIES = ResourceUtil.DEFAULT_MAX_RETRIES
 		return
 	}
 	

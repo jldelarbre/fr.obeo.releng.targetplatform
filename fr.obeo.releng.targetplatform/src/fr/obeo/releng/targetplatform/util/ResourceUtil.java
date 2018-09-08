@@ -36,14 +36,19 @@ public class ResourceUtil {
 
 			} catch (RuntimeException e) {
 				if (i < numTries) {
-					String errStr = "Error while retrieving \"include\" tpd: " + uri + " -- Retry: " + i + "/" + MAX_RETRIES;
-					TargetPlatformBundleActivator.getInstance().getLog()
-					.log(new Status(IStatus.INFO, TargetPlatformBundleActivator.PLUGIN_ID, errStr));
 					try {
 						Thread.sleep(Math.min(800, i*150));
 					} catch (InterruptedException e2) {
 						e2.printStackTrace();
 					}
+					String errStr = "Retry (" + i + "/" + MAX_RETRIES + ") to load \"include\" tpd: " + uri;
+					TargetPlatformBundleActivator.getInstance().getLog()
+					.log(new Status(IStatus.INFO, TargetPlatformBundleActivator.PLUGIN_ID, errStr));
+				}
+				else {
+					String errStr = "Fail to load \"include\" tpd: " + uri;
+					TargetPlatformBundleActivator.getInstance().getLog()
+					.log(new Status(IStatus.WARNING, TargetPlatformBundleActivator.PLUGIN_ID, errStr));
 				}
 			}
 		}

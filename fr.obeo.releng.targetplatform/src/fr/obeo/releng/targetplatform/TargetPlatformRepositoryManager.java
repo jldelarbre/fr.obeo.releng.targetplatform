@@ -45,38 +45,47 @@ public class TargetPlatformRepositoryManager extends MetadataRepositoryManager {
 				result = e1;
 
 				removeRepository(location);
-
-				// TargetPlatformRepositoryManager is implementation specific since it inherits from MetadataRepositoryManager
-				// (inner element ofOSGi bundle => @SuppressWarnings("restriction") annotation on this class), if anything changes,
-				// it may fail. Put in try/catch part which is implementation specific: unavailableRepositories, repositories
-				// Other things depend on IMetadataRepositoryManager or IRepositoryManager (interface)
-				try {
-					if (unavailableRepositories != null) {
-						if (unavailableRepositories.get() != null) {
-							unavailableRepositories.get().remove(location);
-						}
-					}
-					repositories.remove(getKey(location));
-					// flushCache();
-				} catch (Exception e2) {
-					System.out.println("[WARNING] Retry attempt problem (exception = " +
-							e2.getClass().getSimpleName() + ", " + e2.getMessage() + ")");
-				}
-				try {
-					Thread.sleep(Math.min(800, (i+1)*150));
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+				clearCache(location);
+				
 				if (i+1 < numTries) {
+					try {
+						Thread.sleep(Math.min(800, (i+1)*150));
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 					String errStr = "Retry (" + (i+1) + "/" + MAX_RETRIES + ") to load location: " + location;
 					TargetPlatformBundleActivator.getInstance().getLog()
 					.log(new Status(IStatus.INFO, TargetPlatformBundleActivator.PLUGIN_ID, errStr));
+				}
+				else {
+					String errStr = "Fail to load location: " + location;
+					TargetPlatformBundleActivator.getInstance().getLog()
+					.log(new Status(IStatus.WARNING, TargetPlatformBundleActivator.PLUGIN_ID, errStr));
 				}
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
 		}
 		throw result;
+	}
+
+	private void clearCache(URI location) {
+		// TargetPlatformRepositoryManager is implementation specific since it inherits from MetadataRepositoryManager
+		// (inner element ofOSGi bundle => @SuppressWarnings("restriction") annotation on this class), if anything changes,
+		// it may fail. Put in try/catch part which is implementation specific: unavailableRepositories, repositories
+		// Other things depend on IMetadataRepositoryManager or IRepositoryManager (interface)
+		try {
+			if (unavailableRepositories != null) {
+				if (unavailableRepositories.get() != null) {
+					unavailableRepositories.get().remove(location);
+				}
+			}
+			repositories.remove(getKey(location));
+			// flushCache();
+		} catch (Exception e2) {
+			System.out.println("[WARNING] Retry attempt problem (exception = " +
+					e2.getClass().getSimpleName() + ", " + e2.getMessage() + ")");
+		}
 	}
 
 }

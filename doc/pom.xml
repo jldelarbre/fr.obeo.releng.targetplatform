@@ -19,8 +19,8 @@
 		<targetPlatform.repository.p2>https://jldelarbre.github.io/fr.obeo.releng.targetplatform/p2/latest/</targetPlatform.repository.p2>
 		<targetPlatform.application.name>fr.obeo.releng.targetplatform.targetPlatform.converter</targetPlatform.application.name>
 
-        <!-- At least one tpd file, "useEnv" optional, "override" followed by a list of variable override optional also -->
-        <targetPlatform.application.args>targetDefinition1.tpd targetDefinition2.tpd --useEnv --override var1=value1 var2=value2</targetPlatform.application.args>
+        <!-- At least one tpd file, "useEnv" optional, "override" followed by a list of variable override optional also, "maxretry" optional -->
+        <targetPlatform.application.args>targetDefinition1.tpd targetDefinition2.tpd --useEnv --override var1=value1 var2=value2 --maxretry 2</targetPlatform.application.args>
         
 		<targetPlatform.application.feature>fr.obeo.releng.targetplatform-feature</targetPlatform.application.feature>
 	</properties>

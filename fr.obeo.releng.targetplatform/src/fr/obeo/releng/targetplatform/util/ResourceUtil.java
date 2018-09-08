@@ -9,9 +9,6 @@ import fr.obeo.releng.targetplatform.TargetPlatformBundleActivator;
 
 public class ResourceUtil {
 
-	public static final int DEFAULT_MAX_RETRIES = 5;
-	public static int MAX_RETRIES = DEFAULT_MAX_RETRIES;
-
 	private static URI getResolvedImportUri(Resource context, URI uri) {
 		URI contextURI = context.getURI();
 		if (contextURI.isHierarchical() && !contextURI.isRelative() && (uri.isRelative() && !uri.isEmpty())) {
@@ -21,10 +18,14 @@ public class ResourceUtil {
 	}
 
 	public static Resource getResource(Resource context, String uri) {
+		
+		TargetPlatformBundleActivator instance = TargetPlatformBundleActivator.getInstance();
+		PreferenceSettings preferenceSettings = instance.getPreferenceSettings();
+		int maxRetry = preferenceSettings.getMaxRetry();
 
 		URI newURI = getResolvedImportUri(context, URI.createURI(uri));
 
-		int numTries = MAX_RETRIES+1;
+		int numTries = maxRetry+1;
 		for (int i = 1; i <= numTries; i++) {
 			try {
 				Resource resource = context.getResourceSet().getResource(newURI, true);
@@ -41,12 +42,12 @@ public class ResourceUtil {
 					} catch (InterruptedException e2) {
 						e2.printStackTrace();
 					}
-					String errStr = "Retry (" + i + "/" + MAX_RETRIES + ") to load \"include\" tpd: " + uri;
+					String errStr = "Retry (" + i + "/" + maxRetry + ") to load \"include\" tpd: " + uri + " in " + context.getURI();
 					TargetPlatformBundleActivator.getInstance().getLog()
 					.log(new Status(IStatus.INFO, TargetPlatformBundleActivator.PLUGIN_ID, errStr));
 				}
 				else {
-					String errStr = "Fail to load \"include\" tpd: " + uri;
+					String errStr = "Fail to load \"include\" tpd: " + uri + " in " + context.getURI();
 					TargetPlatformBundleActivator.getInstance().getLog()
 					.log(new Status(IStatus.WARNING, TargetPlatformBundleActivator.PLUGIN_ID, errStr));
 				}

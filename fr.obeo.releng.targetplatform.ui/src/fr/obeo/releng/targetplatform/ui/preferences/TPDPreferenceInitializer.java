@@ -20,7 +20,7 @@ public class TPDPreferenceInitializer extends AbstractPreferenceInitializer {
 		IPreferenceStore store = TargetPlatformActivator.getInstance().getPreferenceStore();
 		store.setDefault(TPDPreferenceConstants.P_CHOICE_DUPLICATED_IU_WARNING, PreferenceSettings.DUPLICATED_IU_IMPORT_DEFAULT);
 		store.setDefault(TPDPreferenceConstants.P_CHOICE_USE_ENV, PreferenceSettings.USE_ENV_DEFAULT_SETTING);
+		store.setDefault(TPDPreferenceConstants.P_CHOICE_NUM_RETRY, PreferenceSettings.MAX_RETRIES);
 		store.setDefault(TPDPreferenceConstants.P_LIST_OVERRIDE, PreferenceSettings.OVERRIDE_LIST_DEFAULT);
 	}
-
 }

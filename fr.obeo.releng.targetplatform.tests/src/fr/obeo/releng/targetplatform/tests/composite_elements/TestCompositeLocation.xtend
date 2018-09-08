@@ -3,19 +3,20 @@ package fr.obeo.releng.targetplatform.tests.composite_elements
 import com.google.inject.Inject
 import com.google.inject.Provider
 import fr.obeo.releng.targetplatform.TargetPlatform
+import fr.obeo.releng.targetplatform.TargetPlatformBundleActivator
 import fr.obeo.releng.targetplatform.VarCall
 import fr.obeo.releng.targetplatform.tests.util.CustomTargetPlatformInjectorProviderTargetReloader
 import fr.obeo.releng.targetplatform.util.LocationIndexBuilder
-import fr.obeo.releng.targetplatform.util.ResourceUtil
+import fr.obeo.releng.targetplatform.util.PreferenceSettings
 import org.eclipse.emf.common.util.URI
 import org.eclipse.xtext.junit4.InjectWith
 import org.eclipse.xtext.junit4.XtextRunner
 import org.eclipse.xtext.junit4.util.ParseHelper
 import org.eclipse.xtext.resource.XtextResourceSet
+import org.junit.BeforeClass
 import org.junit.Test
 import org.junit.runner.RunWith
 
-import static fr.obeo.releng.targetplatform.util.ResourceUtil.*
 import static org.junit.Assert.*
 
 @InjectWith(typeof(CustomTargetPlatformInjectorProviderTargetReloader))
@@ -30,6 +31,15 @@ class TestCompositeLocation {
 	
 	@Inject
 	LocationIndexBuilder indexBuilder
+	
+	static PreferenceSettings preferenceSettings;
+	
+	@BeforeClass
+	static def beforeClass() {
+		val instance = TargetPlatformBundleActivator.getInstance();
+		preferenceSettings = instance.getPreferenceSettings();
+		return
+	}
 	
 	@Test
 	def testIncludeWithMultipleStaticString() {
@@ -266,7 +276,7 @@ class TestCompositeLocation {
 		''', URI.createURI("tmp:/subdir/subInclude.tpd"), resourceSet)
 		
 		//Dirty way to avoid (with good probability) retry of include expected to fail: just run test faster
-		ResourceUtil.MAX_RETRIES = 0
+		preferenceSettings.maxRetry = 0
 		
 		val locationIndex = indexBuilder.getLocationIndex(compositeIncludeTarget)
 		assertEquals(0, locationIndex.size)
@@ -280,7 +290,7 @@ class TestCompositeLocation {
 		val varDef = importedTargetPlatforms.last.varDefinition.head
 		assertEquals("subdir", varDef.value.computeActualString)
 		
-		ResourceUtil.MAX_RETRIES = ResourceUtil.DEFAULT_MAX_RETRIES
+		preferenceSettings.maxRetry = PreferenceSettings.MAX_RETRIES
 		return
 	}
 	
@@ -309,7 +319,7 @@ class TestCompositeLocation {
 		''', URI.createURI("tmp:/subdir/subInclude.tpd"), resourceSet)
 		
 		//Dirty way to avoid (with good probability) retry of include expected to fail: just run test faster
-		ResourceUtil.MAX_RETRIES = 0
+		preferenceSettings.maxRetry = 0
 		
 		val locationIndex = indexBuilder.getLocationIndex(compositeIncludeTarget)
 		assertEquals(0, locationIndex.size)
@@ -317,7 +327,7 @@ class TestCompositeLocation {
 		val compositeImportURI = compositeIncludeTarget.includes.last.compositeImportURI
 		assertEquals("wrongSubdir", compositeImportURI.stringParts.head.actualString)
 		
-		ResourceUtil.MAX_RETRIES = ResourceUtil.DEFAULT_MAX_RETRIES
+		preferenceSettings.maxRetry = PreferenceSettings.MAX_RETRIES
 		return
 	}
 	

@@ -6,7 +6,7 @@ import fr.obeo.releng.targetplatform.TargetPlatform
 import fr.obeo.releng.targetplatform.tests.util.CustomTargetPlatformInjectorProviderTargetReloader
 import fr.obeo.releng.targetplatform.util.ImportVariableManager
 import fr.obeo.releng.targetplatform.util.LocationIndexBuilder
-import fr.obeo.releng.targetplatform.util.ResourceUtil
+import fr.obeo.releng.targetplatform.util.PreferenceSettings
 import org.eclipse.emf.common.util.URI
 import org.eclipse.xtext.junit4.InjectWith
 import org.eclipse.xtext.junit4.XtextRunner
@@ -15,8 +15,9 @@ import org.eclipse.xtext.resource.XtextResourceSet
 import org.junit.Test
 import org.junit.runner.RunWith
 
-import static fr.obeo.releng.targetplatform.util.ResourceUtil.*
 import static org.junit.Assert.*
+import fr.obeo.releng.targetplatform.TargetPlatformBundleActivator
+import org.junit.BeforeClass
 
 @InjectWith(typeof(CustomTargetPlatformInjectorProviderTargetReloader))
 @RunWith(typeof(XtextRunner))
@@ -34,6 +35,15 @@ class TestOverrideVariableDefinition {
 	@Inject
 	ImportVariableManager importVariableManager;
 	
+	static PreferenceSettings preferenceSettings;
+	
+	@BeforeClass
+	static def beforeClass() {
+		val instance = TargetPlatformBundleActivator.getInstance();
+		preferenceSettings = instance.getPreferenceSettings();
+		return
+	}
+	
 	@Test
 	def testVarDefinitionOverride1() {
 		val String[] args = #["overrideDefTarget.tpd", ImportVariableManager.OVERRIDE, "var1=overrideVal1", "var3=override val 3"]
@@ -49,7 +59,7 @@ class TestOverrideVariableDefinition {
 		''', URI.createURI("tmp:/overrideDefTarget.tpd"), resourceSet)
 		
 		//Dirty way to avoid (with good probability) retry of include expected to fail: just run test faster
-		ResourceUtil.MAX_RETRIES = 0
+		preferenceSettings.maxRetry = 0
 		
 		val locationIndex = indexBuilder.getLocationIndex(overrideDefTarget)
 		assertEquals(0, locationIndex.size)
@@ -59,7 +69,7 @@ class TestOverrideVariableDefinition {
 		
 		importVariableManager.clear
 		
-		ResourceUtil.MAX_RETRIES = ResourceUtil.DEFAULT_MAX_RETRIES
+		preferenceSettings.maxRetry = PreferenceSettings.MAX_RETRIES
 		return
 	}
 	

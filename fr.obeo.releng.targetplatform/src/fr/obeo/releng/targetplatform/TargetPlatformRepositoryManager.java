@@ -10,10 +10,10 @@ import org.eclipse.equinox.p2.core.IProvisioningAgent;
 import org.eclipse.equinox.p2.core.ProvisionException;
 import org.eclipse.equinox.p2.repository.metadata.IMetadataRepository;
 
+import fr.obeo.releng.targetplatform.util.PreferenceSettings;
+
 @SuppressWarnings("restriction")
 public class TargetPlatformRepositoryManager extends MetadataRepositoryManager {
-
-	public static final int MAX_RETRIES = 5;
 
 	public TargetPlatformRepositoryManager(IProvisioningAgent agent) {
 		super(agent);
@@ -32,9 +32,13 @@ public class TargetPlatformRepositoryManager extends MetadataRepositoryManager {
 	@Override
 	public IMetadataRepository loadRepository(URI location, int flags, IProgressMonitor monitor)
 			throws ProvisionException {
+		
+		TargetPlatformBundleActivator instance = TargetPlatformBundleActivator.getInstance();
+		PreferenceSettings preferenceSettings = instance.getPreferenceSettings();
+		int maxRetry = preferenceSettings.getMaxRetry();
 
 		ProvisionException result = null;
-		int numTries = MAX_RETRIES+1;
+		int numTries = maxRetry+1;
 		for (int i = 0 ; i < numTries ; i++) {
 			try {
 				IMetadataRepository repository = super.loadRepository(location, flags, monitor);
@@ -53,7 +57,7 @@ public class TargetPlatformRepositoryManager extends MetadataRepositoryManager {
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					String errStr = "Retry (" + (i+1) + "/" + MAX_RETRIES + ") to load location: " + location;
+					String errStr = "Retry (" + (i+1) + "/" + maxRetry + ") to load location: " + location;
 					TargetPlatformBundleActivator.getInstance().getLog()
 					.log(new Status(IStatus.INFO, TargetPlatformBundleActivator.PLUGIN_ID, errStr));
 				}

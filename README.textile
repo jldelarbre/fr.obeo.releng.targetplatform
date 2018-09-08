@@ -261,6 +261,7 @@ h3. TPD preferences page
 * Active overriding of @tpd@ variables with environment variables (it also shows the list of environment variables usable by @TPD@), see also "this section":#envVar
 * Define variable override for the current eclipse session (same format as command line arguments)
 * Modify warning behavior of duplicated IU (when you have defined the same IU than in an imported tpd)
+* Set the number of retry when loading a location or an "include" target
 
 h3. Call the generator from the command line
 
@@ -269,11 +270,12 @@ This project provides an Eclipse application that you can launch from the comman
 h4(#envVar). Variable overriding from command line or environment
 
 When the generator is called from command line you can override variable value with command line arguments or environment variables.
-In the example _pom.xml_ above, the _maven_ property @targetPlatform.application.args@ holds the command line arguments. You can define them (tpd filenames shall be first, the two last parameters are optional and case incensitive):
+In the example _pom.xml_ above, the _maven_ property @targetPlatform.application.args@ holds the command line arguments. You can define them (tpd filenames shall be first, the three last parameters are optional and case incensitive):
 
 # tpd filename list (at least one tpd file is required)
 # --useEnv
 # --override "list of variable redefinition"
+# --maxretry [NUM_RETRY]
 
 Variables are redefined in any target or nested target met.
 
@@ -287,10 +289,12 @@ or
 varName2="new value with space"
 </pre>
 
+@--maxretry@ Set the number of retry when loading a location or an "include" target. NUM_RETRY = 0 and above
+
 Command line arguments examples:
 
 <pre>
-myTpd.tpd --useEnv --override var1=someValue var2=otherValue
+myTpd.tpd --useEnv --override var1=someValue var2=otherValue --maxretry 2
 myTpd.tpd myTpd2.tpd --override var1=someValue var2=otherValue
 myTpd.tpd myTpd2.tpd --useEnv
 </pre>

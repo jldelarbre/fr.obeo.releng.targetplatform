@@ -57,15 +57,15 @@ public class TPDPreferencePage
 					{ "&Silent", PreferenceSettings.DUPLICATED_IU_IMPORT_SILENT }
 		}, getFieldEditorParent()));
 		
-		addField(new BooleanFieldEditor(
-				TPDPreferenceConstants.P_CHOICE_USE_ENV,
-				"\nUse &environment variables to override variable values in tpd files\n(need restart only if environment change)",
-				getFieldEditorParent()));
 		Label label = new Label(getFieldEditorParent(),SWT.NONE); // Dirty trick to get widget align in FieldEditorPreferencePage
 		label.setText("\nNumber of &retry when loading a location or an \"include\" tpd");
 		addField(new IntegerFieldEditor(
 				TPDPreferenceConstants.P_CHOICE_NUM_RETRY,
 				"",
+				getFieldEditorParent()));
+		addField(new BooleanFieldEditor(
+				TPDPreferenceConstants.P_CHOICE_USE_ENV,
+				"\nUse &environment variables to override variable values in tpd files\n(need restart only if environment change)",
 				getFieldEditorParent()));
 		
 		showLoadedEnvironmentVariables();
@@ -74,9 +74,8 @@ public class TPDPreferencePage
 
 	private void showLoadedEnvironmentVariables() {
 		Composite parent= getFieldEditorParent();
-		new Label(parent,SWT.NONE); // Dirty trick to get widget align in FieldEditorPreferencePage
 		Label label1 = new Label(parent,SWT.NONE);
-		new Label(parent,SWT.NONE);
+		new Label(parent,SWT.NONE); // Dirty trick to get widget align in FieldEditorPreferencePage
 		label1.setText("Environment variables found at startup for TPD");
 		Text labelLoadedTPDEnvVar = new Text(parent, SWT.READ_ONLY | SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
 		GridData gridData = new GridData(SWT.FILL, SWT.CENTER, true, false);

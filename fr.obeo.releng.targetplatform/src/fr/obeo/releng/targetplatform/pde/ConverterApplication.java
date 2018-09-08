@@ -64,7 +64,7 @@ public class ConverterApplication implements IApplication {
 		
 		String[] pathArgument = importVariableManager.getFilesToProcess();
 		if (pathArgument.length == 0) {
-			System.out.println("Must provide path to a target form file");
+			System.out.println("[ERROR] Must provide path to a target form file");
 			return -256;
 		}
 		

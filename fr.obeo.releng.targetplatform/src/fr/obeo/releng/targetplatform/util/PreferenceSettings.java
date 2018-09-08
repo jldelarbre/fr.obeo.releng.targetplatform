@@ -19,9 +19,10 @@ public class PreferenceSettings {
 	
 	public static final boolean USE_ENV_DEFAULT_SETTING = false;
 
-	/** Under eclipse default behavior is not to use environment variable to override target variables,
-	 * if launched through command line or maven it is set to true */
 	private boolean useEnv = USE_ENV_DEFAULT_SETTING;
+	
+	private int maxRetry = MAX_RETRIES;
+	public static final int MAX_RETRIES = 5;
 	
 	public static final String OVERRIDE_LIST_DEFAULT = "";
 	private String overrideList = OVERRIDE_LIST_DEFAULT;
@@ -77,6 +78,14 @@ public class PreferenceSettings {
 		boolean status = updated;
 		updated = false;
 		return status;
+	}
+
+	public int getMaxRetry() {
+		return maxRetry;
+	}
+
+	public void setMaxRetry(int maxRetry) {
+		this.maxRetry = maxRetry;
 	}
 
 	public static final class OverrideListSplitter {

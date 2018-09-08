@@ -1,12 +1,13 @@
 package fr.obeo.releng.targetplatform.util;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 
-public class ResourceUtil {
+import fr.obeo.releng.targetplatform.TargetPlatformBundleActivator;
 
-	public static final int DEFAULT_MAX_TRIES = 10;
-	public static int MAX_TRIES = DEFAULT_MAX_TRIES;
+public class ResourceUtil {
 
 	private static URI getResolvedImportUri(Resource context, URI uri) {
 		URI contextURI = context.getURI();
@@ -17,10 +18,15 @@ public class ResourceUtil {
 	}
 
 	public static Resource getResource(Resource context, String uri) {
+		
+		TargetPlatformBundleActivator instance = TargetPlatformBundleActivator.getInstance();
+		PreferenceSettings preferenceSettings = instance.getPreferenceSettings();
+		int maxRetry = preferenceSettings.getMaxRetry();
 
 		URI newURI = getResolvedImportUri(context, URI.createURI(uri));
 
-		for (int i = 1; i <= MAX_TRIES; i++) {
+		int numTries = maxRetry+1;
+		for (int i = 1; i <= numTries; i++) {
 			try {
 				Resource resource = context.getResourceSet().getResource(newURI, true);
 				if (!resource.getErrors().isEmpty()) {
@@ -30,14 +36,20 @@ public class ResourceUtil {
 				return resource;
 
 			} catch (RuntimeException e) {
-				if (i < MAX_TRIES) {
-					System.out.println("Error while retrieving location:" + uri);
-					System.out.println("Retry:" + (i+1) + "/" + MAX_TRIES);
+				if (i < numTries) {
 					try {
-						Thread.sleep(500);
+						Thread.sleep(Math.min(800, i*150));
 					} catch (InterruptedException e2) {
 						e2.printStackTrace();
 					}
+					String errStr = "Retry (" + i + "/" + maxRetry + ") to load \"include\" tpd: " + uri + " in " + context.getURI();
+					TargetPlatformBundleActivator.getInstance().getLog()
+					.log(new Status(IStatus.INFO, TargetPlatformBundleActivator.PLUGIN_ID, errStr));
+				}
+				else {
+					String errStr = "Fail to load \"include\" tpd: " + uri + " in " + context.getURI();
+					TargetPlatformBundleActivator.getInstance().getLog()
+					.log(new Status(IStatus.WARNING, TargetPlatformBundleActivator.PLUGIN_ID, errStr));
 				}
 			}
 		}

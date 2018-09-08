@@ -9,11 +9,12 @@ import fr.obeo.releng.targetplatform.IU;
 import fr.obeo.releng.targetplatform.IncludeDeclaration;
 import fr.obeo.releng.targetplatform.Location;
 import fr.obeo.releng.targetplatform.TargetPlatform;
+import fr.obeo.releng.targetplatform.TargetPlatformBundleActivator;
 import fr.obeo.releng.targetplatform.VarCall;
 import fr.obeo.releng.targetplatform.VarDefinition;
 import fr.obeo.releng.targetplatform.tests.util.CustomTargetPlatformInjectorProviderTargetReloader;
 import fr.obeo.releng.targetplatform.util.LocationIndexBuilder;
-import fr.obeo.releng.targetplatform.util.ResourceUtil;
+import fr.obeo.releng.targetplatform.util.PreferenceSettings;
 import java.util.LinkedList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.xtend2.lib.StringConcatenation;
@@ -25,6 +26,7 @@ import org.eclipse.xtext.xbase.lib.Conversions;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -40,6 +42,15 @@ public class TestCompositeLocation {
   
   @Inject
   private LocationIndexBuilder indexBuilder;
+  
+  private static PreferenceSettings preferenceSettings;
+  
+  @BeforeClass
+  public static void beforeClass() {
+    final TargetPlatformBundleActivator instance = TargetPlatformBundleActivator.getInstance();
+    TestCompositeLocation.preferenceSettings = instance.getPreferenceSettings();
+    return;
+  }
   
   @Test
   public void testIncludeWithMultipleStaticString() {
@@ -367,7 +378,7 @@ public class TestCompositeLocation {
       _builder_3.append("}");
       _builder_3.newLine();
       this.parser.parse(_builder_3, URI.createURI("tmp:/subdir/subInclude.tpd"), resourceSet);
-      ResourceUtil.MAX_TRIES = 1;
+      TestCompositeLocation.preferenceSettings.setMaxRetry(0);
       final ListMultimap<String, Location> locationIndex = this.indexBuilder.getLocationIndex(compositeIncludeTarget);
       Assert.assertEquals(0, locationIndex.size());
       final CompositeString compositeImportURI = IterableExtensions.<IncludeDeclaration>last(compositeIncludeTarget.getIncludes()).getCompositeImportURI();
@@ -378,7 +389,7 @@ public class TestCompositeLocation {
       final LinkedList<TargetPlatform> importedTargetPlatforms = this.indexBuilder.getImportedTargetPlatforms(compositeIncludeTarget);
       final VarDefinition varDef = IterableExtensions.<VarDefinition>head(importedTargetPlatforms.getLast().getVarDefinition());
       Assert.assertEquals("subdir", varDef.getValue().computeActualString());
-      ResourceUtil.MAX_TRIES = ResourceUtil.DEFAULT_MAX_TRIES;
+      TestCompositeLocation.preferenceSettings.setMaxRetry(PreferenceSettings.MAX_RETRIES);
       return;
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
@@ -422,12 +433,12 @@ public class TestCompositeLocation {
       _builder_3.append("}");
       _builder_3.newLine();
       this.parser.parse(_builder_3, URI.createURI("tmp:/subdir/subInclude.tpd"), resourceSet);
-      ResourceUtil.MAX_TRIES = 1;
+      TestCompositeLocation.preferenceSettings.setMaxRetry(0);
       final ListMultimap<String, Location> locationIndex = this.indexBuilder.getLocationIndex(compositeIncludeTarget);
       Assert.assertEquals(0, locationIndex.size());
       final CompositeString compositeImportURI = IterableExtensions.<IncludeDeclaration>last(compositeIncludeTarget.getIncludes()).getCompositeImportURI();
       Assert.assertEquals("wrongSubdir", IterableExtensions.<CompositeStringPart>head(compositeImportURI.getStringParts()).getActualString());
-      ResourceUtil.MAX_TRIES = ResourceUtil.DEFAULT_MAX_TRIES;
+      TestCompositeLocation.preferenceSettings.setMaxRetry(PreferenceSettings.MAX_RETRIES);
       return;
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);

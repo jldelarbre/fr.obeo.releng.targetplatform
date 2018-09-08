@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+
 import com.google.inject.Singleton;
 
 import fr.obeo.releng.targetplatform.TargetPlatformBundleActivator;
@@ -14,6 +17,7 @@ public class ImportVariableManager {
 	
 	private static final String ENV = "environment";
 	private static final String USE_ENV = "--useenv";
+	private static final String MAX_RETRY = "--maxretry";
 	public static final String OVERRIDE = "--override";
 	public static final String TPD_VAR_PREFIX = "TPD_VAR_";
 
@@ -21,6 +25,7 @@ public class ImportVariableManager {
 	private Map<String, String> overrideVarDefMap = new HashMap<String, String>();
 
 	private int useEnvPos;
+	private int maxRetryPos;
 	private int overridePos;
 	private int numOverrideVar;
 	private boolean isLoaded = false;
@@ -48,6 +53,16 @@ public class ImportVariableManager {
 				}
 			}
 		}
+		
+		if (isMaxRetryPresent(args)) {
+			TargetPlatformBundleActivator instance = TargetPlatformBundleActivator.getInstance();
+			PreferenceSettings preferenceSettings = instance.getPreferenceSettings();
+			try {
+				int maxRetry = Integer.parseInt(args[maxRetryPos+1]);
+				preferenceSettings.setMaxRetry(maxRetry);
+			} catch (NumberFormatException e) {
+			}
+		}
 
 		computeOverrideVarPositions(args);
 		for (int i = 1 ; i <= numOverrideVar ; i++) {
@@ -73,11 +88,15 @@ public class ImportVariableManager {
 		}
 		
 		if (varImport.length != 2) {
-			System.out.println("[WARNING] - TPD - Wrong variable definition from " + source + envVarString + ": " + curImport
-					+ " (format: varName=varValue or varName=\"varValue with space\")");
+			String msg = "TPD - Wrong variable definition from " + source + envVarString + ": " + curImport
+					+ " (format: varName=varValue or varName=\"varValue with space\")";
+			TargetPlatformBundleActivator.getInstance().getLog()
+				.log(new Status(IStatus.WARNING, TargetPlatformBundleActivator.PLUGIN_ID, msg));
 			return;
 		}
-		System.out.println("[INFO] - TPD - Imported variable from " + source + envVarString + ": " + curImport);
+		String msg = "TPD - Imported variable from " + source + envVarString + ": " + curImport;
+		TargetPlatformBundleActivator.getInstance().getLog()
+			.log(new Status(IStatus.INFO, TargetPlatformBundleActivator.PLUGIN_ID, msg));
 		overrideVarDefMap.put(varImport[0], varImport[1]);
 	}
 	
@@ -137,12 +156,25 @@ public class ImportVariableManager {
 		return false;
 	}
 	
+	private boolean isMaxRetryPresent(String[] args) {
+		if (args.length < 3) {
+			return false;
+		}
+		for (int i = 1 ; i < args.length-1 ; ++i) {
+			if (MAX_RETRY.compareToIgnoreCase(args[i]) == 0) {
+				maxRetryPos = i;
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	private void computeOverrideVarPositions(String[] args) {
 		numOverrideVar = 0;
+		overridePos = args.length;
 		if (args.length < 2) {
 			return;
 		}
-		overridePos = args.length;
 		for (int i = 1 ; i < args.length ; ++i) {
 			if (OVERRIDE.compareToIgnoreCase(args[i]) == 0) {
 				overridePos = i;
@@ -153,6 +185,9 @@ public class ImportVariableManager {
 			if (USE_ENV.compareToIgnoreCase(args[i]) == 0) {
 				break;
 			}
+			if (MAX_RETRY.compareToIgnoreCase(args[i]) == 0) {
+				break;
+			}
 			++numOverrideVar;
 		}
 	}
@@ -160,8 +195,15 @@ public class ImportVariableManager {
 	private int getNumTpdFile(String[] args) {
 		int numTpd = args.length;
 		
-		if (numTpd > useEnvPos) {
-			numTpd = useEnvPos;
+		if (isUseEnvPresent(args)) {
+			if (numTpd > useEnvPos) {
+				numTpd = useEnvPos;
+			}
+		}
+		if (isMaxRetryPresent(args)) {
+			if (numTpd > maxRetryPos) {
+				numTpd = maxRetryPos;
+			}
 		}
 		if (numTpd > overridePos) {
 			numTpd = overridePos;

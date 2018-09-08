@@ -5,6 +5,7 @@ import java.util.Map;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.jface.preference.RadioGroupFieldEditor;
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.jface.util.PropertyChangeEvent;
@@ -28,6 +29,7 @@ public class TPDPreferencePage
 	
 	private String duplicatedIUWarnPreference2BeSet;
 	private boolean useEnvSetting2BeSet;
+	private int maxRetry;
 	private String variableOverridList;
 	
 	private Label labelErr;
@@ -55,6 +57,12 @@ public class TPDPreferencePage
 					{ "&Silent", PreferenceSettings.DUPLICATED_IU_IMPORT_SILENT }
 		}, getFieldEditorParent()));
 		
+		Label label = new Label(getFieldEditorParent(),SWT.NONE); // Dirty trick to get widget align in FieldEditorPreferencePage
+		label.setText("\nNumber of &retry when loading a location or an \"include\" tpd");
+		addField(new IntegerFieldEditor(
+				TPDPreferenceConstants.P_CHOICE_NUM_RETRY,
+				"",
+				getFieldEditorParent()));
 		addField(new BooleanFieldEditor(
 				TPDPreferenceConstants.P_CHOICE_USE_ENV,
 				"\nUse &environment variables to override variable values in tpd files\n(need restart only if environment change)",
@@ -71,7 +79,7 @@ public class TPDPreferencePage
 		label1.setText("Environment variables found at startup for TPD");
 		Text labelLoadedTPDEnvVar = new Text(parent, SWT.READ_ONLY | SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
 		GridData gridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
-		gridData.heightHint = 10 * labelLoadedTPDEnvVar.getLineHeight();
+		gridData.heightHint = 8 * labelLoadedTPDEnvVar.getLineHeight();
 		gridData.widthHint = (3*gridData.heightHint)/2;
 		labelLoadedTPDEnvVar.setLayoutData(gridData);
 		new Label(parent,SWT.NONE);
@@ -122,6 +130,12 @@ public class TPDPreferencePage
         			useEnvSetting2BeSet = (Boolean) event.getNewValue();
         		}
         	}
+        	else if (source instanceof IntegerFieldEditor) {
+        		IntegerFieldEditor intField = (IntegerFieldEditor) source;
+        		if (intField.getPreferenceName().equals(TPDPreferenceConstants.P_CHOICE_NUM_RETRY)) {
+        			maxRetry = Integer.parseInt((String) event.getNewValue());
+        		}
+        	}
         	else if (source instanceof StringFieldEditor) {
         		StringFieldEditor stringEditor = (StringFieldEditor) source;
         		if (stringEditor.getPreferenceName().equals(TPDPreferenceConstants.P_LIST_OVERRIDE)) {
@@ -146,6 +160,7 @@ public class TPDPreferencePage
 		PreferenceSettings preferenceSettings = instance.getPreferenceSettings();
 		preferenceSettings.setDuplicatedIUWarnPreference(duplicatedIUWarnPreference2BeSet);
 		preferenceSettings.setUseEnv(useEnvSetting2BeSet);
+		preferenceSettings.setMaxRetry(maxRetry);
 		preferenceSettings.setOverrideList(variableOverridList);
 	}
 	
@@ -166,6 +181,7 @@ public class TPDPreferencePage
 		super.performDefaults();
 		duplicatedIUWarnPreference2BeSet = PreferenceSettings.DUPLICATED_IU_IMPORT_DEFAULT;
 		useEnvSetting2BeSet = PreferenceSettings.USE_ENV_DEFAULT_SETTING;
+		maxRetry = PreferenceSettings.MAX_RETRIES;
 		variableOverridList = PreferenceSettings.OVERRIDE_LIST_DEFAULT;
 	}
 
@@ -177,6 +193,8 @@ public class TPDPreferencePage
 				.getPreferenceStore().getString(TPDPreferenceConstants.P_CHOICE_DUPLICATED_IU_WARNING);
 		useEnvSetting2BeSet = TargetPlatformActivator.getInstance()
 				.getPreferenceStore().getBoolean(TPDPreferenceConstants.P_CHOICE_USE_ENV);
+		maxRetry = TargetPlatformActivator.getInstance()
+				.getPreferenceStore().getInt(TPDPreferenceConstants.P_CHOICE_NUM_RETRY);
 		variableOverridList = TargetPlatformActivator.getInstance()
 				.getPreferenceStore().getString(TPDPreferenceConstants.P_LIST_OVERRIDE);
 	}

@@ -9,10 +9,11 @@ import fr.obeo.releng.targetplatform.IU;
 import fr.obeo.releng.targetplatform.IncludeDeclaration;
 import fr.obeo.releng.targetplatform.Location;
 import fr.obeo.releng.targetplatform.TargetPlatform;
+import fr.obeo.releng.targetplatform.TargetPlatformBundleActivator;
 import fr.obeo.releng.targetplatform.tests.util.CustomTargetPlatformInjectorProviderTargetReloader;
 import fr.obeo.releng.targetplatform.util.ImportVariableManager;
 import fr.obeo.releng.targetplatform.util.LocationIndexBuilder;
-import fr.obeo.releng.targetplatform.util.ResourceUtil;
+import fr.obeo.releng.targetplatform.util.PreferenceSettings;
 import java.util.LinkedList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.xtend2.lib.StringConcatenation;
@@ -23,6 +24,7 @@ import org.eclipse.xtext.resource.XtextResourceSet;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -42,6 +44,15 @@ public class TestOverrideVariableDefinition {
   @Inject
   private ImportVariableManager importVariableManager;
   
+  private static PreferenceSettings preferenceSettings;
+  
+  @BeforeClass
+  public static void beforeClass() {
+    final TargetPlatformBundleActivator instance = TargetPlatformBundleActivator.getInstance();
+    TestOverrideVariableDefinition.preferenceSettings = instance.getPreferenceSettings();
+    return;
+  }
+  
   @Test
   public void testVarDefinitionOverride1() {
     try {
@@ -60,13 +71,13 @@ public class TestOverrideVariableDefinition {
       _builder.append("include ${var1} + ${var2} + ${var3}");
       _builder.newLine();
       final TargetPlatform overrideDefTarget = this.parser.parse(_builder, URI.createURI("tmp:/overrideDefTarget.tpd"), resourceSet);
-      ResourceUtil.MAX_TRIES = 1;
+      TestOverrideVariableDefinition.preferenceSettings.setMaxRetry(0);
       final ListMultimap<String, Location> locationIndex = this.indexBuilder.getLocationIndex(overrideDefTarget);
       Assert.assertEquals(0, locationIndex.size());
       final IncludeDeclaration include = IterableExtensions.<IncludeDeclaration>head(overrideDefTarget.getIncludes());
       Assert.assertEquals("overrideVal1val2override val 3", include.getImportURI());
       this.importVariableManager.clear();
-      ResourceUtil.MAX_TRIES = ResourceUtil.DEFAULT_MAX_TRIES;
+      TestOverrideVariableDefinition.preferenceSettings.setMaxRetry(PreferenceSettings.MAX_RETRIES);
       return;
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);

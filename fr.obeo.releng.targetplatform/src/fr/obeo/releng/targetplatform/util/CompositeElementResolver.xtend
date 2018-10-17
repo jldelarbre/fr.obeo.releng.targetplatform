@@ -123,6 +123,7 @@ class CompositeElementResolver {
 				.forEach[
 					var notProcessedTargetPlatform = it
 					overrideVariableDefinition(notProcessedTargetPlatform, alreadyVisitedTarget)
+					overrideImportedTargetVariable(notProcessedTargetPlatform, targetPlatform.varDefinition)
 					searchAndAppendDefineFromIncludedTpd(notProcessedTargetPlatform, newHashSet(alreadyVisitedTarget))
 					notProcessedTargetPlatform.varDefinition.forEach[
 						ImportedDefineFromSubTpd.add(it)
@@ -137,6 +138,17 @@ class CompositeElementResolver {
 			mergeImportedDefine(targetPlatform, ImportedDefineFromSubTpd)
 			directlyImportedTargetPlatforms = searchDirectlyImportedTpd(targetPlatform)
 		}
+	}
+	
+	private def overrideImportedTargetVariable(TargetPlatform importedTargetPlatform, EList<VarDefinition> varDefImporter) {
+		importedTargetPlatform.varDefinition.forEach[
+			val curVarDef = it
+			val curName = curVarDef.name
+			val overridingVarDef = varDefImporter.findFirst[it.name.equals(curName)]
+			if (overridingVarDef !== null) {
+				curVarDef.overrideValue = overridingVarDef.value.computeActualString
+			}
+		]
 	}
 	
 	/* Targets that are directly imported, with an "include" directive present in the current

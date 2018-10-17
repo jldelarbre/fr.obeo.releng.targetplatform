@@ -166,6 +166,7 @@ public class CompositeElementResolver {
           public void accept(final TargetPlatform it) {
             TargetPlatform notProcessedTargetPlatform = it;
             CompositeElementResolver.this.overrideVariableDefinition(notProcessedTargetPlatform, alreadyVisitedTarget);
+            CompositeElementResolver.this.overrideImportedTargetVariable(notProcessedTargetPlatform, targetPlatform.getVarDefinition());
             CompositeElementResolver.this.searchAndAppendDefineFromIncludedTpd(notProcessedTargetPlatform, CollectionLiterals.<TargetPlatform>newHashSet(((TargetPlatform[])Conversions.unwrapArray(alreadyVisitedTarget, TargetPlatform.class))));
             final Consumer<VarDefinition> _function = new Consumer<VarDefinition>() {
               @Override
@@ -190,6 +191,28 @@ public class CompositeElementResolver {
         directlyImportedTargetPlatforms = this.searchDirectlyImportedTpd(targetPlatform);
       }
     }
+  }
+  
+  private void overrideImportedTargetVariable(final TargetPlatform importedTargetPlatform, final EList<VarDefinition> varDefImporter) {
+    final Consumer<VarDefinition> _function = new Consumer<VarDefinition>() {
+      @Override
+      public void accept(final VarDefinition it) {
+        final VarDefinition curVarDef = it;
+        final String curName = curVarDef.getName();
+        final Function1<VarDefinition, Boolean> _function = new Function1<VarDefinition, Boolean>() {
+          @Override
+          public Boolean apply(final VarDefinition it) {
+            return Boolean.valueOf(it.getName().equals(curName));
+          }
+        };
+        final VarDefinition overridingVarDef = IterableExtensions.<VarDefinition>findFirst(varDefImporter, _function);
+        boolean _tripleNotEquals = (overridingVarDef != null);
+        if (_tripleNotEquals) {
+          curVarDef.setOverrideValue(overridingVarDef.getValue().computeActualString());
+        }
+      }
+    };
+    importedTargetPlatform.getVarDefinition().forEach(_function);
   }
   
   /**

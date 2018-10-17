@@ -22,7 +22,7 @@ public class PreferenceSettings {
 	private boolean useEnv = USE_ENV_DEFAULT_SETTING;
 	
 	private int maxRetry = MAX_RETRIES;
-	public static final int MAX_RETRIES = 5;
+	public static final int MAX_RETRIES = 0;
 	
 	public static final String OVERRIDE_LIST_DEFAULT = "";
 	private String overrideList = OVERRIDE_LIST_DEFAULT;

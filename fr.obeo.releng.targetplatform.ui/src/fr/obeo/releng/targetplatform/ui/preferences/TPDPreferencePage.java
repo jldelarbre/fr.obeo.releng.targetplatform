@@ -58,7 +58,7 @@ public class TPDPreferencePage
 		}, getFieldEditorParent()));
 		
 		Label label = new Label(getFieldEditorParent(),SWT.NONE); // Dirty trick to get widget align in FieldEditorPreferencePage
-		label.setText("\nNumber of &retry when loading a location or an \"include\" tpd");
+		label.setText("\nNumber of &retry when loading a location or an \"include\" tpd\n(values above 1 may freeze eclipse in some cases)");
 		addField(new IntegerFieldEditor(
 				TPDPreferenceConstants.P_CHOICE_NUM_RETRY,
 				"",

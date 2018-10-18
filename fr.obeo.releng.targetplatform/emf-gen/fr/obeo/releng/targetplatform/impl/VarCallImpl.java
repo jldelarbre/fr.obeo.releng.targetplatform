@@ -315,23 +315,13 @@ public class VarCallImpl extends MinimalEObjectImpl.Container implements VarCall
 				return "";
 			}
 		}
-		boolean _isEmpty = this.getVarName().getOverrideValue().isEmpty();
-		if (_isEmpty) {
-			CompositeString _value_1 = this.getVarName().getValue();
-			boolean _tripleNotEquals_1 = (_value_1 != null);
-			if (_tripleNotEquals_1) {
-				final String stringOutput = this.getVarName().getValue().computeActualString(alreadyCalledVariable);
-				this.setVariableDefinitionCycleDetected(this.getVarName().getValue().isVariableDefinitionCycleDetected());
-				boolean _isVariableDefinitionCycleDetected_1 = this.isVariableDefinitionCycleDetected();
-				if (_isVariableDefinitionCycleDetected_1) {
-					this.setVarDefCycle(CollectionLiterals.<VarDefinition>newArrayList(((VarDefinition[])org.eclipse.xtext.xbase.lib.Conversions.unwrapArray(this.getVarName().getValue().getVarDefCycle(), VarDefinition.class))));
-					return "";
-				}
-				return stringOutput;
-			}
-			return "";
+		final String varNameEffectiveValue = this.getVarName().getEffectiveValue(alreadyCalledVariable);
+		this.setVariableDefinitionCycleDetected(this.getVarName().isVariableDefinitionCycleDetected());
+		boolean _isVariableDefinitionCycleDetected_1 = this.isVariableDefinitionCycleDetected();
+		if (_isVariableDefinitionCycleDetected_1) {
+			this.setVarDefCycle(CollectionLiterals.<VarDefinition>newArrayList(((VarDefinition[])org.eclipse.xtext.xbase.lib.Conversions.unwrapArray(this.getVarName().getVarDefCycle(), VarDefinition.class))));
 		}
-		return this.getVarName().getOverrideValue();
+		return varNameEffectiveValue;
 	}
 
 	/**

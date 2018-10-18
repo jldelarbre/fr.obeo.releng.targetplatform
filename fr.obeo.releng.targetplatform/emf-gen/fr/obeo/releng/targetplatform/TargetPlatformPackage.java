@@ -399,13 +399,22 @@ public interface TargetPlatformPackage extends EPackage {
 	int VAR_DEFINITION__OVERRIDE_VALUE = TARGET_CONTENT_FEATURE_COUNT + 2;
 
 	/**
+	 * The feature id for the '<em><b>Is Override</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VAR_DEFINITION__IS_OVERRIDE = TARGET_CONTENT_FEATURE_COUNT + 3;
+
+	/**
 	 * The feature id for the '<em><b>Variable Definition Cycle Detected</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int VAR_DEFINITION__VARIABLE_DEFINITION_CYCLE_DETECTED = TARGET_CONTENT_FEATURE_COUNT + 3;
+	int VAR_DEFINITION__VARIABLE_DEFINITION_CYCLE_DETECTED = TARGET_CONTENT_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Var Def Cycle</b></em>' attribute.
@@ -414,7 +423,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VAR_DEFINITION__VAR_DEF_CYCLE = TARGET_CONTENT_FEATURE_COUNT + 4;
+	int VAR_DEFINITION__VAR_DEF_CYCLE = TARGET_CONTENT_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Imported</b></em>' attribute.
@@ -423,7 +432,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VAR_DEFINITION__IMPORTED = TARGET_CONTENT_FEATURE_COUNT + 5;
+	int VAR_DEFINITION__IMPORTED = TARGET_CONTENT_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Imported Values</b></em>' attribute list.
@@ -432,7 +441,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VAR_DEFINITION__IMPORTED_VALUES = TARGET_CONTENT_FEATURE_COUNT + 6;
+	int VAR_DEFINITION__IMPORTED_VALUES = TARGET_CONTENT_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>source UUID</b></em>' attribute.
@@ -441,7 +450,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VAR_DEFINITION__SOURCE_UUID = TARGET_CONTENT_FEATURE_COUNT + 7;
+	int VAR_DEFINITION__SOURCE_UUID = TARGET_CONTENT_FEATURE_COUNT + 8;
 
 	/**
 	 * The feature id for the '<em><b>Diamond Inherit</b></em>' attribute.
@@ -450,7 +459,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VAR_DEFINITION__DIAMOND_INHERIT = TARGET_CONTENT_FEATURE_COUNT + 8;
+	int VAR_DEFINITION__DIAMOND_INHERIT = TARGET_CONTENT_FEATURE_COUNT + 9;
 
 	/**
 	 * The number of structural features of the '<em>Var Definition</em>' class.
@@ -459,7 +468,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VAR_DEFINITION_FEATURE_COUNT = TARGET_CONTENT_FEATURE_COUNT + 9;
+	int VAR_DEFINITION_FEATURE_COUNT = TARGET_CONTENT_FEATURE_COUNT + 10;
 
 	/**
 	 * The operation id for the '<em>Check Var Cycle</em>' operation.
@@ -471,13 +480,31 @@ public interface TargetPlatformPackage extends EPackage {
 	int VAR_DEFINITION___CHECK_VAR_CYCLE = TARGET_CONTENT_OPERATION_COUNT + 0;
 
 	/**
+	 * The operation id for the '<em>Get Effective Value</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VAR_DEFINITION___GET_EFFECTIVE_VALUE = TARGET_CONTENT_OPERATION_COUNT + 1;
+
+	/**
+	 * The operation id for the '<em>Get Effective Value</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VAR_DEFINITION___GET_EFFECTIVE_VALUE__LIST = TARGET_CONTENT_OPERATION_COUNT + 2;
+
+	/**
 	 * The operation id for the '<em>Get Source UUID</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int VAR_DEFINITION___GET_SOURCE_UUID = TARGET_CONTENT_OPERATION_COUNT + 1;
+	int VAR_DEFINITION___GET_SOURCE_UUID = TARGET_CONTENT_OPERATION_COUNT + 3;
 
 	/**
 	 * The operation id for the '<em>To String</em>' operation.
@@ -486,7 +513,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VAR_DEFINITION___TO_STRING = TARGET_CONTENT_OPERATION_COUNT + 2;
+	int VAR_DEFINITION___TO_STRING = TARGET_CONTENT_OPERATION_COUNT + 4;
 
 	/**
 	 * The number of operations of the '<em>Var Definition</em>' class.
@@ -495,7 +522,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VAR_DEFINITION_OPERATION_COUNT = TARGET_CONTENT_OPERATION_COUNT + 3;
+	int VAR_DEFINITION_OPERATION_COUNT = TARGET_CONTENT_OPERATION_COUNT + 5;
 
 	/**
 	 * The meta object id for the '{@link fr.obeo.releng.targetplatform.impl.CompositeStringImpl <em>Composite String</em>}' class.
@@ -1512,6 +1539,17 @@ public interface TargetPlatformPackage extends EPackage {
 	EAttribute getVarDefinition_OverrideValue();
 
 	/**
+	 * Returns the meta object for the attribute '{@link fr.obeo.releng.targetplatform.VarDefinition#isIsOverride <em>Is Override</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Is Override</em>'.
+	 * @see fr.obeo.releng.targetplatform.VarDefinition#isIsOverride()
+	 * @see #getVarDefinition()
+	 * @generated
+	 */
+	EAttribute getVarDefinition_IsOverride();
+
+	/**
 	 * Returns the meta object for the attribute '{@link fr.obeo.releng.targetplatform.VarDefinition#isVariableDefinitionCycleDetected <em>Variable Definition Cycle Detected</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1586,6 +1624,26 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 */
 	EOperation getVarDefinition__CheckVarCycle();
+
+	/**
+	 * Returns the meta object for the '{@link fr.obeo.releng.targetplatform.VarDefinition#getEffectiveValue() <em>Get Effective Value</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Get Effective Value</em>' operation.
+	 * @see fr.obeo.releng.targetplatform.VarDefinition#getEffectiveValue()
+	 * @generated
+	 */
+	EOperation getVarDefinition__GetEffectiveValue();
+
+	/**
+	 * Returns the meta object for the '{@link fr.obeo.releng.targetplatform.VarDefinition#getEffectiveValue(java.util.List) <em>Get Effective Value</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Get Effective Value</em>' operation.
+	 * @see fr.obeo.releng.targetplatform.VarDefinition#getEffectiveValue(java.util.List)
+	 * @generated
+	 */
+	EOperation getVarDefinition__GetEffectiveValue__List();
 
 	/**
 	 * Returns the meta object for the '{@link fr.obeo.releng.targetplatform.VarDefinition#getSourceUUID() <em>Get Source UUID</em>}' operation.
@@ -2457,6 +2515,14 @@ public interface TargetPlatformPackage extends EPackage {
 		EAttribute VAR_DEFINITION__OVERRIDE_VALUE = eINSTANCE.getVarDefinition_OverrideValue();
 
 		/**
+		 * The meta object literal for the '<em><b>Is Override</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute VAR_DEFINITION__IS_OVERRIDE = eINSTANCE.getVarDefinition_IsOverride();
+
+		/**
 		 * The meta object literal for the '<em><b>Variable Definition Cycle Detected</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2511,6 +2577,22 @@ public interface TargetPlatformPackage extends EPackage {
 		 * @generated
 		 */
 		EOperation VAR_DEFINITION___CHECK_VAR_CYCLE = eINSTANCE.getVarDefinition__CheckVarCycle();
+
+		/**
+		 * The meta object literal for the '<em><b>Get Effective Value</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation VAR_DEFINITION___GET_EFFECTIVE_VALUE = eINSTANCE.getVarDefinition__GetEffectiveValue();
+
+		/**
+		 * The meta object literal for the '<em><b>Get Effective Value</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation VAR_DEFINITION___GET_EFFECTIVE_VALUE__LIST = eINSTANCE.getVarDefinition__GetEffectiveValue__List();
 
 		/**
 		 * The meta object literal for the '<em><b>Get Source UUID</b></em>' operation.

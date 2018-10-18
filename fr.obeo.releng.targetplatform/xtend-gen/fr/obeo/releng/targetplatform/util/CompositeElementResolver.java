@@ -87,6 +87,7 @@ public class CompositeElementResolver {
         boolean _tripleNotEquals = (variableValue != null);
         if (_tripleNotEquals) {
           varDef.setOverrideValue(variableValue);
+          varDef.setIsOverride(true);
         }
         targetPlatform.setModified(true);
       }
@@ -208,7 +209,8 @@ public class CompositeElementResolver {
         final VarDefinition overridingVarDef = IterableExtensions.<VarDefinition>findFirst(varDefImporter, _function);
         boolean _tripleNotEquals = (overridingVarDef != null);
         if (_tripleNotEquals) {
-          curVarDef.setOverrideValue(overridingVarDef.getValue().computeActualString());
+          curVarDef.setOverrideValue(overridingVarDef.getEffectiveValue());
+          curVarDef.setIsOverride(true);
         }
       }
     };
@@ -353,6 +355,7 @@ public class CompositeElementResolver {
       currentImportedDefineCopy.setName(currentImportedDefine.getName());
       currentImportedDefineCopy.setValue(currentImportedDefine.getValue().getCopy());
       currentImportedDefineCopy.setOverrideValue(currentImportedDefine.getOverrideValue());
+      currentImportedDefineCopy.setIsOverride(currentImportedDefine.isIsOverride());
       currentImportedDefineCopy.setImported(true);
       currentImportedDefineCopy.getImportedValues().add(currentImportedDefine.getValue().computeActualString());
       currentImportedDefineCopy.set_sourceUUID(currentImportedDefine.getSourceUUID());

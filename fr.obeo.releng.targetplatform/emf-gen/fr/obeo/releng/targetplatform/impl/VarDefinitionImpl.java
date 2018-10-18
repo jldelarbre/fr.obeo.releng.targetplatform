@@ -9,6 +9,7 @@ import fr.obeo.releng.targetplatform.VarDefinition;
 
 import java.lang.reflect.InvocationTargetException;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -47,6 +48,7 @@ import org.eclipse.xtext.xbase.lib.IterableExtensions;
  *   <li>{@link fr.obeo.releng.targetplatform.impl.VarDefinitionImpl#getName <em>Name</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.impl.VarDefinitionImpl#getValue <em>Value</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.impl.VarDefinitionImpl#getOverrideValue <em>Override Value</em>}</li>
+ *   <li>{@link fr.obeo.releng.targetplatform.impl.VarDefinitionImpl#isIsOverride <em>Is Override</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.impl.VarDefinitionImpl#isVariableDefinitionCycleDetected <em>Variable Definition Cycle Detected</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.impl.VarDefinitionImpl#getVarDefCycle <em>Var Def Cycle</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.impl.VarDefinitionImpl#isImported <em>Imported</em>}</li>
@@ -107,6 +109,26 @@ public class VarDefinitionImpl extends MinimalEObjectImpl.Container implements V
 	 * @ordered
 	 */
 	protected String overrideValue = OVERRIDE_VALUE_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #isIsOverride() <em>Is Override</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isIsOverride()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean IS_OVERRIDE_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isIsOverride() <em>Is Override</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isIsOverride()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean isOverride = IS_OVERRIDE_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #isVariableDefinitionCycleDetected() <em>Variable Definition Cycle Detected</em>}' attribute.
@@ -368,6 +390,27 @@ public class VarDefinitionImpl extends MinimalEObjectImpl.Container implements V
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public boolean isIsOverride() {
+		return isOverride;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setIsOverride(boolean newIsOverride) {
+		boolean oldIsOverride = isOverride;
+		isOverride = newIsOverride;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TargetPlatformPackage.VAR_DEFINITION__IS_OVERRIDE, oldIsOverride, isOverride));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public boolean isVariableDefinitionCycleDetected() {
 		return variableDefinitionCycleDetected;
 	}
@@ -505,6 +548,42 @@ public class VarDefinitionImpl extends MinimalEObjectImpl.Container implements V
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public String getEffectiveValue() {
+		final ArrayList<VarDefinition> alreadyCalledVariable = CollectionLiterals.<VarDefinition>newArrayList();
+		return this.getEffectiveValue(alreadyCalledVariable);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String getEffectiveValue(final List<VarDefinition> alreadyCalledVariable) {
+		boolean _isIsOverride = this.isIsOverride();
+		boolean _not = (!_isIsOverride);
+		if (_not) {
+			CompositeString _value = this.getValue();
+			boolean _tripleNotEquals = (_value != null);
+			if (_tripleNotEquals) {
+				final String stringOutput = this.getValue().computeActualString(alreadyCalledVariable);
+				this.setVariableDefinitionCycleDetected(this.getValue().isVariableDefinitionCycleDetected());
+				boolean _isVariableDefinitionCycleDetected = this.isVariableDefinitionCycleDetected();
+				if (_isVariableDefinitionCycleDetected) {
+					this.setVarDefCycle(CollectionLiterals.<VarDefinition>newArrayList(((VarDefinition[])org.eclipse.xtext.xbase.lib.Conversions.unwrapArray(this.getValue().getVarDefCycle(), VarDefinition.class))));
+					return "";
+				}
+				return stringOutput;
+			}
+			return "";
+		}
+		return this.getOverrideValue();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public UUID getSourceUUID() {
 		UUID _xblockexpression = null;
 		{
@@ -545,6 +624,8 @@ public class VarDefinitionImpl extends MinimalEObjectImpl.Container implements V
 		result.append(this.getName());
 		result.append(", overrideValue: ");
 		result.append(this.getOverrideValue());
+		result.append(", isOverride: ");
+		result.append(this.isIsOverride());
 		result.append(", variableDefinitionCycleDetected: ");
 		result.append(this.isVariableDefinitionCycleDetected());
 		result.append(", varDefCycle: ");
@@ -623,6 +704,8 @@ public class VarDefinitionImpl extends MinimalEObjectImpl.Container implements V
 				return getValue();
 			case TargetPlatformPackage.VAR_DEFINITION__OVERRIDE_VALUE:
 				return getOverrideValue();
+			case TargetPlatformPackage.VAR_DEFINITION__IS_OVERRIDE:
+				return isIsOverride();
 			case TargetPlatformPackage.VAR_DEFINITION__VARIABLE_DEFINITION_CYCLE_DETECTED:
 				return isVariableDefinitionCycleDetected();
 			case TargetPlatformPackage.VAR_DEFINITION__VAR_DEF_CYCLE:
@@ -659,6 +742,9 @@ public class VarDefinitionImpl extends MinimalEObjectImpl.Container implements V
 				return;
 			case TargetPlatformPackage.VAR_DEFINITION__OVERRIDE_VALUE:
 				setOverrideValue((String)newValue);
+				return;
+			case TargetPlatformPackage.VAR_DEFINITION__IS_OVERRIDE:
+				setIsOverride((Boolean)newValue);
 				return;
 			case TargetPlatformPackage.VAR_DEFINITION__VARIABLE_DEFINITION_CYCLE_DETECTED:
 				setVariableDefinitionCycleDetected((Boolean)newValue);
@@ -703,6 +789,9 @@ public class VarDefinitionImpl extends MinimalEObjectImpl.Container implements V
 			case TargetPlatformPackage.VAR_DEFINITION__OVERRIDE_VALUE:
 				setOverrideValue(OVERRIDE_VALUE_EDEFAULT);
 				return;
+			case TargetPlatformPackage.VAR_DEFINITION__IS_OVERRIDE:
+				setIsOverride(IS_OVERRIDE_EDEFAULT);
+				return;
 			case TargetPlatformPackage.VAR_DEFINITION__VARIABLE_DEFINITION_CYCLE_DETECTED:
 				setVariableDefinitionCycleDetected(VARIABLE_DEFINITION_CYCLE_DETECTED_EDEFAULT);
 				return;
@@ -741,6 +830,8 @@ public class VarDefinitionImpl extends MinimalEObjectImpl.Container implements V
 				return value != null;
 			case TargetPlatformPackage.VAR_DEFINITION__OVERRIDE_VALUE:
 				return OVERRIDE_VALUE_EDEFAULT == null ? overrideValue != null : !OVERRIDE_VALUE_EDEFAULT.equals(overrideValue);
+			case TargetPlatformPackage.VAR_DEFINITION__IS_OVERRIDE:
+				return isOverride != IS_OVERRIDE_EDEFAULT;
 			case TargetPlatformPackage.VAR_DEFINITION__VARIABLE_DEFINITION_CYCLE_DETECTED:
 				return variableDefinitionCycleDetected != VARIABLE_DEFINITION_CYCLE_DETECTED_EDEFAULT;
 			case TargetPlatformPackage.VAR_DEFINITION__VAR_DEF_CYCLE:
@@ -763,11 +854,16 @@ public class VarDefinitionImpl extends MinimalEObjectImpl.Container implements V
 	 * @generated
 	 */
 	@Override
+	@SuppressWarnings("unchecked")
 	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
 		switch (operationID) {
 			case TargetPlatformPackage.VAR_DEFINITION___CHECK_VAR_CYCLE:
 				checkVarCycle();
 				return null;
+			case TargetPlatformPackage.VAR_DEFINITION___GET_EFFECTIVE_VALUE:
+				return getEffectiveValue();
+			case TargetPlatformPackage.VAR_DEFINITION___GET_EFFECTIVE_VALUE__LIST:
+				return getEffectiveValue((List<VarDefinition>)arguments.get(0));
 			case TargetPlatformPackage.VAR_DEFINITION___GET_SOURCE_UUID:
 				return getSourceUUID();
 			case TargetPlatformPackage.VAR_DEFINITION___TO_STRING:

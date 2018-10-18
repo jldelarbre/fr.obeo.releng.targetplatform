@@ -138,7 +138,9 @@ type UUID wraps UUID
 class VarDefinition extends TargetContent {
 	String name
 	contains CompositeString value
+	
 	String overrideValue = ""
+	boolean isOverride = "false"
 	
 	boolean variableDefinitionCycleDetected = "false"
 	VarDefList varDefCycle
@@ -161,6 +163,29 @@ class VarDefinition extends TargetContent {
 		else {
 			varDefCycle = newArrayList
 		}
+	}
+	
+	op String getEffectiveValue() {
+		val alreadyCalledVariable = newArrayList
+		return getEffectiveValue(alreadyCalledVariable)
+	}
+	
+	op String getEffectiveValue(VarDefList alreadyCalledVariable) {
+		// Is variable override
+		if (!isOverride) {
+			// Is the variable called exist
+			if (value !== null) {
+				val stringOutput = value.computeActualString(alreadyCalledVariable)
+				variableDefinitionCycleDetected = value.variableDefinitionCycleDetected
+				if (variableDefinitionCycleDetected) {
+					varDefCycle = newArrayList(value.varDefCycle)
+					return ""
+				}
+				return stringOutput
+			}
+			return "";
+		}
+		return overrideValue
 	}
 	
 	op UUID getSourceUUID() {
@@ -187,6 +212,8 @@ class VarDefinition extends TargetContent {
 		result.append(name)
 		result.append(", overrideValue: ")
 		result.append(overrideValue)
+		result.append(", isOverride: ")
+		result.append(isOverride)
 		result.append(", variableDefinitionCycleDetected: ")
 		result.append(variableDefinitionCycleDetected)
 		result.append(", varDefCycle: ")
@@ -289,22 +316,12 @@ class VarCall extends CompositeStringPart {
 				return ""
 			}
 		}
-		// Compute actual string
-		// Is variable override
-		if (varName.overrideValue.isEmpty) {
-			// Is the variable called exist
-			if (varName.value !== null) {
-				val stringOutput = varName.value.computeActualString(alreadyCalledVariable)
-				variableDefinitionCycleDetected = varName.value.variableDefinitionCycleDetected
-				if (variableDefinitionCycleDetected) {
-					varDefCycle = newArrayList(varName.value.varDefCycle)
-					return ""
-				}
-				return stringOutput
-			}
-			return "";
+		val varNameEffectiveValue = varName.getEffectiveValue(alreadyCalledVariable)
+		variableDefinitionCycleDetected = varName.variableDefinitionCycleDetected
+		if (variableDefinitionCycleDetected) {
+			varDefCycle = newArrayList(varName.varDefCycle)
 		}
-		return varName.overrideValue
+		return varNameEffectiveValue
 	}
 	
 	op VarCall getCopy() {

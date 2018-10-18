@@ -66,6 +66,7 @@ class CompositeElementResolver {
 				val variableValue = importVariableManager.getVariableValue(varDefName)
 				if (variableValue !== null) {
 					varDef.overrideValue = variableValue
+					varDef.isOverride = true
 				}
 				targetPlatform.modified = true
 			]
@@ -146,7 +147,8 @@ class CompositeElementResolver {
 			val curName = curVarDef.name
 			val overridingVarDef = varDefImporter.findFirst[it.name.equals(curName)]
 			if (overridingVarDef !== null) {
-				curVarDef.overrideValue = overridingVarDef.value.computeActualString
+				curVarDef.overrideValue = overridingVarDef.getEffectiveValue()
+				curVarDef.isOverride = true
 			}
 		]
 	}
@@ -247,6 +249,7 @@ class CompositeElementResolver {
 		currentImportedDefineCopy.name = currentImportedDefine.name
 		currentImportedDefineCopy.value = currentImportedDefine.value.copy
 		currentImportedDefineCopy.overrideValue = currentImportedDefine.overrideValue
+		currentImportedDefineCopy.isOverride = currentImportedDefine.isIsOverride
 		currentImportedDefineCopy.imported = true
 		currentImportedDefineCopy.importedValues.add(currentImportedDefine.value.computeActualString)
 		currentImportedDefineCopy._sourceUUID = currentImportedDefine.sourceUUID

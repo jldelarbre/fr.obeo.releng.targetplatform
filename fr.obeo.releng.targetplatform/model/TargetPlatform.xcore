@@ -21,6 +21,12 @@ class TargetPlatform {
 	
 	String varCallFromOnlyImportedVariable = ""
 	
+	// To understand the usage of varDef2OverrideInImportedTarget see tests: TestOverrideImportTarget.testOverrideRecursive
+	// and TestOverrideImportTarget.testOverrideRecursiveWithJump
+	// In the second test, the intermediate tpd has no varDefinition, so we have to propagate them through the
+	// intermediate target
+	contains VarDefinition[] varDef2OverrideInImportedTarget
+	
 	contains TargetContent[] contents opposite targetPlatform
 	  
 	refers derived IncludeDeclaration[] includes get {
@@ -139,8 +145,7 @@ class VarDefinition extends TargetContent {
 	String name
 	contains CompositeString value
 	
-	String overrideValue = ""
-	boolean isOverride = "false"
+	String overrideValue
 	
 	boolean variableDefinitionCycleDetected = "false"
 	VarDefList varDefCycle
@@ -172,7 +177,7 @@ class VarDefinition extends TargetContent {
 	
 	op String getEffectiveValue(VarDefList alreadyCalledVariable) {
 		// Is variable override
-		if (!isOverride) {
+		if (overrideValue === null) {
 			// Is the variable called exist
 			if (value !== null) {
 				val stringOutput = value.computeActualString(alreadyCalledVariable)
@@ -212,8 +217,6 @@ class VarDefinition extends TargetContent {
 		result.append(name)
 		result.append(", overrideValue: ")
 		result.append(overrideValue)
-		result.append(", isOverride: ")
-		result.append(isOverride)
 		result.append(", variableDefinitionCycleDetected: ")
 		result.append(variableDefinitionCycleDetected)
 		result.append(", varDefCycle: ")

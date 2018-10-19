@@ -66,7 +66,6 @@ class CompositeElementResolver {
 				val variableValue = importVariableManager.getVariableValue(varDefName)
 				if (variableValue !== null) {
 					varDef.overrideValue = variableValue
-					varDef.isOverride = true
 				}
 				targetPlatform.modified = true
 			]
@@ -124,7 +123,7 @@ class CompositeElementResolver {
 				.forEach[
 					var notProcessedTargetPlatform = it
 					overrideVariableDefinition(notProcessedTargetPlatform, alreadyVisitedTarget)
-					overrideImportedTargetVariable(notProcessedTargetPlatform, targetPlatform.varDefinition)
+					overrideImportedTargetVariable(notProcessedTargetPlatform, targetPlatform)
 					searchAndAppendDefineFromIncludedTpd(notProcessedTargetPlatform, newHashSet(alreadyVisitedTarget))
 					notProcessedTargetPlatform.varDefinition.forEach[
 						ImportedDefineFromSubTpd.add(it)
@@ -141,16 +140,33 @@ class CompositeElementResolver {
 		}
 	}
 	
-	private def overrideImportedTargetVariable(TargetPlatform importedTargetPlatform, EList<VarDefinition> varDefImporter) {
-		importedTargetPlatform.varDefinition.forEach[
-			val curVarDef = it
-			val curName = curVarDef.name
-			val overridingVarDef = varDefImporter.findFirst[it.name.equals(curName)]
-			if (overridingVarDef !== null) {
-				curVarDef.overrideValue = overridingVarDef.getEffectiveValue()
-				curVarDef.isOverride = true
-			}
+	private def overrideImportedTargetVariable(TargetPlatform importedTargetPlatform, TargetPlatform importerTargetPlatform) {
+		val varDefImporter = importerTargetPlatform.varDefinition
+		varDefImporter.forEach[
+			val varDef4Overriding = it
+			val varDef4OverridingName = varDef4Overriding.name
+			val varDef4OverridingValue = varDef4Overriding.getEffectiveValue()
+			overrideCurrentVarDef(importedTargetPlatform, varDef4OverridingName, varDef4OverridingValue)
 		]
+		importerTargetPlatform.varDef2OverrideInImportedTarget.forEach[
+			val varDef4Overriding = it
+			val varDef4OverridingName = varDef4Overriding.name
+			val varDef4OverridingValue = varDef4Overriding.overrideValue
+			overrideCurrentVarDef(importedTargetPlatform, varDef4OverridingName, varDef4OverridingValue)
+		]
+	}
+	
+	private def overrideCurrentVarDef(TargetPlatform importedTargetPlatform, String varDef4OverridingName, String varDef4OverridingValue) {
+		val varDef2Override = importedTargetPlatform.varDefinition.findFirst[it.name.equals(varDef4OverridingName)]
+		if (varDef2Override !== null) {
+			varDef2Override.overrideValue = varDef4OverridingValue
+		}
+		else {
+			val varDef = TargetPlatformFactory.eINSTANCE.createVarDefinition
+			varDef.name = varDef4OverridingName
+			varDef.overrideValue = varDef4OverridingValue
+			importedTargetPlatform.varDef2OverrideInImportedTarget.add(varDef)
+		}
 	}
 	
 	/* Targets that are directly imported, with an "include" directive present in the current
@@ -249,7 +265,6 @@ class CompositeElementResolver {
 		currentImportedDefineCopy.name = currentImportedDefine.name
 		currentImportedDefineCopy.value = currentImportedDefine.value.copy
 		currentImportedDefineCopy.overrideValue = currentImportedDefine.overrideValue
-		currentImportedDefineCopy.isOverride = currentImportedDefine.isIsOverride
 		currentImportedDefineCopy.imported = true
 		currentImportedDefineCopy.importedValues.add(currentImportedDefine.value.computeActualString)
 		currentImportedDefineCopy._sourceUUID = currentImportedDefine.sourceUUID

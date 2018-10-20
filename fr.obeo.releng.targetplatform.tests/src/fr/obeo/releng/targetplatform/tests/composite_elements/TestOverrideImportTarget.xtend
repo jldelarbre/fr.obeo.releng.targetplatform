@@ -330,4 +330,137 @@ class TestOverrideImportTarget {
 		assertEquals("http://download.eclipse.org/tools/orbit/downloads/drops/R20180905201904/repository", locationsC.head.uri)
 		assertEquals("[2.9.2,3.1.0)", locationsC.last.ius.head.version)
 	}
+	
+	@Test
+	def testOverrideVarToManyTargets() {
+		val resourceSet = resourceSetProvider.get
+		val aTarget = parser.parse('''
+			target "aTarget"
+			include "bTarget.tpd"
+			include "cTarget.tpd"
+			define b = "overrideVal1"
+			define c = "overrideVal2"
+		''', URI.createURI("tmp:/aTarget.tpd"), resourceSet)
+		parser.parse('''
+			target "bTarget"
+			define b = "baseVal"
+			define b2 = ${b}
+		''', URI.createURI("tmp:/bTarget.tpd"), resourceSet)
+		parser.parse('''
+			target "cTarget"
+			define c = "baseVal"
+			define c2 = ${c}
+		''', URI.createURI("tmp:/cTarget.tpd"), resourceSet)
+		
+		val importedTargetPlatforms = indexBuilder.getImportedTargetPlatforms(aTarget)
+		assertEquals(2, importedTargetPlatforms.length)
+		
+		val bTargetPlatform = importedTargetPlatforms.last
+		
+		val varDefB = bTargetPlatform.varDefinition.head
+		assertEquals("b", varDefB.name)
+		assertEquals("overrideVal1", varDefB.overrideValue)
+		
+		val varDefB2 = bTargetPlatform.varDefinition.get(1)
+		assertEquals("b2", varDefB2.name)
+		assertEquals("overrideVal1", varDefB2.value.stringParts.head.actualString)
+		
+		val cTargetPlatform = importedTargetPlatforms.first
+		
+		val varDefC = cTargetPlatform.varDefinition.head
+		assertEquals("c", varDefC.name)
+		assertEquals("overrideVal2", varDefC.overrideValue)
+		
+		val varDefC2 = cTargetPlatform.varDefinition.get(1)
+		assertEquals("c2", varDefC2.name)
+		assertEquals("overrideVal2", varDefC2.value.stringParts.head.actualString)
+	}
+	
+	@Test
+	def testNotOverrideImported1() {
+		val resourceSet = resourceSetProvider.get
+		val aTarget = parser.parse('''
+			target "aTarget"
+			include "b1Target.tpd"
+			include "b2Target.tpd"
+		''', URI.createURI("tmp:/aTarget.tpd"), resourceSet)
+		parser.parse('''
+			target "b1Target"
+			define b = "valB1"
+		''', URI.createURI("tmp:/b1Target.tpd"), resourceSet)
+		parser.parse('''
+			target "b2Target"
+			define b = "valB2"
+		''', URI.createURI("tmp:/b2Target.tpd"), resourceSet)
+		
+		val importedTargetPlatforms = indexBuilder.getImportedTargetPlatforms(aTarget)
+		assertEquals(2, importedTargetPlatforms.length)
+		
+		val b2TargetPlatform = importedTargetPlatforms.first
+		assertEquals("b2Target", b2TargetPlatform.name)
+		
+		val varDefB = b2TargetPlatform.varDefinition.head
+		assertEquals("b", varDefB.name)
+		assertEquals(null, varDefB.overrideValue)
+		assertEquals("valB2", varDefB.effectiveValue)
+	}
+	
+	@Test
+	def testNotOverrideImported2() {
+		val resourceSet = resourceSetProvider.get
+		val aTarget = parser.parse('''
+			target "aTarget"
+			include "b2Target.tpd"
+			include "b1Target.tpd"
+		''', URI.createURI("tmp:/aTarget.tpd"), resourceSet)
+		parser.parse('''
+			target "b1Target"
+			define b = "valB1"
+		''', URI.createURI("tmp:/b1Target.tpd"), resourceSet)
+		parser.parse('''
+			target "b2Target"
+			define b = "valB2"
+		''', URI.createURI("tmp:/b2Target.tpd"), resourceSet)
+		
+		val importedTargetPlatforms = indexBuilder.getImportedTargetPlatforms(aTarget)
+		assertEquals(2, importedTargetPlatforms.length)
+		
+		val b2TargetPlatform = importedTargetPlatforms.last
+		assertEquals("b2Target", b2TargetPlatform.name)
+		
+		val varDefB = b2TargetPlatform.varDefinition.head
+		assertEquals("b", varDefB.name)
+		assertEquals(null, varDefB.overrideValue)
+		assertEquals("valB2", varDefB.effectiveValue)
+	}
+	
+	@Test
+	def testNotOverrideImported3() {
+		val resourceSet = resourceSetProvider.get
+		val aTarget = parser.parse('''
+			target "aTarget"
+			include "bTarget.tpd"
+			include ${includeTargetURI}
+		''', URI.createURI("tmp:/aTarget.tpd"), resourceSet)
+		parser.parse('''
+			target "bTarget"
+			define b = "valB_B"
+			define includeTargetURI = "cTarget.tpd"
+		''', URI.createURI("tmp:/bTarget.tpd"), resourceSet)
+		parser.parse('''
+			target "cTarget"
+			define b = "valB_C"
+		''', URI.createURI("tmp:/cTarget.tpd"), resourceSet)
+		
+		val importedTargetPlatforms = indexBuilder.getImportedTargetPlatforms(aTarget)
+		assertEquals(2, importedTargetPlatforms.length)
+		
+		val cTargetPlatform = importedTargetPlatforms.head
+		assertEquals("cTarget", cTargetPlatform.name)
+		
+		val varDefB = cTargetPlatform.varDefinition.head
+		assertEquals("b", varDefB.name)
+		assertEquals(null, varDefB.overrideValue)
+		assertEquals("valB_C", varDefB.effectiveValue)
+	}
 }

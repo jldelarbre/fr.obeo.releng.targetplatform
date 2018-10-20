@@ -140,9 +140,28 @@ class CompositeElementResolver {
 		}
 	}
 	
+	/**
+	 * Override variable of the imported tpd with the one of the tpd importer.
+	 * 
+	 * target "targetA"
+	 * define varA = "valA"
+	 * include "targetB"
+	 * 
+	 * ------------------
+	 * 
+	 * target "targetB"
+	 * define varA = "valB"
+	 * 
+	 * ------------------
+	 * 
+	 * In this case varA of targetB will be override with the value "valA"
+	 */
 	private def overrideImportedTargetVariable(TargetPlatform importedTargetPlatform, TargetPlatform importerTargetPlatform) {
 		val varDefImporter = importerTargetPlatform.varDefinition
-		varDefImporter.forEach[
+		varDefImporter.filter[
+			!it.imported
+		]
+		.forEach[
 			val varDef4Overriding = it
 			val varDef4OverridingName = varDef4Overriding.name
 			val varDef4OverridingValue = varDef4Overriding.getEffectiveValue()

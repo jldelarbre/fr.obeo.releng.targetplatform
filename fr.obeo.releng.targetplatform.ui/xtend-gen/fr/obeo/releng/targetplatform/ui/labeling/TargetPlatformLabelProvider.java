@@ -51,6 +51,7 @@ public class TargetPlatformLabelProvider extends DefaultEObjectLabelProvider {
       if (_tripleEquals) {
         EObject _eContainer = object.eContainer();
         this.compositeElementResolver.resolveCompositeElements(((TargetPlatform) _eContainer));
+        object.resolveUri();
       }
       ss.append(object.getUri());
       String _iD = object.getID();
@@ -116,6 +117,7 @@ public class TargetPlatformLabelProvider extends DefaultEObjectLabelProvider {
       if (_tripleEquals) {
         EObject _eContainer = object.eContainer();
         this.compositeElementResolver.resolveCompositeElements(((TargetPlatform) _eContainer));
+        object.generateImportURI();
       }
       ss.append(object.getImportURI());
       _xblockexpression = ss;
@@ -158,6 +160,14 @@ public class TargetPlatformLabelProvider extends DefaultEObjectLabelProvider {
   
   public String image(final Environment object) {
     return "obj16/env_obj.gif";
+  }
+  
+  public String text(final VarDefinition object) {
+    String _name = object.getName();
+    String _plus = (_name + " - (effective value = ");
+    String _effectiveValue = object.getEffectiveValue();
+    String _plus_1 = (_plus + _effectiveValue);
+    return (_plus_1 + ")");
   }
   
   public String image(final VarDefinition object) {

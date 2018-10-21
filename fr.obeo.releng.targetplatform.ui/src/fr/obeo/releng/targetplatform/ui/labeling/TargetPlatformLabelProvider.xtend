@@ -11,6 +11,7 @@
 package fr.obeo.releng.targetplatform.ui.labeling
 
 import com.google.inject.Inject
+import fr.obeo.releng.targetplatform.CompositeString
 import fr.obeo.releng.targetplatform.Environment
 import fr.obeo.releng.targetplatform.IU
 import fr.obeo.releng.targetplatform.IncludeDeclaration
@@ -18,13 +19,12 @@ import fr.obeo.releng.targetplatform.Location
 import fr.obeo.releng.targetplatform.Option
 import fr.obeo.releng.targetplatform.Options
 import fr.obeo.releng.targetplatform.TargetPlatform
+import fr.obeo.releng.targetplatform.VarCall
 import fr.obeo.releng.targetplatform.VarDefinition
 import fr.obeo.releng.targetplatform.util.CompositeElementResolver
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider
 import org.eclipse.jface.viewers.StyledString
 import org.eclipse.xtext.ui.label.DefaultEObjectLabelProvider
-import fr.obeo.releng.targetplatform.CompositeString
-import fr.obeo.releng.targetplatform.VarCall
 
 /**
  * Provides labels for a EObjects.
@@ -45,6 +45,7 @@ class TargetPlatformLabelProvider extends DefaultEObjectLabelProvider {
 		val ss = new StyledString();
 		if (object.uri === null) {
 			compositeElementResolver.resolveCompositeElements(object.eContainer as TargetPlatform)
+			object.resolveUri
 		}
 		ss.append(object.uri);
 		if (object.getID() !== null) {
@@ -85,6 +86,7 @@ class TargetPlatformLabelProvider extends DefaultEObjectLabelProvider {
 		val ss = new StyledString()
 		if (object.importURI === null) {
 			compositeElementResolver.resolveCompositeElements(object.eContainer as TargetPlatform)
+			object.generateImportURI
 		}
 		ss.append(object.importURI)
 		ss

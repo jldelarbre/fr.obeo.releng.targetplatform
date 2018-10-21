@@ -161,6 +161,9 @@ class CompositeElementResolver {
 		varDefImporter.filter[
 			!it.imported
 		]
+		.filter[
+			it.isWhollyDefinedByTarget
+		]
 		.forEach[
 			val varDef4Overriding = it
 			val varDef4OverridingName = varDef4Overriding.name

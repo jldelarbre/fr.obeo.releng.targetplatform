@@ -463,4 +463,175 @@ class TestOverrideImportTarget {
 		assertEquals(null, varDefB.overrideValue)
 		assertEquals("valB_C", varDefB.effectiveValue)
 	}
+	
+	@Test
+	def testNotOverridePartiallyDefinedVariable1() {
+		val resourceSet = resourceSetProvider.get
+		val aTarget = parser.parse('''
+			target "aTarget"
+			include "bTarget.tpd"
+			include "cTarget.tpd"
+			define partiallyDefineVarInA = "foo_" + ${b}
+		''', URI.createURI("tmp:/aTarget.tpd"), resourceSet)
+		parser.parse('''
+			target "bTarget"
+			define b = "valB_B"
+		''', URI.createURI("tmp:/bTarget.tpd"), resourceSet)
+		parser.parse('''
+			target "cTarget"
+			define partiallyDefineVarInA = "value_C"
+		''', URI.createURI("tmp:/cTarget.tpd"), resourceSet)
+		
+		val importedTargetPlatforms = indexBuilder.getImportedTargetPlatforms(aTarget)
+		assertEquals(2, importedTargetPlatforms.length)
+		
+		val cTargetPlatform = importedTargetPlatforms.head
+		assertEquals("cTarget", cTargetPlatform.name)
+		
+		val varDefB = cTargetPlatform.varDefinition.head
+		assertEquals("partiallyDefineVarInA", varDefB.name)
+		assertEquals(null, varDefB.overrideValue)
+		assertEquals("value_C", varDefB.effectiveValue)
+	}
+	
+	@Test
+	def testNotOverridePartiallyDefinedVariable2() {
+		val resourceSet = resourceSetProvider.get
+		val aTarget = parser.parse('''
+			target "aTarget"
+			include "bTarget.tpd"
+			include ${includeTargetURI}
+			define partiallyDefineVarInA = "foo_" + ${b}
+		''', URI.createURI("tmp:/aTarget.tpd"), resourceSet)
+		parser.parse('''
+			target "bTarget"
+			define b = "valB_B"
+			define includeTargetURI = "cTarget.tpd"
+		''', URI.createURI("tmp:/bTarget.tpd"), resourceSet)
+		parser.parse('''
+			target "cTarget"
+			define partiallyDefineVarInA = "value_C"
+		''', URI.createURI("tmp:/cTarget.tpd"), resourceSet)
+		
+		val importedTargetPlatforms = indexBuilder.getImportedTargetPlatforms(aTarget)
+		assertEquals(2, importedTargetPlatforms.length)
+		
+		val cTargetPlatform = importedTargetPlatforms.head
+		assertEquals("cTarget", cTargetPlatform.name)
+		
+		val varDefB = cTargetPlatform.varDefinition.head
+		assertEquals("partiallyDefineVarInA", varDefB.name)
+		assertEquals(null, varDefB.overrideValue)
+		assertEquals("value_C", varDefB.effectiveValue)
+	}
+	
+	@Test
+	def testOverrideWithCompositeVarDef1() {
+		val resourceSet = resourceSetProvider.get
+		val aTarget = parser.parse('''
+			target "aTarget"
+			include "cTarget.tpd"
+			define b = "valB"
+			define a = "foo_" + ${b}
+		''', URI.createURI("tmp:/aTarget.tpd"), resourceSet)
+		parser.parse('''
+			target "cTarget"
+			define a = "value_C"
+		''', URI.createURI("tmp:/cTarget.tpd"), resourceSet)
+		
+		val importedTargetPlatforms = indexBuilder.getImportedTargetPlatforms(aTarget)
+		assertEquals(1, importedTargetPlatforms.length)
+		
+		val cTargetPlatform = importedTargetPlatforms.head
+		assertEquals("cTarget", cTargetPlatform.name)
+		
+		val varDefA = cTargetPlatform.varDefinition.head
+		assertEquals("a", varDefA.name)
+		assertEquals("foo_valB", varDefA.overrideValue)
+		assertEquals("foo_valB", varDefA.effectiveValue)
+	}
+	
+	@Test
+	def testOverrideWithCompositeVarDef2() {
+		val resourceSet = resourceSetProvider.get
+		val aTarget = parser.parse('''
+			target "aTarget"
+			include "cTarget.tpd"
+			define c = "valC"
+			define b = ${c}
+			define a = "foo_" + ${b}
+		''', URI.createURI("tmp:/aTarget.tpd"), resourceSet)
+		parser.parse('''
+			target "cTarget"
+			define a = "value_C"
+		''', URI.createURI("tmp:/cTarget.tpd"), resourceSet)
+		
+		val importedTargetPlatforms = indexBuilder.getImportedTargetPlatforms(aTarget)
+		assertEquals(1, importedTargetPlatforms.length)
+		
+		val cTargetPlatform = importedTargetPlatforms.head
+		assertEquals("cTarget", cTargetPlatform.name)
+		
+		val varDefA = cTargetPlatform.varDefinition.head
+		assertEquals("a", varDefA.name)
+		assertEquals("foo_valC", varDefA.overrideValue)
+		assertEquals("foo_valC", varDefA.effectiveValue)
+	}
+	
+	@Test
+	def testNotOverridePartiallyDefinedVariable3() {
+		val resourceSet = resourceSetProvider.get
+		val aTarget = parser.parse('''
+			target "aTarget"
+			include "bTarget.tpd"
+			include "cTarget.tpd"
+			define b = ${b2}
+			define a = "foo_" + ${b}
+		''', URI.createURI("tmp:/aTarget.tpd"), resourceSet)
+		parser.parse('''
+			target "bTarget"
+			define b2 = "valB2"
+		''', URI.createURI("tmp:/bTarget.tpd"), resourceSet)
+		parser.parse('''
+			target "cTarget"
+			define a = "value_C"
+		''', URI.createURI("tmp:/cTarget.tpd"), resourceSet)
+		
+		val importedTargetPlatforms = indexBuilder.getImportedTargetPlatforms(aTarget)
+		assertEquals(2, importedTargetPlatforms.length)
+		
+		val cTargetPlatform = importedTargetPlatforms.head
+		assertEquals("cTarget", cTargetPlatform.name)
+		
+		val varDefA = cTargetPlatform.varDefinition.head
+		assertEquals("a", varDefA.name)
+		assertEquals(null, varDefA.overrideValue)
+		assertEquals("value_C", varDefA.effectiveValue)
+	}
+	
+	@Test
+	def testNotOverrideErroneousDefinedVariable() {
+		val resourceSet = resourceSetProvider.get
+		val aTarget = parser.parse('''
+			target "aTarget"
+			include "cTarget.tpd"
+			define b = ${a}
+			define a = "foo_" + ${b}
+		''', URI.createURI("tmp:/aTarget.tpd"), resourceSet)
+		parser.parse('''
+			target "cTarget"
+			define a = "value_C"
+		''', URI.createURI("tmp:/cTarget.tpd"), resourceSet)
+		
+		val importedTargetPlatforms = indexBuilder.getImportedTargetPlatforms(aTarget)
+		assertEquals(1, importedTargetPlatforms.length)
+		
+		val cTargetPlatform = importedTargetPlatforms.head
+		assertEquals("cTarget", cTargetPlatform.name)
+		
+		val varDefA = cTargetPlatform.varDefinition.head
+		assertEquals("a", varDefA.name)
+		assertEquals(null, varDefA.overrideValue)
+		assertEquals("value_C", varDefA.effectiveValue)
+	}
 }

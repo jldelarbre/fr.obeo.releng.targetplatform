@@ -155,6 +155,46 @@ class VarDefinition extends TargetContent {
 	UUID _sourceUUID //if a varDefinition is imported from a target and hence copied, it gets the UUID of the original verDef
 	boolean diamondInherit = "false"
 	
+	/**
+	 * return true if the variable is wholly defined inside the target where it is declared.
+	 * 
+	 * target "A"
+	 * include "B"
+	 * define a = "foo" + ${b}
+	 * ----------------------
+	 * target "B"
+	 * define b = "bar"
+	 * ----------------------
+	 * 
+	 * The variable "a" shall returned false
+	 */
+	op boolean isWhollyDefinedByTarget() {
+		checkVarCycle()
+		if (variableDefinitionCycleDetected) {
+			return false
+		}
+		return isWhollyDefinedByTargetNoCycleChecked
+	}
+	
+	op boolean isWhollyDefinedByTargetNoCycleChecked() {
+		return value.stringParts.forall[
+			if (it instanceof StaticString) {
+				return true
+			}
+			else if (it instanceof VarCall) {
+				val calledVarDef = it.varName
+				if (calledVarDef.name === null) {
+					return false
+				}
+				if (calledVarDef.imported) {
+					return false
+				}
+				return calledVarDef.isWhollyDefinedByTargetNoCycleChecked
+			}
+			return false
+		]
+	}
+	
 	op void checkVarCycle() {
 		variableDefinitionCycleDetected = false
 		varDefCycle = newArrayList

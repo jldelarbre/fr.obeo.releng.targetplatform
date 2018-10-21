@@ -124,6 +124,10 @@ class TargetPlatformLabelProvider extends DefaultEObjectLabelProvider {
 		"obj16/env_obj.gif"
 	}
 	
+	def text(VarDefinition object) {
+		object.name + " - (effective value = " + object.effectiveValue + ")"
+	}
+	
 	def image(VarDefinition object) {
 		if (object.imported) {
 			if (object.diamondInherit) {

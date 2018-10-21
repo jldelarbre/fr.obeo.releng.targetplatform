@@ -273,7 +273,7 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getTargetPlatform_Contents() {
+	public EReference getTargetPlatform_VarDef2OverrideInImportedTarget() {
 		return (EReference)targetPlatformEClass.getEStructuralFeatures().get(4);
 	}
 
@@ -282,7 +282,7 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getTargetPlatform_Includes() {
+	public EReference getTargetPlatform_Contents() {
 		return (EReference)targetPlatformEClass.getEStructuralFeatures().get(5);
 	}
 
@@ -291,8 +291,17 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getTargetPlatform_Includes() {
+		return (EReference)targetPlatformEClass.getEStructuralFeatures().get(6);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EAttribute getTargetPlatform_Options() {
-		return (EAttribute)targetPlatformEClass.getEStructuralFeatures().get(6);
+		return (EAttribute)targetPlatformEClass.getEStructuralFeatures().get(7);
 	}
 
 	/**
@@ -301,15 +310,6 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 	 * @generated
 	 */
 	public EReference getTargetPlatform_Locations() {
-		return (EReference)targetPlatformEClass.getEStructuralFeatures().get(7);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getTargetPlatform_Environment() {
 		return (EReference)targetPlatformEClass.getEStructuralFeatures().get(8);
 	}
 
@@ -318,8 +318,17 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getTargetPlatform_VarDefinition() {
+	public EReference getTargetPlatform_Environment() {
 		return (EReference)targetPlatformEClass.getEStructuralFeatures().get(9);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getTargetPlatform_VarDefinition() {
+		return (EReference)targetPlatformEClass.getEStructuralFeatures().get(10);
 	}
 
 	/**
@@ -462,7 +471,7 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getVarDefinition_IsOverride() {
+	public EAttribute getVarDefinition_VariableDefinitionCycleDetected() {
 		return (EAttribute)varDefinitionEClass.getEStructuralFeatures().get(3);
 	}
 
@@ -471,7 +480,7 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getVarDefinition_VariableDefinitionCycleDetected() {
+	public EAttribute getVarDefinition_VarDefCycle() {
 		return (EAttribute)varDefinitionEClass.getEStructuralFeatures().get(4);
 	}
 
@@ -480,7 +489,7 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getVarDefinition_VarDefCycle() {
+	public EAttribute getVarDefinition_Imported() {
 		return (EAttribute)varDefinitionEClass.getEStructuralFeatures().get(5);
 	}
 
@@ -489,7 +498,7 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getVarDefinition_Imported() {
+	public EAttribute getVarDefinition_ImportedValues() {
 		return (EAttribute)varDefinitionEClass.getEStructuralFeatures().get(6);
 	}
 
@@ -498,7 +507,7 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getVarDefinition_ImportedValues() {
+	public EAttribute getVarDefinition__sourceUUID() {
 		return (EAttribute)varDefinitionEClass.getEStructuralFeatures().get(7);
 	}
 
@@ -507,7 +516,7 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getVarDefinition__sourceUUID() {
+	public EAttribute getVarDefinition_DiamondInherit() {
 		return (EAttribute)varDefinitionEClass.getEStructuralFeatures().get(8);
 	}
 
@@ -516,16 +525,7 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getVarDefinition_DiamondInherit() {
-		return (EAttribute)varDefinitionEClass.getEStructuralFeatures().get(9);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EOperation getVarDefinition__CheckVarCycle() {
+	public EOperation getVarDefinition__IsWhollyDefinedByTarget() {
 		return varDefinitionEClass.getEOperations().get(0);
 	}
 
@@ -534,7 +534,7 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getVarDefinition__GetEffectiveValue() {
+	public EOperation getVarDefinition__IsWhollyDefinedByTargetNoCycleChecked() {
 		return varDefinitionEClass.getEOperations().get(1);
 	}
 
@@ -543,7 +543,7 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getVarDefinition__GetEffectiveValue__List() {
+	public EOperation getVarDefinition__CheckVarCycle() {
 		return varDefinitionEClass.getEOperations().get(2);
 	}
 
@@ -552,7 +552,7 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getVarDefinition__GetSourceUUID() {
+	public EOperation getVarDefinition__GetEffectiveValue() {
 		return varDefinitionEClass.getEOperations().get(3);
 	}
 
@@ -561,8 +561,26 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getVarDefinition__ToString() {
+	public EOperation getVarDefinition__GetEffectiveValue__List() {
 		return varDefinitionEClass.getEOperations().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getVarDefinition__GetSourceUUID() {
+		return varDefinitionEClass.getEOperations().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getVarDefinition__ToString() {
+		return varDefinitionEClass.getEOperations().get(6);
 	}
 
 	/**
@@ -1120,6 +1138,7 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 		createEAttribute(targetPlatformEClass, TARGET_PLATFORM__COMPOSITE_ELEMENTS_RESOLVED);
 		createEAttribute(targetPlatformEClass, TARGET_PLATFORM__MODIFIED);
 		createEAttribute(targetPlatformEClass, TARGET_PLATFORM__VAR_CALL_FROM_ONLY_IMPORTED_VARIABLE);
+		createEReference(targetPlatformEClass, TARGET_PLATFORM__VAR_DEF2_OVERRIDE_IN_IMPORTED_TARGET);
 		createEReference(targetPlatformEClass, TARGET_PLATFORM__CONTENTS);
 		createEReference(targetPlatformEClass, TARGET_PLATFORM__INCLUDES);
 		createEAttribute(targetPlatformEClass, TARGET_PLATFORM__OPTIONS);
@@ -1145,13 +1164,14 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 		createEAttribute(varDefinitionEClass, VAR_DEFINITION__NAME);
 		createEReference(varDefinitionEClass, VAR_DEFINITION__VALUE);
 		createEAttribute(varDefinitionEClass, VAR_DEFINITION__OVERRIDE_VALUE);
-		createEAttribute(varDefinitionEClass, VAR_DEFINITION__IS_OVERRIDE);
 		createEAttribute(varDefinitionEClass, VAR_DEFINITION__VARIABLE_DEFINITION_CYCLE_DETECTED);
 		createEAttribute(varDefinitionEClass, VAR_DEFINITION__VAR_DEF_CYCLE);
 		createEAttribute(varDefinitionEClass, VAR_DEFINITION__IMPORTED);
 		createEAttribute(varDefinitionEClass, VAR_DEFINITION__IMPORTED_VALUES);
 		createEAttribute(varDefinitionEClass, VAR_DEFINITION__SOURCE_UUID);
 		createEAttribute(varDefinitionEClass, VAR_DEFINITION__DIAMOND_INHERIT);
+		createEOperation(varDefinitionEClass, VAR_DEFINITION___IS_WHOLLY_DEFINED_BY_TARGET);
+		createEOperation(varDefinitionEClass, VAR_DEFINITION___IS_WHOLLY_DEFINED_BY_TARGET_NO_CYCLE_CHECKED);
 		createEOperation(varDefinitionEClass, VAR_DEFINITION___CHECK_VAR_CYCLE);
 		createEOperation(varDefinitionEClass, VAR_DEFINITION___GET_EFFECTIVE_VALUE);
 		createEOperation(varDefinitionEClass, VAR_DEFINITION___GET_EFFECTIVE_VALUE__LIST);
@@ -1273,6 +1293,7 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 		initEAttribute(getTargetPlatform_CompositeElementsResolved(), theEcorePackage.getEBoolean(), "compositeElementsResolved", "false", 0, 1, TargetPlatform.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getTargetPlatform_Modified(), theEcorePackage.getEBoolean(), "modified", "false", 0, 1, TargetPlatform.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getTargetPlatform_VarCallFromOnlyImportedVariable(), theEcorePackage.getEString(), "varCallFromOnlyImportedVariable", "", 0, 1, TargetPlatform.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getTargetPlatform_VarDef2OverrideInImportedTarget(), this.getVarDefinition(), null, "varDef2OverrideInImportedTarget", null, 0, -1, TargetPlatform.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getTargetPlatform_Contents(), this.getTargetContent(), this.getTargetContent_TargetPlatform(), "contents", null, 0, -1, TargetPlatform.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getTargetPlatform_Includes(), this.getIncludeDeclaration(), null, "includes", null, 0, -1, TargetPlatform.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 		initEAttribute(getTargetPlatform_Options(), this.getOption(), "options", null, 0, -1, TargetPlatform.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, IS_DERIVED, IS_ORDERED);
@@ -1297,14 +1318,17 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 		initEClass(varDefinitionEClass, VarDefinition.class, "VarDefinition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getVarDefinition_Name(), theEcorePackage.getEString(), "name", null, 0, 1, VarDefinition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getVarDefinition_Value(), this.getCompositeString(), null, "value", null, 0, 1, VarDefinition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getVarDefinition_OverrideValue(), theEcorePackage.getEString(), "overrideValue", "", 0, 1, VarDefinition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getVarDefinition_IsOverride(), theEcorePackage.getEBoolean(), "isOverride", "false", 0, 1, VarDefinition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getVarDefinition_OverrideValue(), theEcorePackage.getEString(), "overrideValue", null, 0, 1, VarDefinition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getVarDefinition_VariableDefinitionCycleDetected(), theEcorePackage.getEBoolean(), "variableDefinitionCycleDetected", "false", 0, 1, VarDefinition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getVarDefinition_VarDefCycle(), this.getVarDefList(), "varDefCycle", null, 0, 1, VarDefinition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getVarDefinition_Imported(), theEcorePackage.getEBoolean(), "imported", "false", 0, 1, VarDefinition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getVarDefinition_ImportedValues(), theEcorePackage.getEString(), "importedValues", null, 0, -1, VarDefinition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getVarDefinition__sourceUUID(), this.getUUID(), "_sourceUUID", null, 0, 1, VarDefinition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getVarDefinition_DiamondInherit(), theEcorePackage.getEBoolean(), "diamondInherit", "false", 0, 1, VarDefinition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEOperation(getVarDefinition__IsWhollyDefinedByTarget(), theEcorePackage.getEBoolean(), "isWhollyDefinedByTarget", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getVarDefinition__IsWhollyDefinedByTargetNoCycleChecked(), theEcorePackage.getEBoolean(), "isWhollyDefinedByTargetNoCycleChecked", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
 		initEOperation(getVarDefinition__CheckVarCycle(), null, "checkVarCycle", 0, 1, !IS_UNIQUE, IS_ORDERED);
 

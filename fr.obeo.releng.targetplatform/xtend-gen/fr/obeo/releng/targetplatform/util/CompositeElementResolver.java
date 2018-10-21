@@ -87,7 +87,6 @@ public class CompositeElementResolver {
         boolean _tripleNotEquals = (variableValue != null);
         if (_tripleNotEquals) {
           varDef.setOverrideValue(variableValue);
-          varDef.setIsOverride(true);
         }
         targetPlatform.setModified(true);
       }
@@ -167,7 +166,7 @@ public class CompositeElementResolver {
           public void accept(final TargetPlatform it) {
             TargetPlatform notProcessedTargetPlatform = it;
             CompositeElementResolver.this.overrideVariableDefinition(notProcessedTargetPlatform, alreadyVisitedTarget);
-            CompositeElementResolver.this.overrideImportedTargetVariable(notProcessedTargetPlatform, targetPlatform.getVarDefinition());
+            CompositeElementResolver.this.overrideImportedTargetVariable(notProcessedTargetPlatform, targetPlatform);
             CompositeElementResolver.this.searchAndAppendDefineFromIncludedTpd(notProcessedTargetPlatform, CollectionLiterals.<TargetPlatform>newHashSet(((TargetPlatform[])Conversions.unwrapArray(alreadyVisitedTarget, TargetPlatform.class))));
             final Consumer<VarDefinition> _function = new Consumer<VarDefinition>() {
               @Override
@@ -194,27 +193,86 @@ public class CompositeElementResolver {
     }
   }
   
-  private void overrideImportedTargetVariable(final TargetPlatform importedTargetPlatform, final EList<VarDefinition> varDefImporter) {
-    final Consumer<VarDefinition> _function = new Consumer<VarDefinition>() {
+  /**
+   * Override variable of the imported tpd with the one of the tpd importer.
+   * 
+   * target "targetA"
+   * define varA = "valA"
+   * include "targetB"
+   * 
+   * ------------------
+   * 
+   * target "targetB"
+   * define varA = "valB"
+   * 
+   * ------------------
+   * 
+   * In this case varA of targetB will be override with the value "valA"
+   */
+  private void overrideImportedTargetVariable(final TargetPlatform importedTargetPlatform, final TargetPlatform importerTargetPlatform) {
+    final EList<VarDefinition> varDefImporter = importerTargetPlatform.getVarDefinition();
+    final Function1<VarDefinition, Boolean> _function = new Function1<VarDefinition, Boolean>() {
       @Override
-      public void accept(final VarDefinition it) {
-        final VarDefinition curVarDef = it;
-        final String curName = curVarDef.getName();
-        final Function1<VarDefinition, Boolean> _function = new Function1<VarDefinition, Boolean>() {
-          @Override
-          public Boolean apply(final VarDefinition it) {
-            return Boolean.valueOf(it.getName().equals(curName));
-          }
-        };
-        final VarDefinition overridingVarDef = IterableExtensions.<VarDefinition>findFirst(varDefImporter, _function);
-        boolean _tripleNotEquals = (overridingVarDef != null);
-        if (_tripleNotEquals) {
-          curVarDef.setOverrideValue(overridingVarDef.getEffectiveValue());
-          curVarDef.setIsOverride(true);
-        }
+      public Boolean apply(final VarDefinition it) {
+        boolean _isImported = it.isImported();
+        return Boolean.valueOf((!_isImported));
       }
     };
-    importedTargetPlatform.getVarDefinition().forEach(_function);
+    final Function1<VarDefinition, Boolean> _function_1 = new Function1<VarDefinition, Boolean>() {
+      @Override
+      public Boolean apply(final VarDefinition it) {
+        return Boolean.valueOf(it.isWhollyDefinedByTarget());
+      }
+    };
+    final Consumer<VarDefinition> _function_2 = new Consumer<VarDefinition>() {
+      @Override
+      public void accept(final VarDefinition it) {
+        final VarDefinition varDef4Overriding = it;
+        final String varDef4OverridingName = varDef4Overriding.getName();
+        final String varDef4OverridingValue = varDef4Overriding.getEffectiveValue();
+        CompositeElementResolver.this.overrideCurrentVarDef(importedTargetPlatform, varDef4OverridingName, varDef4OverridingValue);
+      }
+    };
+    IterableExtensions.<VarDefinition>filter(IterableExtensions.<VarDefinition>filter(varDefImporter, _function), _function_1).forEach(_function_2);
+    final Consumer<VarDefinition> _function_3 = new Consumer<VarDefinition>() {
+      @Override
+      public void accept(final VarDefinition it) {
+        final VarDefinition varDef4Overriding = it;
+        final String varDef4OverridingName = varDef4Overriding.getName();
+        final String varDef4OverridingValue = varDef4Overriding.getOverrideValue();
+        CompositeElementResolver.this.overrideCurrentVarDef(importedTargetPlatform, varDef4OverridingName, varDef4OverridingValue);
+      }
+    };
+    importerTargetPlatform.getVarDef2OverrideInImportedTarget().forEach(_function_3);
+  }
+  
+  private Boolean overrideCurrentVarDef(final TargetPlatform importedTargetPlatform, final String varDef4OverridingName, final String varDef4OverridingValue) {
+    boolean _xblockexpression = false;
+    {
+      final Function1<VarDefinition, Boolean> _function = new Function1<VarDefinition, Boolean>() {
+        @Override
+        public Boolean apply(final VarDefinition it) {
+          return Boolean.valueOf(it.getName().equals(varDef4OverridingName));
+        }
+      };
+      final VarDefinition varDef2Override = IterableExtensions.<VarDefinition>findFirst(importedTargetPlatform.getVarDefinition(), _function);
+      boolean _xifexpression = false;
+      boolean _tripleNotEquals = (varDef2Override != null);
+      if (_tripleNotEquals) {
+        varDef2Override.setOverrideValue(varDef4OverridingValue);
+      } else {
+        boolean _xblockexpression_1 = false;
+        {
+          final VarDefinition varDef = TargetPlatformFactory.eINSTANCE.createVarDefinition();
+          varDef.setName(varDef4OverridingName);
+          varDef.setOverrideValue(varDef4OverridingValue);
+          _xblockexpression_1 = importedTargetPlatform.getVarDef2OverrideInImportedTarget().add(varDef);
+        }
+        _xifexpression = _xblockexpression_1;
+      }
+      _xblockexpression = _xifexpression;
+    }
+    return Boolean.valueOf(_xblockexpression);
   }
   
   /**
@@ -355,7 +413,6 @@ public class CompositeElementResolver {
       currentImportedDefineCopy.setName(currentImportedDefine.getName());
       currentImportedDefineCopy.setValue(currentImportedDefine.getValue().getCopy());
       currentImportedDefineCopy.setOverrideValue(currentImportedDefine.getOverrideValue());
-      currentImportedDefineCopy.setIsOverride(currentImportedDefine.isIsOverride());
       currentImportedDefineCopy.setImported(true);
       currentImportedDefineCopy.getImportedValues().add(currentImportedDefine.getValue().computeActualString());
       currentImportedDefineCopy.set_sourceUUID(currentImportedDefine.getSourceUUID());

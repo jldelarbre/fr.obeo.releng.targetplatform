@@ -30,6 +30,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
@@ -49,6 +50,7 @@ import org.eclipse.xtext.xbase.lib.IterableExtensions;
  *   <li>{@link fr.obeo.releng.targetplatform.impl.TargetPlatformImpl#isCompositeElementsResolved <em>Composite Elements Resolved</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.impl.TargetPlatformImpl#isModified <em>Modified</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.impl.TargetPlatformImpl#getVarCallFromOnlyImportedVariable <em>Var Call From Only Imported Variable</em>}</li>
+ *   <li>{@link fr.obeo.releng.targetplatform.impl.TargetPlatformImpl#getVarDef2OverrideInImportedTarget <em>Var Def2 Override In Imported Target</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.impl.TargetPlatformImpl#getContents <em>Contents</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.impl.TargetPlatformImpl#getIncludes <em>Includes</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.impl.TargetPlatformImpl#getOptions <em>Options</em>}</li>
@@ -139,6 +141,16 @@ public class TargetPlatformImpl extends MinimalEObjectImpl.Container implements 
 	 * @ordered
 	 */
 	protected String varCallFromOnlyImportedVariable = VAR_CALL_FROM_ONLY_IMPORTED_VARIABLE_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getVarDef2OverrideInImportedTarget() <em>Var Def2 Override In Imported Target</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getVarDef2OverrideInImportedTarget()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<VarDefinition> varDef2OverrideInImportedTarget;
 
 	/**
 	 * The cached value of the '{@link #getContents() <em>Contents</em>}' containment reference list.
@@ -258,6 +270,18 @@ public class TargetPlatformImpl extends MinimalEObjectImpl.Container implements 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EList<VarDefinition> getVarDef2OverrideInImportedTarget() {
+		if (varDef2OverrideInImportedTarget == null) {
+			varDef2OverrideInImportedTarget = new EObjectContainmentEList<VarDefinition>(VarDefinition.class, this, TargetPlatformPackage.TARGET_PLATFORM__VAR_DEF2_OVERRIDE_IN_IMPORTED_TARGET);
+		}
+		return varDef2OverrideInImportedTarget;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EList<TargetContent> getContents() {
 		if (contents == null) {
 			contents = new EObjectContainmentWithInverseEList<TargetContent>(TargetContent.class, this, TargetPlatformPackage.TARGET_PLATFORM__CONTENTS, TargetPlatformPackage.TARGET_CONTENT__TARGET_PLATFORM);
@@ -352,6 +376,8 @@ public class TargetPlatformImpl extends MinimalEObjectImpl.Container implements 
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
+			case TargetPlatformPackage.TARGET_PLATFORM__VAR_DEF2_OVERRIDE_IN_IMPORTED_TARGET:
+				return ((InternalEList<?>)getVarDef2OverrideInImportedTarget()).basicRemove(otherEnd, msgs);
 			case TargetPlatformPackage.TARGET_PLATFORM__CONTENTS:
 				return ((InternalEList<?>)getContents()).basicRemove(otherEnd, msgs);
 		}
@@ -374,6 +400,8 @@ public class TargetPlatformImpl extends MinimalEObjectImpl.Container implements 
 				return isModified();
 			case TargetPlatformPackage.TARGET_PLATFORM__VAR_CALL_FROM_ONLY_IMPORTED_VARIABLE:
 				return getVarCallFromOnlyImportedVariable();
+			case TargetPlatformPackage.TARGET_PLATFORM__VAR_DEF2_OVERRIDE_IN_IMPORTED_TARGET:
+				return getVarDef2OverrideInImportedTarget();
 			case TargetPlatformPackage.TARGET_PLATFORM__CONTENTS:
 				return getContents();
 			case TargetPlatformPackage.TARGET_PLATFORM__INCLUDES:
@@ -412,6 +440,10 @@ public class TargetPlatformImpl extends MinimalEObjectImpl.Container implements 
 			case TargetPlatformPackage.TARGET_PLATFORM__VAR_CALL_FROM_ONLY_IMPORTED_VARIABLE:
 				setVarCallFromOnlyImportedVariable((String)newValue);
 				return;
+			case TargetPlatformPackage.TARGET_PLATFORM__VAR_DEF2_OVERRIDE_IN_IMPORTED_TARGET:
+				getVarDef2OverrideInImportedTarget().clear();
+				getVarDef2OverrideInImportedTarget().addAll((Collection<? extends VarDefinition>)newValue);
+				return;
 			case TargetPlatformPackage.TARGET_PLATFORM__CONTENTS:
 				getContents().clear();
 				getContents().addAll((Collection<? extends TargetContent>)newValue);
@@ -440,6 +472,9 @@ public class TargetPlatformImpl extends MinimalEObjectImpl.Container implements 
 			case TargetPlatformPackage.TARGET_PLATFORM__VAR_CALL_FROM_ONLY_IMPORTED_VARIABLE:
 				setVarCallFromOnlyImportedVariable(VAR_CALL_FROM_ONLY_IMPORTED_VARIABLE_EDEFAULT);
 				return;
+			case TargetPlatformPackage.TARGET_PLATFORM__VAR_DEF2_OVERRIDE_IN_IMPORTED_TARGET:
+				getVarDef2OverrideInImportedTarget().clear();
+				return;
 			case TargetPlatformPackage.TARGET_PLATFORM__CONTENTS:
 				getContents().clear();
 				return;
@@ -463,6 +498,8 @@ public class TargetPlatformImpl extends MinimalEObjectImpl.Container implements 
 				return modified != MODIFIED_EDEFAULT;
 			case TargetPlatformPackage.TARGET_PLATFORM__VAR_CALL_FROM_ONLY_IMPORTED_VARIABLE:
 				return VAR_CALL_FROM_ONLY_IMPORTED_VARIABLE_EDEFAULT == null ? varCallFromOnlyImportedVariable != null : !VAR_CALL_FROM_ONLY_IMPORTED_VARIABLE_EDEFAULT.equals(varCallFromOnlyImportedVariable);
+			case TargetPlatformPackage.TARGET_PLATFORM__VAR_DEF2_OVERRIDE_IN_IMPORTED_TARGET:
+				return varDef2OverrideInImportedTarget != null && !varDef2OverrideInImportedTarget.isEmpty();
 			case TargetPlatformPackage.TARGET_PLATFORM__CONTENTS:
 				return contents != null && !contents.isEmpty();
 			case TargetPlatformPackage.TARGET_PLATFORM__INCLUDES:

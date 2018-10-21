@@ -107,13 +107,22 @@ public interface TargetPlatformPackage extends EPackage {
 	int TARGET_PLATFORM__VAR_CALL_FROM_ONLY_IMPORTED_VARIABLE = 3;
 
 	/**
+	 * The feature id for the '<em><b>Var Def2 Override In Imported Target</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TARGET_PLATFORM__VAR_DEF2_OVERRIDE_IN_IMPORTED_TARGET = 4;
+
+	/**
 	 * The feature id for the '<em><b>Contents</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TARGET_PLATFORM__CONTENTS = 4;
+	int TARGET_PLATFORM__CONTENTS = 5;
 
 	/**
 	 * The feature id for the '<em><b>Includes</b></em>' reference list.
@@ -122,7 +131,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TARGET_PLATFORM__INCLUDES = 5;
+	int TARGET_PLATFORM__INCLUDES = 6;
 
 	/**
 	 * The feature id for the '<em><b>Options</b></em>' attribute list.
@@ -131,7 +140,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TARGET_PLATFORM__OPTIONS = 6;
+	int TARGET_PLATFORM__OPTIONS = 7;
 
 	/**
 	 * The feature id for the '<em><b>Locations</b></em>' reference list.
@@ -140,7 +149,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TARGET_PLATFORM__LOCATIONS = 7;
+	int TARGET_PLATFORM__LOCATIONS = 8;
 
 	/**
 	 * The feature id for the '<em><b>Environment</b></em>' reference.
@@ -149,7 +158,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TARGET_PLATFORM__ENVIRONMENT = 8;
+	int TARGET_PLATFORM__ENVIRONMENT = 9;
 
 	/**
 	 * The feature id for the '<em><b>Var Definition</b></em>' reference list.
@@ -158,7 +167,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TARGET_PLATFORM__VAR_DEFINITION = 9;
+	int TARGET_PLATFORM__VAR_DEFINITION = 10;
 
 	/**
 	 * The number of structural features of the '<em>Target Platform</em>' class.
@@ -167,7 +176,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TARGET_PLATFORM_FEATURE_COUNT = 10;
+	int TARGET_PLATFORM_FEATURE_COUNT = 11;
 
 	/**
 	 * The number of operations of the '<em>Target Platform</em>' class.
@@ -399,22 +408,13 @@ public interface TargetPlatformPackage extends EPackage {
 	int VAR_DEFINITION__OVERRIDE_VALUE = TARGET_CONTENT_FEATURE_COUNT + 2;
 
 	/**
-	 * The feature id for the '<em><b>Is Override</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int VAR_DEFINITION__IS_OVERRIDE = TARGET_CONTENT_FEATURE_COUNT + 3;
-
-	/**
 	 * The feature id for the '<em><b>Variable Definition Cycle Detected</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int VAR_DEFINITION__VARIABLE_DEFINITION_CYCLE_DETECTED = TARGET_CONTENT_FEATURE_COUNT + 4;
+	int VAR_DEFINITION__VARIABLE_DEFINITION_CYCLE_DETECTED = TARGET_CONTENT_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Var Def Cycle</b></em>' attribute.
@@ -423,7 +423,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VAR_DEFINITION__VAR_DEF_CYCLE = TARGET_CONTENT_FEATURE_COUNT + 5;
+	int VAR_DEFINITION__VAR_DEF_CYCLE = TARGET_CONTENT_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Imported</b></em>' attribute.
@@ -432,7 +432,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VAR_DEFINITION__IMPORTED = TARGET_CONTENT_FEATURE_COUNT + 6;
+	int VAR_DEFINITION__IMPORTED = TARGET_CONTENT_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Imported Values</b></em>' attribute list.
@@ -441,7 +441,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VAR_DEFINITION__IMPORTED_VALUES = TARGET_CONTENT_FEATURE_COUNT + 7;
+	int VAR_DEFINITION__IMPORTED_VALUES = TARGET_CONTENT_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>source UUID</b></em>' attribute.
@@ -450,7 +450,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VAR_DEFINITION__SOURCE_UUID = TARGET_CONTENT_FEATURE_COUNT + 8;
+	int VAR_DEFINITION__SOURCE_UUID = TARGET_CONTENT_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Diamond Inherit</b></em>' attribute.
@@ -459,7 +459,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VAR_DEFINITION__DIAMOND_INHERIT = TARGET_CONTENT_FEATURE_COUNT + 9;
+	int VAR_DEFINITION__DIAMOND_INHERIT = TARGET_CONTENT_FEATURE_COUNT + 8;
 
 	/**
 	 * The number of structural features of the '<em>Var Definition</em>' class.
@@ -468,7 +468,25 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VAR_DEFINITION_FEATURE_COUNT = TARGET_CONTENT_FEATURE_COUNT + 10;
+	int VAR_DEFINITION_FEATURE_COUNT = TARGET_CONTENT_FEATURE_COUNT + 9;
+
+	/**
+	 * The operation id for the '<em>Is Wholly Defined By Target</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VAR_DEFINITION___IS_WHOLLY_DEFINED_BY_TARGET = TARGET_CONTENT_OPERATION_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>Is Wholly Defined By Target No Cycle Checked</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VAR_DEFINITION___IS_WHOLLY_DEFINED_BY_TARGET_NO_CYCLE_CHECKED = TARGET_CONTENT_OPERATION_COUNT + 1;
 
 	/**
 	 * The operation id for the '<em>Check Var Cycle</em>' operation.
@@ -477,7 +495,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VAR_DEFINITION___CHECK_VAR_CYCLE = TARGET_CONTENT_OPERATION_COUNT + 0;
+	int VAR_DEFINITION___CHECK_VAR_CYCLE = TARGET_CONTENT_OPERATION_COUNT + 2;
 
 	/**
 	 * The operation id for the '<em>Get Effective Value</em>' operation.
@@ -486,7 +504,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VAR_DEFINITION___GET_EFFECTIVE_VALUE = TARGET_CONTENT_OPERATION_COUNT + 1;
+	int VAR_DEFINITION___GET_EFFECTIVE_VALUE = TARGET_CONTENT_OPERATION_COUNT + 3;
 
 	/**
 	 * The operation id for the '<em>Get Effective Value</em>' operation.
@@ -495,7 +513,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VAR_DEFINITION___GET_EFFECTIVE_VALUE__LIST = TARGET_CONTENT_OPERATION_COUNT + 2;
+	int VAR_DEFINITION___GET_EFFECTIVE_VALUE__LIST = TARGET_CONTENT_OPERATION_COUNT + 4;
 
 	/**
 	 * The operation id for the '<em>Get Source UUID</em>' operation.
@@ -504,7 +522,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VAR_DEFINITION___GET_SOURCE_UUID = TARGET_CONTENT_OPERATION_COUNT + 3;
+	int VAR_DEFINITION___GET_SOURCE_UUID = TARGET_CONTENT_OPERATION_COUNT + 5;
 
 	/**
 	 * The operation id for the '<em>To String</em>' operation.
@@ -513,7 +531,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VAR_DEFINITION___TO_STRING = TARGET_CONTENT_OPERATION_COUNT + 4;
+	int VAR_DEFINITION___TO_STRING = TARGET_CONTENT_OPERATION_COUNT + 6;
 
 	/**
 	 * The number of operations of the '<em>Var Definition</em>' class.
@@ -522,7 +540,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VAR_DEFINITION_OPERATION_COUNT = TARGET_CONTENT_OPERATION_COUNT + 5;
+	int VAR_DEFINITION_OPERATION_COUNT = TARGET_CONTENT_OPERATION_COUNT + 7;
 
 	/**
 	 * The meta object id for the '{@link fr.obeo.releng.targetplatform.impl.CompositeStringImpl <em>Composite String</em>}' class.
@@ -1312,6 +1330,17 @@ public interface TargetPlatformPackage extends EPackage {
 	EAttribute getTargetPlatform_VarCallFromOnlyImportedVariable();
 
 	/**
+	 * Returns the meta object for the containment reference list '{@link fr.obeo.releng.targetplatform.TargetPlatform#getVarDef2OverrideInImportedTarget <em>Var Def2 Override In Imported Target</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Var Def2 Override In Imported Target</em>'.
+	 * @see fr.obeo.releng.targetplatform.TargetPlatform#getVarDef2OverrideInImportedTarget()
+	 * @see #getTargetPlatform()
+	 * @generated
+	 */
+	EReference getTargetPlatform_VarDef2OverrideInImportedTarget();
+
+	/**
 	 * Returns the meta object for the containment reference list '{@link fr.obeo.releng.targetplatform.TargetPlatform#getContents <em>Contents</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1539,17 +1568,6 @@ public interface TargetPlatformPackage extends EPackage {
 	EAttribute getVarDefinition_OverrideValue();
 
 	/**
-	 * Returns the meta object for the attribute '{@link fr.obeo.releng.targetplatform.VarDefinition#isIsOverride <em>Is Override</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Is Override</em>'.
-	 * @see fr.obeo.releng.targetplatform.VarDefinition#isIsOverride()
-	 * @see #getVarDefinition()
-	 * @generated
-	 */
-	EAttribute getVarDefinition_IsOverride();
-
-	/**
 	 * Returns the meta object for the attribute '{@link fr.obeo.releng.targetplatform.VarDefinition#isVariableDefinitionCycleDetected <em>Variable Definition Cycle Detected</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1614,6 +1632,26 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getVarDefinition_DiamondInherit();
+
+	/**
+	 * Returns the meta object for the '{@link fr.obeo.releng.targetplatform.VarDefinition#isWhollyDefinedByTarget() <em>Is Wholly Defined By Target</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Is Wholly Defined By Target</em>' operation.
+	 * @see fr.obeo.releng.targetplatform.VarDefinition#isWhollyDefinedByTarget()
+	 * @generated
+	 */
+	EOperation getVarDefinition__IsWhollyDefinedByTarget();
+
+	/**
+	 * Returns the meta object for the '{@link fr.obeo.releng.targetplatform.VarDefinition#isWhollyDefinedByTargetNoCycleChecked() <em>Is Wholly Defined By Target No Cycle Checked</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Is Wholly Defined By Target No Cycle Checked</em>' operation.
+	 * @see fr.obeo.releng.targetplatform.VarDefinition#isWhollyDefinedByTargetNoCycleChecked()
+	 * @generated
+	 */
+	EOperation getVarDefinition__IsWhollyDefinedByTargetNoCycleChecked();
 
 	/**
 	 * Returns the meta object for the '{@link fr.obeo.releng.targetplatform.VarDefinition#checkVarCycle() <em>Check Var Cycle</em>}' operation.
@@ -2339,6 +2377,14 @@ public interface TargetPlatformPackage extends EPackage {
 		EAttribute TARGET_PLATFORM__VAR_CALL_FROM_ONLY_IMPORTED_VARIABLE = eINSTANCE.getTargetPlatform_VarCallFromOnlyImportedVariable();
 
 		/**
+		 * The meta object literal for the '<em><b>Var Def2 Override In Imported Target</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference TARGET_PLATFORM__VAR_DEF2_OVERRIDE_IN_IMPORTED_TARGET = eINSTANCE.getTargetPlatform_VarDef2OverrideInImportedTarget();
+
+		/**
 		 * The meta object literal for the '<em><b>Contents</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2515,14 +2561,6 @@ public interface TargetPlatformPackage extends EPackage {
 		EAttribute VAR_DEFINITION__OVERRIDE_VALUE = eINSTANCE.getVarDefinition_OverrideValue();
 
 		/**
-		 * The meta object literal for the '<em><b>Is Override</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute VAR_DEFINITION__IS_OVERRIDE = eINSTANCE.getVarDefinition_IsOverride();
-
-		/**
 		 * The meta object literal for the '<em><b>Variable Definition Cycle Detected</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2569,6 +2607,22 @@ public interface TargetPlatformPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute VAR_DEFINITION__DIAMOND_INHERIT = eINSTANCE.getVarDefinition_DiamondInherit();
+
+		/**
+		 * The meta object literal for the '<em><b>Is Wholly Defined By Target</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation VAR_DEFINITION___IS_WHOLLY_DEFINED_BY_TARGET = eINSTANCE.getVarDefinition__IsWhollyDefinedByTarget();
+
+		/**
+		 * The meta object literal for the '<em><b>Is Wholly Defined By Target No Cycle Checked</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation VAR_DEFINITION___IS_WHOLLY_DEFINED_BY_TARGET_NO_CYCLE_CHECKED = eINSTANCE.getVarDefinition__IsWhollyDefinedByTargetNoCycleChecked();
 
 		/**
 		 * The meta object literal for the '<em><b>Check Var Cycle</b></em>' operation.

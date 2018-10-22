@@ -11,6 +11,7 @@ import org.eclipse.xtext.ui.editor.XtextEditor;
 import org.eclipse.xtext.ui.editor.utils.EditorUtils;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Conversions;
+import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
@@ -41,6 +42,16 @@ public class ReferenceResolvingErrorClearer implements Runnable {
   
   @Override
   public void run() {
+    try {
+      Thread.sleep(30);
+    } catch (final Throwable _t) {
+      if (_t instanceof InterruptedException) {
+        final InterruptedException e = (InterruptedException)_t;
+        e.printStackTrace();
+      } else {
+        throw Exceptions.sneakyThrow(_t);
+      }
+    }
     final XtextEditor xtextEditor = EditorUtils.getActiveXtextEditor();
     if (((xtextEditor == null) || (!this.targetPlatformURI.contains(xtextEditor.getTitle())))) {
       return;

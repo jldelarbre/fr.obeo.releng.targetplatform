@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 import fr.obeo.releng.targetplatform.CompositeStringPart;
 import fr.obeo.releng.targetplatform.IncludeDeclaration;
 import fr.obeo.releng.targetplatform.Location;
+import fr.obeo.releng.targetplatform.StaticString;
 import fr.obeo.releng.targetplatform.TargetContent;
 import fr.obeo.releng.targetplatform.TargetPlatform;
 import fr.obeo.releng.targetplatform.TargetPlatformFactory;
@@ -14,20 +15,27 @@ import fr.obeo.releng.targetplatform.util.ImportVariableManager;
 import fr.obeo.releng.targetplatform.util.LocationIndexBuilder;
 import fr.obeo.releng.targetplatform.util.ReferenceResolvingErrorClearer;
 import fr.obeo.releng.targetplatform.util.TargetReloader;
+import java.net.URL;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Conversions;
+import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 
 @SuppressWarnings("all")
 public class CompositeElementResolver {
+  private final static String CONSTANT_PREFIX = "cst_";
+  
   @Inject
   private LocationIndexBuilder locationIndexBuilder;
   
@@ -131,6 +139,113 @@ public class CompositeElementResolver {
     targetPlatform.setModified(true);
   }
   
+  public final static String CST_USER_DIR = "cst_userDir";
+  
+  public final static String CST_TPD_URI = "cst_tpdUri";
+  
+  public final static String CST_TPD_PATH = "cst_tpdPath";
+  
+  public final static String CST_TPD_FILENAME = "cst_tpdFileName";
+  
+  public final static String CST_TPD_FILENAME_NO_EXT = "cst_tpdFileNameNoExtension";
+  
+  public final static String CST_ABS_TPD_URI = "cst_absoluteTpdUri";
+  
+  public final static String CST_ABS_TPD_PATH = "cst_absoluteTpdPath";
+  
+  public final static String CST_TPD_DIR = "cst_tpdDir";
+  
+  public final static String CST_ABS_TPD_DIR = "cst_absoluteTpdDir";
+  
+  public final static int NUM_PREDIFINED_VAR = 9;
+  
+  private boolean createPreDefinedVariables(final TargetPlatform targetPlatform) {
+    boolean _xblockexpression = false;
+    {
+      this.createPredefinedVariable(targetPlatform, CompositeElementResolver.CST_USER_DIR, System.getProperty("user.home"));
+      final URI tpdPathVarValue = targetPlatform.eResource().getURI();
+      this.createPredefinedVariable(targetPlatform, CompositeElementResolver.CST_TPD_URI, tpdPathVarValue.toString());
+      this.createPredefinedVariable(targetPlatform, CompositeElementResolver.CST_TPD_PATH, tpdPathVarValue.path());
+      this.createPredefinedVariable(targetPlatform, CompositeElementResolver.CST_TPD_FILENAME, tpdPathVarValue.lastSegment());
+      String tpdFileNameNoExtension = tpdPathVarValue.lastSegment();
+      boolean _endsWith = tpdPathVarValue.lastSegment().endsWith(".tpd");
+      if (_endsWith) {
+        int _length = tpdFileNameNoExtension.length();
+        int _minus = (_length - 4);
+        tpdFileNameNoExtension = tpdFileNameNoExtension.substring(0, _minus);
+      }
+      this.createPredefinedVariable(targetPlatform, CompositeElementResolver.CST_TPD_FILENAME_NO_EXT, tpdFileNameNoExtension);
+      final URI absoluteTpdPathVarValue = CompositeElementResolver.convertToAbsoluteUri(tpdPathVarValue);
+      this.createPredefinedVariable(targetPlatform, CompositeElementResolver.CST_ABS_TPD_URI, absoluteTpdPathVarValue.toString());
+      this.createPredefinedVariable(targetPlatform, CompositeElementResolver.CST_ABS_TPD_PATH, absoluteTpdPathVarValue.path());
+      final int lastIndexTpdDir = tpdPathVarValue.path().toString().lastIndexOf("/");
+      if ((lastIndexTpdDir != (-1))) {
+        final String tpdDir = tpdPathVarValue.path().toString().substring(0, lastIndexTpdDir);
+        this.createPredefinedVariable(targetPlatform, CompositeElementResolver.CST_TPD_DIR, tpdDir);
+      }
+      final int lastIndexAbsTpdDir = absoluteTpdPathVarValue.path().toString().lastIndexOf("/");
+      boolean _xifexpression = false;
+      if ((lastIndexAbsTpdDir != (-1))) {
+        boolean _xblockexpression_1 = false;
+        {
+          final String absoluteTpdDir = absoluteTpdPathVarValue.path().toString().substring(0, lastIndexAbsTpdDir);
+          _xblockexpression_1 = this.createPredefinedVariable(targetPlatform, CompositeElementResolver.CST_ABS_TPD_DIR, absoluteTpdDir);
+        }
+        _xifexpression = _xblockexpression_1;
+      }
+      _xblockexpression = _xifexpression;
+    }
+    return _xblockexpression;
+  }
+  
+  private boolean createPredefinedVariable(final TargetPlatform targetPlatform, final String predefinedVarName, final String predefinedVarValue) {
+    boolean _xblockexpression = false;
+    {
+      final Function1<VarDefinition, Boolean> _function = new Function1<VarDefinition, Boolean>() {
+        @Override
+        public Boolean apply(final VarDefinition it) {
+          return Boolean.valueOf(it.getName().equals(predefinedVarName));
+        }
+      };
+      final boolean predefinedVarExist = IterableExtensions.<VarDefinition>exists(targetPlatform.getVarDefinition(), _function);
+      boolean _xifexpression = false;
+      if ((!predefinedVarExist)) {
+        boolean _xblockexpression_1 = false;
+        {
+          final VarDefinition predefinedVar = TargetPlatformFactory.eINSTANCE.createVarDefinition();
+          predefinedVar.setName(predefinedVarName);
+          predefinedVar.setValue(TargetPlatformFactory.eINSTANCE.createCompositeString());
+          final StaticString staticString = TargetPlatformFactory.eINSTANCE.createStaticString();
+          staticString.setValue(predefinedVarValue);
+          predefinedVar.getValue().getStringParts().add(staticString);
+          _xblockexpression_1 = targetPlatform.getContents().add(predefinedVar);
+        }
+        _xifexpression = _xblockexpression_1;
+      }
+      _xblockexpression = _xifexpression;
+    }
+    return _xblockexpression;
+  }
+  
+  public static URI convertToAbsoluteUri(final URI resourceUri) {
+    try {
+      URI _xblockexpression = null;
+      {
+        URI absoluteResourceUri = resourceUri;
+        boolean _isPlatform = resourceUri.isPlatform();
+        if (_isPlatform) {
+          String _string = resourceUri.toString();
+          URL _uRL = new URL(_string);
+          absoluteResourceUri = URI.createFileURI(FileLocator.toFileURL(_uRL).getFile());
+        }
+        _xblockexpression = absoluteResourceUri;
+      }
+      return _xblockexpression;
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
   private void searchAndAppendDefineFromIncludedTpd(final TargetPlatform targetPlatform) {
     final HashSet<TargetPlatform> alreadyVisitedTarget = CollectionLiterals.<TargetPlatform>newHashSet();
     this.searchAndAppendDefineFromIncludedTpd(targetPlatform, alreadyVisitedTarget);
@@ -144,6 +259,7 @@ public class CompositeElementResolver {
     final HashSet<VarDefinition> ImportedDefineFromSubTpd = CollectionLiterals.<VarDefinition>newHashSet();
     final LinkedList<TargetPlatform> processedTargetPlatform = CollectionLiterals.<TargetPlatform>newLinkedList();
     alreadyVisitedTarget.add(targetPlatform);
+    this.createPreDefinedVariables(targetPlatform);
     List<TargetPlatform> directlyImportedTargetPlatforms = this.searchDirectlyImportedTpd(targetPlatform);
     while ((directlyImportedTargetPlatforms.size() > processedTargetPlatform.size())) {
       {
@@ -214,17 +330,24 @@ public class CompositeElementResolver {
     final Function1<VarDefinition, Boolean> _function = new Function1<VarDefinition, Boolean>() {
       @Override
       public Boolean apply(final VarDefinition it) {
-        boolean _isImported = it.isImported();
-        return Boolean.valueOf((!_isImported));
+        boolean _startsWith = it.getName().startsWith(CompositeElementResolver.CONSTANT_PREFIX);
+        return Boolean.valueOf((!_startsWith));
       }
     };
     final Function1<VarDefinition, Boolean> _function_1 = new Function1<VarDefinition, Boolean>() {
       @Override
       public Boolean apply(final VarDefinition it) {
+        boolean _isImported = it.isImported();
+        return Boolean.valueOf((!_isImported));
+      }
+    };
+    final Function1<VarDefinition, Boolean> _function_2 = new Function1<VarDefinition, Boolean>() {
+      @Override
+      public Boolean apply(final VarDefinition it) {
         return Boolean.valueOf(it.isWhollyDefinedByTarget());
       }
     };
-    final Consumer<VarDefinition> _function_2 = new Consumer<VarDefinition>() {
+    final Consumer<VarDefinition> _function_3 = new Consumer<VarDefinition>() {
       @Override
       public void accept(final VarDefinition it) {
         final VarDefinition varDef4Overriding = it;
@@ -233,8 +356,8 @@ public class CompositeElementResolver {
         CompositeElementResolver.this.overrideCurrentVarDef(importedTargetPlatform, varDef4OverridingName, varDef4OverridingValue);
       }
     };
-    IterableExtensions.<VarDefinition>filter(IterableExtensions.<VarDefinition>filter(varDefImporter, _function), _function_1).forEach(_function_2);
-    final Consumer<VarDefinition> _function_3 = new Consumer<VarDefinition>() {
+    IterableExtensions.<VarDefinition>filter(IterableExtensions.<VarDefinition>filter(IterableExtensions.<VarDefinition>filter(varDefImporter, _function), _function_1), _function_2).forEach(_function_3);
+    final Consumer<VarDefinition> _function_4 = new Consumer<VarDefinition>() {
       @Override
       public void accept(final VarDefinition it) {
         final VarDefinition varDef4Overriding = it;
@@ -243,7 +366,7 @@ public class CompositeElementResolver {
         CompositeElementResolver.this.overrideCurrentVarDef(importedTargetPlatform, varDef4OverridingName, varDef4OverridingValue);
       }
     };
-    importerTargetPlatform.getVarDef2OverrideInImportedTarget().forEach(_function_3);
+    importerTargetPlatform.getVarDef2OverrideInImportedTarget().forEach(_function_4);
   }
   
   private Boolean overrideCurrentVarDef(final TargetPlatform importedTargetPlatform, final String varDef4OverridingName, final String varDef4OverridingValue) {
@@ -280,25 +403,31 @@ public class CompositeElementResolver {
    * target: "targetPlatform". Do not look for target imported through an imported target
    */
   private List<TargetPlatform> searchDirectlyImportedTpd(final TargetPlatform targetPlatform) {
-    final Function1<IncludeDeclaration, Boolean> _function = new Function1<IncludeDeclaration, Boolean>() {
-      @Override
-      public Boolean apply(final IncludeDeclaration it) {
-        return Boolean.valueOf(it.isResolved());
-      }
-    };
-    final Function1<IncludeDeclaration, TargetPlatform> _function_1 = new Function1<IncludeDeclaration, TargetPlatform>() {
-      @Override
-      public TargetPlatform apply(final IncludeDeclaration it) {
-        return CompositeElementResolver.this.locationIndexBuilder.getImportedTargetPlatform(targetPlatform.eResource(), it);
-      }
-    };
-    final Function1<TargetPlatform, Boolean> _function_2 = new Function1<TargetPlatform, Boolean>() {
-      @Override
-      public Boolean apply(final TargetPlatform it) {
-        return Boolean.valueOf((it != null));
-      }
-    };
-    return IterableExtensions.<TargetPlatform>toList(IterableExtensions.<TargetPlatform>filter(IterableExtensions.<IncludeDeclaration, TargetPlatform>map(IterableExtensions.<IncludeDeclaration>filter(targetPlatform.getIncludes(), _function), _function_1), _function_2));
+    List<TargetPlatform> _xblockexpression = null;
+    {
+      final Function1<IncludeDeclaration, Boolean> _function = new Function1<IncludeDeclaration, Boolean>() {
+        @Override
+        public Boolean apply(final IncludeDeclaration it) {
+          return Boolean.valueOf(it.isResolved());
+        }
+      };
+      final Function1<IncludeDeclaration, TargetPlatform> _function_1 = new Function1<IncludeDeclaration, TargetPlatform>() {
+        @Override
+        public TargetPlatform apply(final IncludeDeclaration it) {
+          return CompositeElementResolver.this.locationIndexBuilder.getImportedTargetPlatform(targetPlatform.eResource(), it);
+        }
+      };
+      final Function1<TargetPlatform, Boolean> _function_2 = new Function1<TargetPlatform, Boolean>() {
+        @Override
+        public Boolean apply(final TargetPlatform it) {
+          return Boolean.valueOf((it != null));
+        }
+      };
+      final List<TargetPlatform> directlyImportedTargetPlatforms = IterableExtensions.<TargetPlatform>toList(IterableExtensions.<TargetPlatform>filter(IterableExtensions.<IncludeDeclaration, TargetPlatform>map(IterableExtensions.<IncludeDeclaration>filter(targetPlatform.getIncludes(), _function), _function_1), _function_2));
+      final List<TargetPlatform> directlyImportedTargetPlatformsNoDuplicate = directlyImportedTargetPlatforms.stream().distinct().collect(Collectors.<TargetPlatform>toList());
+      _xblockexpression = directlyImportedTargetPlatformsNoDuplicate;
+    }
+    return _xblockexpression;
   }
   
   /**

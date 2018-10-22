@@ -15,6 +15,8 @@ import java.util.stream.Collectors
 
 class CompositeElementResolver {
 	
+	private final static String CONSTANT_PREFIX = "cst_";
+	
 	@Inject
 	LocationIndexBuilder locationIndexBuilder
 	
@@ -160,6 +162,9 @@ class CompositeElementResolver {
 	private def overrideImportedTargetVariable(TargetPlatform importedTargetPlatform, TargetPlatform importerTargetPlatform) {
 		val varDefImporter = importerTargetPlatform.varDefinition
 		varDefImporter.filter[
+			!it.name.startsWith(CONSTANT_PREFIX)
+		]
+		.filter[
 			!it.imported
 		]
 		.filter[

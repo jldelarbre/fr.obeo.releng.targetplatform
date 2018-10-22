@@ -10,15 +10,14 @@
  *******************************************************************************/
 package fr.obeo.releng.targetplatform.ui.outline
 
+import com.google.inject.Inject
 import fr.obeo.releng.targetplatform.IncludeDeclaration
 import fr.obeo.releng.targetplatform.TargetPlatform
+import fr.obeo.releng.targetplatform.util.CompositeElementResolver
+import fr.obeo.releng.targetplatform.util.LocationIndexBuilder
+import org.eclipse.emf.common.util.URI
 import org.eclipse.xtext.ui.editor.outline.IOutlineNode
 import org.eclipse.xtext.ui.editor.outline.impl.DefaultOutlineTreeProvider
-import fr.obeo.releng.targetplatform.util.LocationIndexBuilder
-import com.google.inject.Inject
-import org.eclipse.emf.common.util.URI
-import org.eclipse.core.runtime.FileLocator
-import java.net.URL
 
 /**
  * Customization of the default outline structure.
@@ -35,7 +34,7 @@ class TargetPlatformOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		
 		val enclosingTargetPlatform = includeDeclaration.eContainer as TargetPlatform
 		val enclosingTargetUri = enclosingTargetPlatform.eResource.URI
-		val absoluteEnclosingTargetUri = convertToAbsoluteUri(enclosingTargetUri)
+		val absoluteEnclosingTargetUri = CompositeElementResolver.convertToAbsoluteUri(enclosingTargetUri)
 		val importedTargetPlatforms = indexBuilder.getImportedTargetPlatforms(enclosingTargetPlatform)
 		
 		val includeUri = URI.createURI(includeDeclaration.importURI);
@@ -49,7 +48,7 @@ class TargetPlatformOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		val matchingTarget = importedTargetPlatforms.findFirst[
 			val importedTarget = it
 			val importedTargetUri = importedTarget.eResource.URI
-			val absoluteImportedTargetUri = convertToAbsoluteUri(importedTargetUri)
+			val absoluteImportedTargetUri = CompositeElementResolver.convertToAbsoluteUri(importedTargetUri)
 			
 			return absoluteImportedTargetUri.equals(absoluteIncludeUri)
 		]
@@ -57,12 +56,21 @@ class TargetPlatformOutlineTreeProvider extends DefaultOutlineTreeProvider {
 			createNode(parentNode, matchingTarget);
 		}
 	}
-	
-	private def URI convertToAbsoluteUri(URI resourceUri) {
-		var absoluteResourceUri = resourceUri
-		if (resourceUri.isPlatform) {
-			absoluteResourceUri = org.eclipse.emf.common.util.URI.createFileURI(FileLocator.toFileURL(new URL(resourceUri.toString)).file);
-		}
-		absoluteResourceUri
-	}
+
+//	protected def void _createChildren(IOutlineNode parentNode, VarDefinition varDefinition) {
+//		if (varDefinition.name.equals(CompositeElementResolver.CST_USER_DIR) ||
+//			varDefinition.name.equals(CompositeElementResolver.CST_TPD_URI) ||
+//			varDefinition.name.equals(CompositeElementResolver.CST_TPD_PATH) ||
+//			varDefinition.name.equals(CompositeElementResolver.CST_TPD_FILENAME) ||
+//			varDefinition.name.equals(CompositeElementResolver.CST_TPD_FILENAME_NO_EXT) ||
+//			varDefinition.name.equals(CompositeElementResolver.CST_ABS_TPD_URI) ||
+//			varDefinition.name.equals(CompositeElementResolver.CST_ABS_TPD_PATH) ||
+//			varDefinition.name.equals(CompositeElementResolver.CST_TPD_DIR) ||
+//			varDefinition.name.equals(CompositeElementResolver.CST_ABS_TPD_DIR)
+//		) {
+//			return
+//		}
+//		
+//		super._createChildren(parentNode, varDefinition);
+//	}
 }

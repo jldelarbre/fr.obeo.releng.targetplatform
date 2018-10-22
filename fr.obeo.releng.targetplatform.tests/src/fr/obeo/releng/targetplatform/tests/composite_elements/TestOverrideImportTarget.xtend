@@ -213,7 +213,7 @@ class TestOverrideImportTarget {
 		val varDefinitionsC = cTargetPlatform.varDefinition
 		assertEquals("d2Target.tpd", varDefinitionsC.head.effectiveValue)
 		assertEquals("http://download.eclipse.org/tools/orbit/downloads/drops/R20180905201904/repository", varDefinitionsC.get(1).effectiveValue)
-		assertEquals("[2.9.2,3.1.0)", varDefinitionsC.last.effectiveValue)
+		assertEquals("[2.9.2,3.1.0)", varDefinitionsC.get(2).effectiveValue)
 		
 		val includeC = cTargetPlatform.includes.head
 		assertEquals("d2Target.tpd", includeC.importURI)
@@ -265,7 +265,7 @@ class TestOverrideImportTarget {
 		val varDefinitionsC = cTargetPlatform.varDefinition
 		assertEquals("d2Target.tpd", varDefinitionsC.head.effectiveValue)
 		assertEquals("http://download.eclipse.org/tools/orbit/downloads/drops/R20180905201904/repository", varDefinitionsC.get(1).effectiveValue)
-		assertEquals("[2.9.2,3.1.0)", varDefinitionsC.last.effectiveValue)
+		assertEquals("[2.9.2,3.1.0)", varDefinitionsC.get(2).effectiveValue)
 		
 		val includeC = cTargetPlatform.includes.head
 		assertEquals("d2Target.tpd", includeC.importURI)
@@ -321,7 +321,7 @@ class TestOverrideImportTarget {
 		val varDefinitionsC = cTargetPlatform.varDefinition
 		assertEquals("d2Target.tpd", varDefinitionsC.head.effectiveValue)
 		assertEquals("http://download.eclipse.org/tools/orbit/downloads/drops/R20180905201904/repository", varDefinitionsC.get(1).effectiveValue)
-		assertEquals("[2.9.2,3.1.0)", varDefinitionsC.last.effectiveValue)
+		assertEquals("[2.9.2,3.1.0)", varDefinitionsC.get(2).effectiveValue)
 		
 		val includeC = cTargetPlatform.includes.head
 		assertEquals("d2Target.tpd", includeC.importURI)

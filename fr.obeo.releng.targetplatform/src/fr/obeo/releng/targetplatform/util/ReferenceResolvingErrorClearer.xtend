@@ -27,6 +27,13 @@ class ReferenceResolvingErrorClearer implements Runnable {
 	}
 	
 	override run() {
+		// Very dirty: wait enough time (hopefully) to let eclipse display the error on the editor, hence we can removed it after
+		try {
+			Thread.sleep(30)
+		} catch (InterruptedException e) {
+			e.printStackTrace
+		}
+		
 		val xtextEditor = EditorUtils.getActiveXtextEditor()
 		if (xtextEditor === null || !targetPlatformURI.contains(xtextEditor.title)) {
 			return

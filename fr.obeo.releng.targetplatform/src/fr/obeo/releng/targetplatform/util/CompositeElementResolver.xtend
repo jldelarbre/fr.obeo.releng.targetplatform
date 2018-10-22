@@ -11,6 +11,7 @@ import java.util.List
 import java.util.Set
 import org.eclipse.emf.common.util.EList
 import org.eclipse.swt.widgets.Display
+import java.util.stream.Collectors
 
 class CompositeElementResolver {
 	
@@ -194,7 +195,7 @@ class CompositeElementResolver {
 	/* Targets that are directly imported, with an "include" directive present in the current
 	 * target: "targetPlatform". Do not look for target imported through an imported target */
 	private def List<TargetPlatform> searchDirectlyImportedTpd(TargetPlatform targetPlatform) {
-		targetPlatform.includes
+		val directlyImportedTargetPlatforms = targetPlatform.includes
 			.filter[
 				it.isResolved
 			]
@@ -205,6 +206,15 @@ class CompositeElementResolver {
 				it !== null
 			]
 			.toList
+			
+		// Avoid the case where user includes the same target twice (Avoid NPE)
+		//
+		// target "A"
+		// include "someTargetUsedTwice.tpd"
+		// include "someTargetUsedTwice.tpd"
+		//
+		val directlyImportedTargetPlatformsNoDuplicate = directlyImportedTargetPlatforms.stream.distinct.collect(Collectors.toList())
+		directlyImportedTargetPlatformsNoDuplicate
 	}
 	
 	/*

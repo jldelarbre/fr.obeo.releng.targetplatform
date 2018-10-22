@@ -16,6 +16,9 @@ import org.eclipse.xtext.ui.editor.outline.IOutlineNode
 import org.eclipse.xtext.ui.editor.outline.impl.DefaultOutlineTreeProvider
 import fr.obeo.releng.targetplatform.util.LocationIndexBuilder
 import com.google.inject.Inject
+import org.eclipse.emf.common.util.URI
+import org.eclipse.core.runtime.FileLocator
+import java.net.URL
 
 /**
  * Customization of the default outline structure.
@@ -32,10 +35,34 @@ class TargetPlatformOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		
 		val enclosingTargetPlatform = includeDeclaration.eContainer as TargetPlatform
 		val enclosingTargetUri = enclosingTargetPlatform.eResource.URI
+		val absoluteEnclosingTargetUri = convertToAbsoluteUri(enclosingTargetUri)
 		val importedTargetPlatforms = indexBuilder.getImportedTargetPlatforms(enclosingTargetPlatform)
-		importedTargetPlatforms.size
-		enclosingTargetUri.toString
 		
-//		createNode(parentNode, importedTargetPlatforms.head);
+		val includeUri = URI.createURI(includeDeclaration.importURI);
+		var tempAbsoluteIncludeUri = includeUri;
+		if (includeUri.relative &&
+			!includeUri.platform) {
+			tempAbsoluteIncludeUri = includeUri.resolve(absoluteEnclosingTargetUri)
+		}
+		val absoluteIncludeUri = tempAbsoluteIncludeUri
+		
+		val matchingTarget = importedTargetPlatforms.findFirst[
+			val importedTarget = it
+			val importedTargetUri = importedTarget.eResource.URI
+			val absoluteImportedTargetUri = convertToAbsoluteUri(importedTargetUri)
+			
+			return absoluteImportedTargetUri.equals(absoluteIncludeUri)
+		]
+		if (matchingTarget !== null) {
+			createNode(parentNode, matchingTarget);
+		}
+	}
+	
+	private def URI convertToAbsoluteUri(URI resourceUri) {
+		var absoluteResourceUri = resourceUri
+		if (resourceUri.isPlatform) {
+			absoluteResourceUri = org.eclipse.emf.common.util.URI.createFileURI(FileLocator.toFileURL(new URL(resourceUri.toString)).file);
+		}
+		absoluteResourceUri
 	}
 }

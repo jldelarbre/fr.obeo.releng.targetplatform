@@ -25,6 +25,7 @@ import fr.obeo.releng.targetplatform.util.CompositeElementResolver
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider
 import org.eclipse.jface.viewers.StyledString
 import org.eclipse.xtext.ui.label.DefaultEObjectLabelProvider
+import fr.obeo.releng.targetplatform.VarDefinitionContainer
 
 /**
  * Provides labels for a EObjects.
@@ -122,6 +123,10 @@ class TargetPlatformLabelProvider extends DefaultEObjectLabelProvider {
 	
 	def image(Environment object) {
 		"obj16/env_obj.gif"
+	}
+	
+	def image(VarDefinitionContainer object) {
+		"obj16/var_group.gif"
 	}
 	
 	def text(VarDefinition object) {

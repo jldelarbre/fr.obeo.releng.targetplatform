@@ -12,12 +12,15 @@ package fr.obeo.releng.targetplatform.ui.outline
 
 import com.google.inject.Inject
 import fr.obeo.releng.targetplatform.IncludeDeclaration
+import fr.obeo.releng.targetplatform.Options
 import fr.obeo.releng.targetplatform.TargetPlatform
+import fr.obeo.releng.targetplatform.TargetPlatformFactory
 import fr.obeo.releng.targetplatform.util.LocationIndexBuilder
 import fr.obeo.releng.targetplatform.util.PredefinedVariableGenerator
 import org.eclipse.emf.common.util.URI
 import org.eclipse.xtext.ui.editor.outline.IOutlineNode
 import org.eclipse.xtext.ui.editor.outline.impl.DefaultOutlineTreeProvider
+import fr.obeo.releng.targetplatform.VarDefinitionContainer
 
 /**
  * Customization of the default outline structure.
@@ -28,6 +31,9 @@ class TargetPlatformOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	
 	@Inject
 	LocationIndexBuilder indexBuilder
+	
+	@Inject
+	PredefinedVariableGenerator predefinedVariableGenerator
 	
 	protected def void _createChildren(IOutlineNode parentNode, IncludeDeclaration includeDeclaration) {
 		super._createChildren(parentNode, includeDeclaration);
@@ -56,21 +62,55 @@ class TargetPlatformOutlineTreeProvider extends DefaultOutlineTreeProvider {
 			createNode(parentNode, matchingTarget);
 		}
 	}
-
-//	protected def void _createChildren(IOutlineNode parentNode, VarDefinition varDefinition) {
-//		if (varDefinition.name.equals(CompositeElementResolver.CST_USER_DIR) ||
-//			varDefinition.name.equals(CompositeElementResolver.CST_TPD_URI) ||
-//			varDefinition.name.equals(CompositeElementResolver.CST_TPD_PATH) ||
-//			varDefinition.name.equals(CompositeElementResolver.CST_TPD_FILENAME) ||
-//			varDefinition.name.equals(CompositeElementResolver.CST_TPD_FILENAME_NO_EXT) ||
-//			varDefinition.name.equals(CompositeElementResolver.CST_ABS_TPD_URI) ||
-//			varDefinition.name.equals(CompositeElementResolver.CST_ABS_TPD_PATH) ||
-//			varDefinition.name.equals(CompositeElementResolver.CST_TPD_DIR) ||
-//			varDefinition.name.equals(CompositeElementResolver.CST_ABS_TPD_DIR)
-//		) {
-//			return
-//		}
-//		
-//		super._createChildren(parentNode, varDefinition);
-//	}
+	
+	protected def void _createChildren(IOutlineNode parentNode, TargetPlatform targetPlatform) {
+		targetPlatform.contents.filter[
+			it instanceof Options
+		]
+		.forEach[
+			createNode(parentNode, it);
+		]
+		
+		targetPlatform.locations.forEach[
+			createNode(parentNode, it);
+		]
+		
+		targetPlatform.includes.forEach[
+			createNode(parentNode, it);
+		]
+		
+		if (targetPlatform.preDefinedVarContainer === null) {
+			targetPlatform.preDefinedVarContainer = TargetPlatformFactory.eINSTANCE.createVarDefinitionContainer
+			targetPlatform.preDefinedVarContainer.name = "Predefined variables"
+		}
+		val preDefinedVarContainer = targetPlatform.preDefinedVarContainer
+		preDefinedVarContainer.varDefList = newArrayList()
+		targetPlatform.varDefinition.forEach[
+			if (predefinedVariableGenerator.isPredefinedVariable(it)) {
+				preDefinedVarContainer.varDefList.add(it)
+			}
+		]
+		createNode(parentNode, preDefinedVarContainer);
+		
+		targetPlatform.varDefinition.forEach[
+			if (!predefinedVariableGenerator.isPredefinedVariable(it)) {
+				createNode(parentNode, it);
+			}
+		]
+	}
+	
+	protected def void _createChildren(IOutlineNode parentNode, VarDefinitionContainer varDefinitionContainer) {
+		varDefinitionContainer.varDefList.forEach[
+			createNode(parentNode, it);
+		]
+	}
+	
+	protected def boolean _isLeaf(VarDefinitionContainer varDefinitionContainer) {
+		if (varDefinitionContainer.varDefList !== null) {
+			if (varDefinitionContainer.varDefList.size > 0) {
+				return false
+			}
+		}
+		return true
+	}
 }

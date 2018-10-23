@@ -21,6 +21,8 @@ class TargetPlatform {
 	
 	String varCallFromOnlyImportedVariable = ""
 	
+	contains VarDefinitionContainer preDefinedVarContainer
+	
 	// To understand the usage of varDef2OverrideInImportedTarget see tests: TestOverrideImportTarget.testOverrideRecursive
 	// and TestOverrideImportTarget.testOverrideRecursiveWithJump
 	// In the second test, the intermediate tpd has no varDefinition, so we have to propagate them through the
@@ -273,6 +275,11 @@ class VarDefinition extends TargetContent {
 		
 		return result.toString()
 	}
+}
+
+class VarDefinitionContainer {
+	String name
+	VarDefList varDefList
 }
 
 type VarDefList wraps List<VarDefinition>

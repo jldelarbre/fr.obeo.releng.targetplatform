@@ -5,6 +5,7 @@ import org.eclipse.emf.common.util.URI
 import org.eclipse.core.runtime.FileLocator
 import java.net.URL
 import fr.obeo.releng.targetplatform.TargetPlatformFactory
+import fr.obeo.releng.targetplatform.VarDefinition
 
 class PredefinedVariableGenerator {
 	
@@ -54,12 +55,28 @@ class PredefinedVariableGenerator {
 		if (!predefinedVarExist) {
 			val predefinedVar = TargetPlatformFactory.eINSTANCE.createVarDefinition
 			predefinedVar.name = predefinedVarName
+			predefinedVar.constant = true
 			predefinedVar.value = TargetPlatformFactory.eINSTANCE.createCompositeString
 			val staticString = TargetPlatformFactory.eINSTANCE.createStaticString
 			staticString.value = predefinedVarValue
 			predefinedVar.value.stringParts.add(staticString)
 			targetPlatform.contents.add(predefinedVar)
 		}
+	}
+	
+	public def boolean isPredefinedVariable(VarDefinition varDefinition) {
+		if (varDefinition.name.equals(CST_USER_DIR) ||
+			varDefinition.name.equals(CST_TPD_URI) ||
+			varDefinition.name.equals(CST_TPD_PATH) ||
+			varDefinition.name.equals(CST_TPD_FILENAME) ||
+			varDefinition.name.equals(CST_TPD_FILENAME_NO_EXT) ||
+			varDefinition.name.equals(CST_ABS_TPD_URI) ||
+			varDefinition.name.equals(CST_ABS_TPD_PATH) ||
+			varDefinition.name.equals(CST_TPD_DIR) ||
+			varDefinition.name.equals(CST_ABS_TPD_DIR)) {
+			return true
+		}
+		return false
 	}
 	
 	public static def URI convertToAbsoluteUri(URI resourceUri) {

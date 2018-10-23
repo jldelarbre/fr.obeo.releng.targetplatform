@@ -5,6 +5,7 @@ import com.google.inject.Provider
 import fr.obeo.releng.targetplatform.TargetPlatform
 import fr.obeo.releng.targetplatform.tests.util.CustomTargetPlatformInjectorProviderTargetReloader
 import fr.obeo.releng.targetplatform.util.LocationIndexBuilder
+import fr.obeo.releng.targetplatform.util.PredefinedVariableGenerator
 import org.eclipse.emf.common.util.URI
 import org.eclipse.xtext.junit4.InjectWith
 import org.eclipse.xtext.junit4.XtextRunner
@@ -14,7 +15,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 import static org.junit.Assert.*
-import fr.obeo.releng.targetplatform.util.CompositeElementResolver
 
 @InjectWith(typeof(CustomTargetPlatformInjectorProviderTargetReloader))
 @RunWith(typeof(XtextRunner))
@@ -308,13 +308,13 @@ class TestVariableVariableDefinition {
 		assertEquals("value", varDef.value.computeActualString)
 		assertFalse(varDef.imported)
 		
-		val varDef2 = mainTpd.varDefinition.get(1 + CompositeElementResolver.NUM_PREDIFINED_VAR)
+		val varDef2 = mainTpd.varDefinition.get(1 + PredefinedVariableGenerator.NUM_PREDIFINED_VAR)
 		assertEquals("twiceInheritedVar", varDef2.name)
 		assertEquals("value", varDef2.value.computeActualString)
 		assertTrue(varDef2.imported)
 		assertFalse(varDef.diamondInherit)
 		
-		assertEquals(2 + CompositeElementResolver.NUM_PREDIFINED_VAR, mainTpd.varDefinition.size)
+		assertEquals(2 + PredefinedVariableGenerator.NUM_PREDIFINED_VAR, mainTpd.varDefinition.size)
 	}
 	
 	@Test
@@ -344,7 +344,7 @@ class TestVariableVariableDefinition {
 		assertTrue(varDefVal.equals("value1") || varDefVal.equals("value2")) // Do not expect specially value1 or value2
 		assertFalse(varDef.imported)
 		
-		val varDef2 = mainTpd.varDefinition.get(1 + CompositeElementResolver.NUM_PREDIFINED_VAR)
+		val varDef2 = mainTpd.varDefinition.get(1 + PredefinedVariableGenerator.NUM_PREDIFINED_VAR)
 		assertEquals("twiceInheritedVar", varDef2.name)
 		val varDefVal2 = varDef2.value.computeActualString
 		assertTrue(varDefVal2.equals("value1") || varDefVal2.equals("value2")) // Do not expect specially value1 or value2
@@ -354,7 +354,7 @@ class TestVariableVariableDefinition {
 		assertTrue(varDef2.importedValues.contains("value1"))
 		assertTrue(varDef2.importedValues.contains("value2"))
 		
-		assertEquals(2 + CompositeElementResolver.NUM_PREDIFINED_VAR, mainTpd.varDefinition.size)
+		assertEquals(2 + PredefinedVariableGenerator.NUM_PREDIFINED_VAR, mainTpd.varDefinition.size)
 	}
 	
 	@Test
@@ -388,7 +388,7 @@ class TestVariableVariableDefinition {
 		assertEquals("value", varDef.value.computeActualString)
 		assertFalse(varDef.imported)
 		
-		val varDef2 = mainTpd.varDefinition.get(1 + CompositeElementResolver.NUM_PREDIFINED_VAR)
+		val varDef2 = mainTpd.varDefinition.get(1 + PredefinedVariableGenerator.NUM_PREDIFINED_VAR)
 		assertEquals("twiceInheritedVar", varDef2.name)
 		assertEquals("value", varDef2.value.computeActualString)
 		assertTrue(varDef2.imported)
@@ -398,7 +398,7 @@ class TestVariableVariableDefinition {
 		assertEquals("value", varDef2.importedValues.get(1))
 		assertEquals("value", varDef2.importedValues.get(2))
 		
-		assertEquals(2 + CompositeElementResolver.NUM_PREDIFINED_VAR, mainTpd.varDefinition.size)
+		assertEquals(2 + PredefinedVariableGenerator.NUM_PREDIFINED_VAR, mainTpd.varDefinition.size)
 	}
 	
 	@Test
@@ -436,7 +436,7 @@ class TestVariableVariableDefinition {
 		assertEquals("value", varDef.value.computeActualString)
 		assertFalse(varDef.imported)
 		
-		val varDef2 = mainTpd.varDefinition.get(1 + CompositeElementResolver.NUM_PREDIFINED_VAR)
+		val varDef2 = mainTpd.varDefinition.get(1 + PredefinedVariableGenerator.NUM_PREDIFINED_VAR)
 		assertEquals("twiceInheritedVar", varDef2.name)
 		assertEquals("value", varDef2.value.computeActualString)
 		assertTrue(varDef2.imported)
@@ -446,7 +446,7 @@ class TestVariableVariableDefinition {
 		assertEquals("value", varDef2.importedValues.get(1))
 		assertEquals("value", varDef2.importedValues.get(2))
 		
-		assertEquals(2 + CompositeElementResolver.NUM_PREDIFINED_VAR, mainTpd.varDefinition.size)
+		assertEquals(2 + PredefinedVariableGenerator.NUM_PREDIFINED_VAR, mainTpd.varDefinition.size)
 	}
 	
 	@Test
@@ -480,14 +480,14 @@ class TestVariableVariableDefinition {
 		assertFalse(varDef.imported)
 		assertFalse(varDef.diamondInherit)
 		
-		val varDef2 = mainTpd.varDefinition.get(1 + CompositeElementResolver.NUM_PREDIFINED_VAR)
+		val varDef2 = mainTpd.varDefinition.get(1 + PredefinedVariableGenerator.NUM_PREDIFINED_VAR)
 		assertEquals("twiceInheritedVar", varDef2.name)
 		assertEquals("value", varDef2.value.computeActualString)
 		assertEquals(1, varDef2.importedValues.size)
 		assertTrue(varDef2.imported)
 		assertTrue(varDef2.diamondInherit)
 		
-		assertEquals(2 + CompositeElementResolver.NUM_PREDIFINED_VAR, mainTpd.varDefinition.size)
+		assertEquals(2 + PredefinedVariableGenerator.NUM_PREDIFINED_VAR, mainTpd.varDefinition.size)
 	}
 	
 	@Test
@@ -523,7 +523,7 @@ class TestVariableVariableDefinition {
 		assertFalse(varDef.imported)
 		assertFalse(varDef.diamondInherit)
 		
-		val varDef2 = mainTpd.varDefinition.get(1 + CompositeElementResolver.NUM_PREDIFINED_VAR)
+		val varDef2 = mainTpd.varDefinition.get(1 + PredefinedVariableGenerator.NUM_PREDIFINED_VAR)
 		assertEquals("twiceInheritedVar", varDef2.name)
 		val varDef2Val = varDef2.value.computeActualString
 		assertTrue(varDef2Val.equals("value") || varDef2Val.equals("valueSub2")) // Do not expect specially value or valueSub2
@@ -533,7 +533,7 @@ class TestVariableVariableDefinition {
 		assertTrue(varDef2.imported)
 		assertFalse(varDef2.diamondInherit)
 		
-		assertEquals(2 + CompositeElementResolver.NUM_PREDIFINED_VAR, mainTpd.varDefinition.size)
+		assertEquals(2 + PredefinedVariableGenerator.NUM_PREDIFINED_VAR, mainTpd.varDefinition.size)
 	}
 	
 	@Test
@@ -568,7 +568,7 @@ class TestVariableVariableDefinition {
 		assertFalse(varDef.imported)
 		assertFalse(varDef.diamondInherit)
 		
-		val varDef2 = mainTpd.varDefinition.get(1 + CompositeElementResolver.NUM_PREDIFINED_VAR)
+		val varDef2 = mainTpd.varDefinition.get(1 + PredefinedVariableGenerator.NUM_PREDIFINED_VAR)
 		assertEquals("twiceInheritedVar", varDef2.name)
 		assertEquals("value", varDef2.value.computeActualString)
 		assertEquals(2, varDef2.importedValues.size)
@@ -577,7 +577,7 @@ class TestVariableVariableDefinition {
 		assertTrue(varDef2.imported)
 		assertFalse(varDef2.diamondInherit)
 		
-		assertEquals(2 + CompositeElementResolver.NUM_PREDIFINED_VAR, mainTpd.varDefinition.size)
+		assertEquals(2 + PredefinedVariableGenerator.NUM_PREDIFINED_VAR, mainTpd.varDefinition.size)
 	}
 	
 	@Test
@@ -616,14 +616,14 @@ class TestVariableVariableDefinition {
 		assertFalse(varDef.imported)
 		assertFalse(varDef.diamondInherit)
 		
-		val varDef2 = mainTpd.varDefinition.get(1 + CompositeElementResolver.NUM_PREDIFINED_VAR)
+		val varDef2 = mainTpd.varDefinition.get(1 + PredefinedVariableGenerator.NUM_PREDIFINED_VAR)
 		assertEquals("twiceInheritedVar", varDef2.name)
 		assertEquals("value", varDef2.value.computeActualString)
 		assertEquals(1, varDef2.importedValues.size)
 		assertTrue(varDef2.imported)
 		assertTrue(varDef2.diamondInherit)
 		
-		assertEquals(2 + CompositeElementResolver.NUM_PREDIFINED_VAR, mainTpd.varDefinition.size)
+		assertEquals(2 + PredefinedVariableGenerator.NUM_PREDIFINED_VAR, mainTpd.varDefinition.size)
 	}
 	
 	@Test
@@ -661,14 +661,14 @@ class TestVariableVariableDefinition {
 		assertFalse(varDef.imported)
 		assertFalse(varDef.diamondInherit)
 		
-		val varDef2 = mainTpd.varDefinition.get(1 + CompositeElementResolver.NUM_PREDIFINED_VAR)
+		val varDef2 = mainTpd.varDefinition.get(1 + PredefinedVariableGenerator.NUM_PREDIFINED_VAR)
 		assertEquals("twiceInheritedVar", varDef2.name)
 		assertEquals("value", varDef2.value.computeActualString)
 		assertEquals(1, varDef2.importedValues.size)
 		assertTrue(varDef2.imported)
 		assertTrue(varDef2.diamondInherit)
 		
-		assertEquals(2 + CompositeElementResolver.NUM_PREDIFINED_VAR, mainTpd.varDefinition.size)
+		assertEquals(2 + PredefinedVariableGenerator.NUM_PREDIFINED_VAR, mainTpd.varDefinition.size)
 	}
 	
 	@Test

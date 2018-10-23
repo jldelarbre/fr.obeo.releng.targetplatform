@@ -144,6 +144,7 @@ type UUID wraps UUID
 class VarDefinition extends TargetContent {
 	String name
 	contains CompositeString value
+	boolean constant = "false"
 	
 	String overrideValue
 	

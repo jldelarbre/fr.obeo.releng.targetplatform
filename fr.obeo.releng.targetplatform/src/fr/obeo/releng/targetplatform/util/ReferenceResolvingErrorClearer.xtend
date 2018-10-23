@@ -28,6 +28,7 @@ class ReferenceResolvingErrorClearer implements Runnable {
 	
 	override run() {
 		// Very dirty: wait enough time (hopefully) to let eclipse display the error on the editor, hence we can removed it after
+		// Hope to find a better way some day
 		try {
 			Thread.sleep(30)
 		} catch (InterruptedException e) {

@@ -641,12 +641,12 @@ class TestOverrideImportTarget {
 		val aTarget = parser.parse('''
 			target "aTarget"
 			include "bTarget.tpd"
-			define cst_a = "overrideVal"
+			define const a = "overrideVal"
 		''', URI.createURI("tmp:/aTarget.tpd"), resourceSet)
 		parser.parse('''
 			target "bTarget"
-			define cst_a = "baseVal"
-			define b = ${cst_a}
+			define const a = "baseVal"
+			define b = ${a}
 		''', URI.createURI("tmp:/bTarget.tpd"), resourceSet)
 		
 		val importedTargetPlatforms = indexBuilder.getImportedTargetPlatforms(aTarget)
@@ -655,11 +655,67 @@ class TestOverrideImportTarget {
 		val bTargetPlatform = importedTargetPlatforms.first
 		
 		val varDefA = bTargetPlatform.varDefinition.head
-		assertEquals("cst_a", varDefA.name)
+		assertEquals("a", varDefA.name)
 		assertEquals(null, varDefA.overrideValue)
 		
 		val varDefB = bTargetPlatform.varDefinition.get(1)
 		assertEquals("b", varDefB.name)
 		assertEquals("baseVal", varDefB.value.stringParts.head.actualString)
+	}
+	
+	@Test
+	def testNotOverrideCstFromNotConst() {
+		val resourceSet = resourceSetProvider.get
+		val aTarget = parser.parse('''
+			target "aTarget"
+			include "bTarget.tpd"
+			define a = "overrideVal"
+		''', URI.createURI("tmp:/aTarget.tpd"), resourceSet)
+		parser.parse('''
+			target "bTarget"
+			define const a = "baseVal"
+			define b = ${a}
+		''', URI.createURI("tmp:/bTarget.tpd"), resourceSet)
+		
+		val importedTargetPlatforms = indexBuilder.getImportedTargetPlatforms(aTarget)
+		assertEquals(1, importedTargetPlatforms.length)
+		
+		val bTargetPlatform = importedTargetPlatforms.first
+		
+		val varDefA = bTargetPlatform.varDefinition.head
+		assertEquals("a", varDefA.name)
+		assertEquals(null, varDefA.overrideValue)
+		
+		val varDefB = bTargetPlatform.varDefinition.get(1)
+		assertEquals("b", varDefB.name)
+		assertEquals("baseVal", varDefB.value.stringParts.head.actualString)
+	}
+	
+	@Test
+	def testOverrideFromConst() {
+		val resourceSet = resourceSetProvider.get
+		val aTarget = parser.parse('''
+			target "aTarget"
+			include "bTarget.tpd"
+			define const a = "overrideVal"
+		''', URI.createURI("tmp:/aTarget.tpd"), resourceSet)
+		parser.parse('''
+			target "bTarget"
+			define a = "baseVal"
+			define b = ${a}
+		''', URI.createURI("tmp:/bTarget.tpd"), resourceSet)
+		
+		val importedTargetPlatforms = indexBuilder.getImportedTargetPlatforms(aTarget)
+		assertEquals(1, importedTargetPlatforms.length)
+		
+		val bTargetPlatform = importedTargetPlatforms.first
+		
+		val varDefA = bTargetPlatform.varDefinition.head
+		assertEquals("a", varDefA.name)
+		assertEquals("overrideVal", varDefA.overrideValue)
+		
+		val varDefB = bTargetPlatform.varDefinition.get(1)
+		assertEquals("b", varDefB.name)
+		assertEquals("overrideVal", varDefB.value.stringParts.head.actualString)
 	}
 }

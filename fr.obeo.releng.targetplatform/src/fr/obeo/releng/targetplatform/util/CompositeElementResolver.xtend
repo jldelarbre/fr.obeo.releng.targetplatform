@@ -6,19 +6,17 @@ import fr.obeo.releng.targetplatform.TargetPlatform
 import fr.obeo.releng.targetplatform.TargetPlatformFactory
 import fr.obeo.releng.targetplatform.VarCall
 import fr.obeo.releng.targetplatform.VarDefinition
-import java.net.URL
 import java.util.HashSet
 import java.util.List
 import java.util.Set
 import java.util.stream.Collectors
-import org.eclipse.core.runtime.FileLocator
 import org.eclipse.emf.common.util.EList
-import org.eclipse.emf.common.util.URI
 import org.eclipse.swt.widgets.Display
 
 class CompositeElementResolver {
 	
-	private static final String CONSTANT_PREFIX = "cst_";
+	@Inject
+	PredefinedVariableGenerator predefinedVariableGenerator
 	
 	@Inject
 	LocationIndexBuilder locationIndexBuilder
@@ -102,68 +100,6 @@ class CompositeElementResolver {
 		targetPlatform.modified = true
 	}
 	
-	public static final String CST_USER_DIR            = "cst_userDir"
-	public static final String CST_TPD_URI             = "cst_tpdUri"
-	public static final String CST_TPD_PATH            = "cst_tpdPath"
-	public static final String CST_TPD_FILENAME        = "cst_tpdFileName"
-	public static final String CST_TPD_FILENAME_NO_EXT = "cst_tpdFileNameNoExtension"
-	public static final String CST_ABS_TPD_URI         = "cst_absoluteTpdUri"
-	public static final String CST_ABS_TPD_PATH        = "cst_absoluteTpdPath"
-	public static final String CST_TPD_DIR             = "cst_tpdDir"
-	public static final String CST_ABS_TPD_DIR         = "cst_absoluteTpdDir"
-	public static final int NUM_PREDIFINED_VAR = 9
-	
-	private def createPreDefinedVariables(TargetPlatform targetPlatform) {
-		createPredefinedVariable(targetPlatform, CST_USER_DIR, System.getProperty("user.home"))
-		
-		val tpdPathVarValue = targetPlatform.eResource.URI
-		createPredefinedVariable(targetPlatform, CST_TPD_URI, tpdPathVarValue.toString)
-		createPredefinedVariable(targetPlatform, CST_TPD_PATH, tpdPathVarValue.path)
-		createPredefinedVariable(targetPlatform, CST_TPD_FILENAME, tpdPathVarValue.lastSegment)
-		var tpdFileNameNoExtension = tpdPathVarValue.lastSegment
-		if (tpdPathVarValue.lastSegment.endsWith(".tpd")) {
-			tpdFileNameNoExtension = tpdFileNameNoExtension.substring(0, tpdFileNameNoExtension.length-4)
-		}
-		createPredefinedVariable(targetPlatform, CST_TPD_FILENAME_NO_EXT, tpdFileNameNoExtension)
-		
-		val absoluteTpdPathVarValue = convertToAbsoluteUri(tpdPathVarValue)
-		createPredefinedVariable(targetPlatform, CST_ABS_TPD_URI, absoluteTpdPathVarValue.toString)
-		createPredefinedVariable(targetPlatform, CST_ABS_TPD_PATH, absoluteTpdPathVarValue.path)
-		val lastIndexTpdDir = tpdPathVarValue.path.toString.lastIndexOf("/")
-		if (lastIndexTpdDir != -1) {
-			val tpdDir = tpdPathVarValue.path.toString.substring(0, lastIndexTpdDir)
-			createPredefinedVariable(targetPlatform, CST_TPD_DIR, tpdDir)
-		}
-		val lastIndexAbsTpdDir = absoluteTpdPathVarValue.path.toString.lastIndexOf("/")
-		if (lastIndexAbsTpdDir != -1) {
-			val absoluteTpdDir = absoluteTpdPathVarValue.path.toString.substring(0, lastIndexAbsTpdDir)
-			createPredefinedVariable(targetPlatform, CST_ABS_TPD_DIR, absoluteTpdDir)
-		}
-	}
-	
-	private def createPredefinedVariable(TargetPlatform targetPlatform, String predefinedVarName, String predefinedVarValue) {
-		val predefinedVarExist = targetPlatform.varDefinition.exists[
-			it.name.equals(predefinedVarName)
-		]
-		if (!predefinedVarExist) {
-			val predefinedVar = TargetPlatformFactory.eINSTANCE.createVarDefinition
-			predefinedVar.name = predefinedVarName
-			predefinedVar.value = TargetPlatformFactory.eINSTANCE.createCompositeString
-			val staticString = TargetPlatformFactory.eINSTANCE.createStaticString
-			staticString.value = predefinedVarValue
-			predefinedVar.value.stringParts.add(staticString)
-			targetPlatform.contents.add(predefinedVar)
-		}
-	}
-	
-	public static def URI convertToAbsoluteUri(URI resourceUri) {
-		var absoluteResourceUri = resourceUri
-		if (resourceUri.isPlatform) {
-			absoluteResourceUri = URI.createFileURI(FileLocator.toFileURL(new URL(resourceUri.toString)).file);
-		}
-		absoluteResourceUri
-	}
-	
 	private def searchAndAppendDefineFromIncludedTpd(TargetPlatform targetPlatform) {
 		val alreadyVisitedTarget = newHashSet()
 		searchAndAppendDefineFromIncludedTpd(targetPlatform, alreadyVisitedTarget)
@@ -177,7 +113,7 @@ class CompositeElementResolver {
 		
 		alreadyVisitedTarget.add(targetPlatform)
 		
-		createPreDefinedVariables(targetPlatform)
+		predefinedVariableGenerator.createPreDefinedVariables(targetPlatform)
 		
 		var directlyImportedTargetPlatforms = searchDirectlyImportedTpd(targetPlatform)
 		
@@ -229,9 +165,6 @@ class CompositeElementResolver {
 	private def overrideImportedTargetVariable(TargetPlatform importedTargetPlatform, TargetPlatform importerTargetPlatform) {
 		val varDefImporter = importerTargetPlatform.varDefinition
 		varDefImporter.filter[
-			!it.name.startsWith(CONSTANT_PREFIX)
-		]
-		.filter[
 			!it.imported
 		]
 		.filter[
@@ -254,7 +187,9 @@ class CompositeElementResolver {
 	private def overrideCurrentVarDef(TargetPlatform importedTargetPlatform, String varDef4OverridingName, String varDef4OverridingValue) {
 		val varDef2Override = importedTargetPlatform.varDefinition.findFirst[it.name.equals(varDef4OverridingName)]
 		if (varDef2Override !== null) {
-			varDef2Override.overrideValue = varDef4OverridingValue
+			if (!varDef2Override.constant) {
+				varDef2Override.overrideValue = varDef4OverridingValue
+			}
 		}
 		else {
 			val varDef = TargetPlatformFactory.eINSTANCE.createVarDefinition
@@ -372,6 +307,7 @@ class CompositeElementResolver {
 		currentImportedDefineCopy.imported = true
 		currentImportedDefineCopy.importedValues.add(currentImportedDefine.value.computeActualString)
 		currentImportedDefineCopy._sourceUUID = currentImportedDefine.sourceUUID
+		currentImportedDefineCopy.constant = currentImportedDefine.constant
 		currentImportedDefineCopy
 	}
 	

@@ -24,7 +24,7 @@ Environment:
 ;
 
 VarDefinition:
-	'define' name=ID '=' value=CompositeString
+	'define' (constant?='const')? name=ID '=' value=CompositeString
 ;
 
 CompositeString:
@@ -74,6 +74,7 @@ VersionRange hidden (WS):
 	( ('('|'[') Version ',' Version (')'|']') ) | Version | 'lazy'
 ;
 
+// Override annotation may cause trouble when generating the grammar: you can remove it just for this operation
 @Override 
 terminal INT returns ecore::EInt: ('0'..'9')+;
 @Override 

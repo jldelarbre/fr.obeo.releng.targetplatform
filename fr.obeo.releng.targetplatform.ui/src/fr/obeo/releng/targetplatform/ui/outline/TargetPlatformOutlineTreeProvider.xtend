@@ -13,8 +13,8 @@ package fr.obeo.releng.targetplatform.ui.outline
 import com.google.inject.Inject
 import fr.obeo.releng.targetplatform.IncludeDeclaration
 import fr.obeo.releng.targetplatform.TargetPlatform
-import fr.obeo.releng.targetplatform.util.CompositeElementResolver
 import fr.obeo.releng.targetplatform.util.LocationIndexBuilder
+import fr.obeo.releng.targetplatform.util.PredefinedVariableGenerator
 import org.eclipse.emf.common.util.URI
 import org.eclipse.xtext.ui.editor.outline.IOutlineNode
 import org.eclipse.xtext.ui.editor.outline.impl.DefaultOutlineTreeProvider
@@ -34,7 +34,7 @@ class TargetPlatformOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		
 		val enclosingTargetPlatform = includeDeclaration.eContainer as TargetPlatform
 		val enclosingTargetUri = enclosingTargetPlatform.eResource.URI
-		val absoluteEnclosingTargetUri = CompositeElementResolver.convertToAbsoluteUri(enclosingTargetUri)
+		val absoluteEnclosingTargetUri = PredefinedVariableGenerator.convertToAbsoluteUri(enclosingTargetUri)
 		val importedTargetPlatforms = indexBuilder.getImportedTargetPlatforms(enclosingTargetPlatform)
 		
 		val includeUri = URI.createURI(includeDeclaration.importURI);
@@ -48,7 +48,7 @@ class TargetPlatformOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		val matchingTarget = importedTargetPlatforms.findFirst[
 			val importedTarget = it
 			val importedTargetUri = importedTarget.eResource.URI
-			val absoluteImportedTargetUri = CompositeElementResolver.convertToAbsoluteUri(importedTargetUri)
+			val absoluteImportedTargetUri = PredefinedVariableGenerator.convertToAbsoluteUri(importedTargetUri)
 			
 			return absoluteImportedTargetUri.equals(absoluteIncludeUri)
 		]

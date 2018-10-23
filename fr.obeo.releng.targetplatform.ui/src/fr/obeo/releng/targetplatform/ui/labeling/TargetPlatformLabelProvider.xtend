@@ -131,14 +131,29 @@ class TargetPlatformLabelProvider extends DefaultEObjectLabelProvider {
 	def image(VarDefinition object) {
 		if (object.imported) {
 			if (object.diamondInherit) {
-				"obj16/varImportDiamond_obj.gif"
+				if (object.constant) {
+					"obj16/cstImportDiamond_obj.gif"
+				}
+				else {
+					"obj16/varImportDiamond_obj.gif"
+				}
 			}
 			else {
-				"obj16/varImport_obj.gif"
+				if (object.constant) {
+					"obj16/cstImport_obj.gif"
+				}
+				else {
+					"obj16/varImport_obj.gif"
+				}
 			}
 		}
 		else {
-			"obj16/var_obj.gif"
+			if (object.constant) {
+				"obj16/cst_obj.gif"
+			}
+			else {
+				"obj16/var_obj.gif"
+			}
 		}
 	}
 }

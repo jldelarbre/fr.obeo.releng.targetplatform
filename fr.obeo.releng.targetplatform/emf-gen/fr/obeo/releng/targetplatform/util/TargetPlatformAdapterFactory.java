@@ -88,6 +88,10 @@ public class TargetPlatformAdapterFactory extends AdapterFactoryImpl {
 				return createVarDefinitionAdapter();
 			}
 			@Override
+			public Adapter caseVarDefinitionContainer(VarDefinitionContainer object) {
+				return createVarDefinitionContainerAdapter();
+			}
+			@Override
 			public Adapter caseCompositeString(CompositeString object) {
 				return createCompositeStringAdapter();
 			}
@@ -202,6 +206,20 @@ public class TargetPlatformAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createVarDefinitionAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link fr.obeo.releng.targetplatform.VarDefinitionContainer <em>Var Definition Container</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see fr.obeo.releng.targetplatform.VarDefinitionContainer
+	 * @generated
+	 */
+	public Adapter createVarDefinitionContainerAdapter() {
 		return null;
 	}
 

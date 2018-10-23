@@ -53,6 +53,7 @@ import org.eclipse.xtext.xbase.lib.IterableExtensions;
  *   <li>{@link fr.obeo.releng.targetplatform.impl.VarDefinitionImpl#getTargetPlatform <em>Target Platform</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.impl.VarDefinitionImpl#getName <em>Name</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.impl.VarDefinitionImpl#getValue <em>Value</em>}</li>
+ *   <li>{@link fr.obeo.releng.targetplatform.impl.VarDefinitionImpl#isConstant <em>Constant</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.impl.VarDefinitionImpl#getOverrideValue <em>Override Value</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.impl.VarDefinitionImpl#isVariableDefinitionCycleDetected <em>Variable Definition Cycle Detected</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.impl.VarDefinitionImpl#getVarDefCycle <em>Var Def Cycle</em>}</li>
@@ -94,6 +95,26 @@ public class VarDefinitionImpl extends MinimalEObjectImpl.Container implements V
 	 * @ordered
 	 */
 	protected CompositeString value;
+
+	/**
+	 * The default value of the '{@link #isConstant() <em>Constant</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isConstant()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean CONSTANT_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isConstant() <em>Constant</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isConstant()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean constant = CONSTANT_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getOverrideValue() <em>Override Value</em>}' attribute.
@@ -347,6 +368,27 @@ public class VarDefinitionImpl extends MinimalEObjectImpl.Container implements V
 		}
 		else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, TargetPlatformPackage.VAR_DEFINITION__VALUE, newValue, newValue));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean isConstant() {
+		return constant;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setConstant(boolean newConstant) {
+		boolean oldConstant = constant;
+		constant = newConstant;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TargetPlatformPackage.VAR_DEFINITION__CONSTANT, oldConstant, constant));
 	}
 
 	/**
@@ -710,6 +752,8 @@ public class VarDefinitionImpl extends MinimalEObjectImpl.Container implements V
 				return getName();
 			case TargetPlatformPackage.VAR_DEFINITION__VALUE:
 				return getValue();
+			case TargetPlatformPackage.VAR_DEFINITION__CONSTANT:
+				return isConstant();
 			case TargetPlatformPackage.VAR_DEFINITION__OVERRIDE_VALUE:
 				return getOverrideValue();
 			case TargetPlatformPackage.VAR_DEFINITION__VARIABLE_DEFINITION_CYCLE_DETECTED:
@@ -745,6 +789,9 @@ public class VarDefinitionImpl extends MinimalEObjectImpl.Container implements V
 				return;
 			case TargetPlatformPackage.VAR_DEFINITION__VALUE:
 				setValue((CompositeString)newValue);
+				return;
+			case TargetPlatformPackage.VAR_DEFINITION__CONSTANT:
+				setConstant((Boolean)newValue);
 				return;
 			case TargetPlatformPackage.VAR_DEFINITION__OVERRIDE_VALUE:
 				setOverrideValue((String)newValue);
@@ -789,6 +836,9 @@ public class VarDefinitionImpl extends MinimalEObjectImpl.Container implements V
 			case TargetPlatformPackage.VAR_DEFINITION__VALUE:
 				setValue((CompositeString)null);
 				return;
+			case TargetPlatformPackage.VAR_DEFINITION__CONSTANT:
+				setConstant(CONSTANT_EDEFAULT);
+				return;
 			case TargetPlatformPackage.VAR_DEFINITION__OVERRIDE_VALUE:
 				setOverrideValue(OVERRIDE_VALUE_EDEFAULT);
 				return;
@@ -828,6 +878,8 @@ public class VarDefinitionImpl extends MinimalEObjectImpl.Container implements V
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case TargetPlatformPackage.VAR_DEFINITION__VALUE:
 				return value != null;
+			case TargetPlatformPackage.VAR_DEFINITION__CONSTANT:
+				return constant != CONSTANT_EDEFAULT;
 			case TargetPlatformPackage.VAR_DEFINITION__OVERRIDE_VALUE:
 				return OVERRIDE_VALUE_EDEFAULT == null ? overrideValue != null : !OVERRIDE_VALUE_EDEFAULT.equals(overrideValue);
 			case TargetPlatformPackage.VAR_DEFINITION__VARIABLE_DEFINITION_CYCLE_DETECTED:

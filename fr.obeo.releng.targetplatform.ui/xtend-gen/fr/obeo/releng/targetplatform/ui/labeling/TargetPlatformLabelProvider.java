@@ -21,6 +21,7 @@ import fr.obeo.releng.targetplatform.Options;
 import fr.obeo.releng.targetplatform.TargetPlatform;
 import fr.obeo.releng.targetplatform.VarCall;
 import fr.obeo.releng.targetplatform.VarDefinition;
+import fr.obeo.releng.targetplatform.VarDefinitionContainer;
 import fr.obeo.releng.targetplatform.util.CompositeElementResolver;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
@@ -162,6 +163,10 @@ public class TargetPlatformLabelProvider extends DefaultEObjectLabelProvider {
     return "obj16/env_obj.gif";
   }
   
+  public String image(final VarDefinitionContainer object) {
+    return "obj16/var_group.gif";
+  }
+  
   public String text(final VarDefinition object) {
     String _name = object.getName();
     String _plus = (_name + " - (effective value = ");
@@ -177,13 +182,34 @@ public class TargetPlatformLabelProvider extends DefaultEObjectLabelProvider {
       String _xifexpression_1 = null;
       boolean _isDiamondInherit = object.isDiamondInherit();
       if (_isDiamondInherit) {
-        _xifexpression_1 = "obj16/varImportDiamond_obj.gif";
+        String _xifexpression_2 = null;
+        boolean _isConstant = object.isConstant();
+        if (_isConstant) {
+          _xifexpression_2 = "obj16/cstImportDiamond_obj.gif";
+        } else {
+          _xifexpression_2 = "obj16/varImportDiamond_obj.gif";
+        }
+        _xifexpression_1 = _xifexpression_2;
       } else {
-        _xifexpression_1 = "obj16/varImport_obj.gif";
+        String _xifexpression_3 = null;
+        boolean _isConstant_1 = object.isConstant();
+        if (_isConstant_1) {
+          _xifexpression_3 = "obj16/cstImport_obj.gif";
+        } else {
+          _xifexpression_3 = "obj16/varImport_obj.gif";
+        }
+        _xifexpression_1 = _xifexpression_3;
       }
       _xifexpression = _xifexpression_1;
     } else {
-      _xifexpression = "obj16/var_obj.gif";
+      String _xifexpression_4 = null;
+      boolean _isConstant_2 = object.isConstant();
+      if (_isConstant_2) {
+        _xifexpression_4 = "obj16/cst_obj.gif";
+      } else {
+        _xifexpression_4 = "obj16/var_obj.gif";
+      }
+      _xifexpression = _xifexpression_4;
     }
     return _xifexpression;
   }

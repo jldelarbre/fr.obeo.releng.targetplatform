@@ -58,6 +58,15 @@ public interface TargetPlatformFactory extends EFactory {
 	VarDefinition createVarDefinition();
 
 	/**
+	 * Returns a new object of class '<em>Var Definition Container</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Var Definition Container</em>'.
+	 * @generated
+	 */
+	VarDefinitionContainer createVarDefinitionContainer();
+
+	/**
 	 * Returns a new object of class '<em>Composite String</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

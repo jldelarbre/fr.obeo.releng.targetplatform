@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link fr.obeo.releng.targetplatform.TargetPlatform#isCompositeElementsResolved <em>Composite Elements Resolved</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.TargetPlatform#isModified <em>Modified</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.TargetPlatform#getVarCallFromOnlyImportedVariable <em>Var Call From Only Imported Variable</em>}</li>
+ *   <li>{@link fr.obeo.releng.targetplatform.TargetPlatform#getPreDefinedVarContainer <em>Pre Defined Var Container</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.TargetPlatform#getVarDef2OverrideInImportedTarget <em>Var Def2 Override In Imported Target</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.TargetPlatform#getContents <em>Contents</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.TargetPlatform#getIncludes <em>Includes</em>}</li>
@@ -139,6 +140,32 @@ public interface TargetPlatform extends EObject {
 	 * @generated
 	 */
 	void setVarCallFromOnlyImportedVariable(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Pre Defined Var Container</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Pre Defined Var Container</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Pre Defined Var Container</em>' containment reference.
+	 * @see #setPreDefinedVarContainer(VarDefinitionContainer)
+	 * @see fr.obeo.releng.targetplatform.TargetPlatformPackage#getTargetPlatform_PreDefinedVarContainer()
+	 * @model containment="true"
+	 * @generated
+	 */
+	VarDefinitionContainer getPreDefinedVarContainer();
+
+	/**
+	 * Sets the value of the '{@link fr.obeo.releng.targetplatform.TargetPlatform#getPreDefinedVarContainer <em>Pre Defined Var Container</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Pre Defined Var Container</em>' containment reference.
+	 * @see #getPreDefinedVarContainer()
+	 * @generated
+	 */
+	void setPreDefinedVarContainer(VarDefinitionContainer value);
 
 	/**
 	 * Returns the value of the '<em><b>Var Def2 Override In Imported Target</b></em>' containment reference list.

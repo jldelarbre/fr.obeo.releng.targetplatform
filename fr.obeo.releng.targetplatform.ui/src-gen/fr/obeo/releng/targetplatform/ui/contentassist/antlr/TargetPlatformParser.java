@@ -74,8 +74,9 @@ public class TargetPlatformParser extends AbstractContentAssistParser {
 					put(grammarAccess.getOptionsAccess().getOptionsAssignment_2_1(), "rule__Options__OptionsAssignment_2_1");
 					put(grammarAccess.getEnvironmentAccess().getEnvAssignment_2(), "rule__Environment__EnvAssignment_2");
 					put(grammarAccess.getEnvironmentAccess().getEnvAssignment_3_1(), "rule__Environment__EnvAssignment_3_1");
-					put(grammarAccess.getVarDefinitionAccess().getNameAssignment_1(), "rule__VarDefinition__NameAssignment_1");
-					put(grammarAccess.getVarDefinitionAccess().getValueAssignment_3(), "rule__VarDefinition__ValueAssignment_3");
+					put(grammarAccess.getVarDefinitionAccess().getConstantAssignment_1(), "rule__VarDefinition__ConstantAssignment_1");
+					put(grammarAccess.getVarDefinitionAccess().getNameAssignment_2(), "rule__VarDefinition__NameAssignment_2");
+					put(grammarAccess.getVarDefinitionAccess().getValueAssignment_4(), "rule__VarDefinition__ValueAssignment_4");
 					put(grammarAccess.getCompositeStringAccess().getStringPartsAssignment_1(), "rule__CompositeString__StringPartsAssignment_1");
 					put(grammarAccess.getCompositeStringAccess().getStringPartsAssignment_2_1(), "rule__CompositeString__StringPartsAssignment_2_1");
 					put(grammarAccess.getVarCallAccess().getVarNameAssignment_1(), "rule__VarCall__VarNameAssignment_1");

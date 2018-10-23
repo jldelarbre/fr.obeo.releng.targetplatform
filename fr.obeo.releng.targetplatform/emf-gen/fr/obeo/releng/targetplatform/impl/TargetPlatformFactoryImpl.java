@@ -67,6 +67,7 @@ public class TargetPlatformFactoryImpl extends EFactoryImpl implements TargetPla
 			case TargetPlatformPackage.OPTIONS: return createOptions();
 			case TargetPlatformPackage.ENVIRONMENT: return createEnvironment();
 			case TargetPlatformPackage.VAR_DEFINITION: return createVarDefinition();
+			case TargetPlatformPackage.VAR_DEFINITION_CONTAINER: return createVarDefinitionContainer();
 			case TargetPlatformPackage.COMPOSITE_STRING: return createCompositeString();
 			case TargetPlatformPackage.VAR_CALL: return createVarCall();
 			case TargetPlatformPackage.STATIC_STRING: return createStaticString();
@@ -162,6 +163,16 @@ public class TargetPlatformFactoryImpl extends EFactoryImpl implements TargetPla
 	public VarDefinition createVarDefinition() {
 		VarDefinitionImpl varDefinition = new VarDefinitionImpl();
 		return varDefinition;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public VarDefinitionContainer createVarDefinitionContainer() {
+		VarDefinitionContainerImpl varDefinitionContainer = new VarDefinitionContainerImpl();
+		return varDefinitionContainer;
 	}
 
 	/**

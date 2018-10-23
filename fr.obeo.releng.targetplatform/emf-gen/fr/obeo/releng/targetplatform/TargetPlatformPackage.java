@@ -107,13 +107,22 @@ public interface TargetPlatformPackage extends EPackage {
 	int TARGET_PLATFORM__VAR_CALL_FROM_ONLY_IMPORTED_VARIABLE = 3;
 
 	/**
+	 * The feature id for the '<em><b>Pre Defined Var Container</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TARGET_PLATFORM__PRE_DEFINED_VAR_CONTAINER = 4;
+
+	/**
 	 * The feature id for the '<em><b>Var Def2 Override In Imported Target</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TARGET_PLATFORM__VAR_DEF2_OVERRIDE_IN_IMPORTED_TARGET = 4;
+	int TARGET_PLATFORM__VAR_DEF2_OVERRIDE_IN_IMPORTED_TARGET = 5;
 
 	/**
 	 * The feature id for the '<em><b>Contents</b></em>' containment reference list.
@@ -122,7 +131,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TARGET_PLATFORM__CONTENTS = 5;
+	int TARGET_PLATFORM__CONTENTS = 6;
 
 	/**
 	 * The feature id for the '<em><b>Includes</b></em>' reference list.
@@ -131,7 +140,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TARGET_PLATFORM__INCLUDES = 6;
+	int TARGET_PLATFORM__INCLUDES = 7;
 
 	/**
 	 * The feature id for the '<em><b>Options</b></em>' attribute list.
@@ -140,7 +149,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TARGET_PLATFORM__OPTIONS = 7;
+	int TARGET_PLATFORM__OPTIONS = 8;
 
 	/**
 	 * The feature id for the '<em><b>Locations</b></em>' reference list.
@@ -149,7 +158,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TARGET_PLATFORM__LOCATIONS = 8;
+	int TARGET_PLATFORM__LOCATIONS = 9;
 
 	/**
 	 * The feature id for the '<em><b>Environment</b></em>' reference.
@@ -158,7 +167,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TARGET_PLATFORM__ENVIRONMENT = 9;
+	int TARGET_PLATFORM__ENVIRONMENT = 10;
 
 	/**
 	 * The feature id for the '<em><b>Var Definition</b></em>' reference list.
@@ -167,7 +176,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TARGET_PLATFORM__VAR_DEFINITION = 10;
+	int TARGET_PLATFORM__VAR_DEFINITION = 11;
 
 	/**
 	 * The number of structural features of the '<em>Target Platform</em>' class.
@@ -176,7 +185,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TARGET_PLATFORM_FEATURE_COUNT = 11;
+	int TARGET_PLATFORM_FEATURE_COUNT = 12;
 
 	/**
 	 * The number of operations of the '<em>Target Platform</em>' class.
@@ -399,13 +408,22 @@ public interface TargetPlatformPackage extends EPackage {
 	int VAR_DEFINITION__VALUE = TARGET_CONTENT_FEATURE_COUNT + 1;
 
 	/**
+	 * The feature id for the '<em><b>Constant</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VAR_DEFINITION__CONSTANT = TARGET_CONTENT_FEATURE_COUNT + 2;
+
+	/**
 	 * The feature id for the '<em><b>Override Value</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int VAR_DEFINITION__OVERRIDE_VALUE = TARGET_CONTENT_FEATURE_COUNT + 2;
+	int VAR_DEFINITION__OVERRIDE_VALUE = TARGET_CONTENT_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Variable Definition Cycle Detected</b></em>' attribute.
@@ -414,7 +432,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VAR_DEFINITION__VARIABLE_DEFINITION_CYCLE_DETECTED = TARGET_CONTENT_FEATURE_COUNT + 3;
+	int VAR_DEFINITION__VARIABLE_DEFINITION_CYCLE_DETECTED = TARGET_CONTENT_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Var Def Cycle</b></em>' attribute.
@@ -423,7 +441,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VAR_DEFINITION__VAR_DEF_CYCLE = TARGET_CONTENT_FEATURE_COUNT + 4;
+	int VAR_DEFINITION__VAR_DEF_CYCLE = TARGET_CONTENT_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Imported</b></em>' attribute.
@@ -432,7 +450,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VAR_DEFINITION__IMPORTED = TARGET_CONTENT_FEATURE_COUNT + 5;
+	int VAR_DEFINITION__IMPORTED = TARGET_CONTENT_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Imported Values</b></em>' attribute list.
@@ -441,7 +459,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VAR_DEFINITION__IMPORTED_VALUES = TARGET_CONTENT_FEATURE_COUNT + 6;
+	int VAR_DEFINITION__IMPORTED_VALUES = TARGET_CONTENT_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>source UUID</b></em>' attribute.
@@ -450,7 +468,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VAR_DEFINITION__SOURCE_UUID = TARGET_CONTENT_FEATURE_COUNT + 7;
+	int VAR_DEFINITION__SOURCE_UUID = TARGET_CONTENT_FEATURE_COUNT + 8;
 
 	/**
 	 * The feature id for the '<em><b>Diamond Inherit</b></em>' attribute.
@@ -459,7 +477,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VAR_DEFINITION__DIAMOND_INHERIT = TARGET_CONTENT_FEATURE_COUNT + 8;
+	int VAR_DEFINITION__DIAMOND_INHERIT = TARGET_CONTENT_FEATURE_COUNT + 9;
 
 	/**
 	 * The number of structural features of the '<em>Var Definition</em>' class.
@@ -468,7 +486,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VAR_DEFINITION_FEATURE_COUNT = TARGET_CONTENT_FEATURE_COUNT + 9;
+	int VAR_DEFINITION_FEATURE_COUNT = TARGET_CONTENT_FEATURE_COUNT + 10;
 
 	/**
 	 * The operation id for the '<em>Is Wholly Defined By Target</em>' operation.
@@ -543,6 +561,52 @@ public interface TargetPlatformPackage extends EPackage {
 	int VAR_DEFINITION_OPERATION_COUNT = TARGET_CONTENT_OPERATION_COUNT + 7;
 
 	/**
+	 * The meta object id for the '{@link fr.obeo.releng.targetplatform.impl.VarDefinitionContainerImpl <em>Var Definition Container</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see fr.obeo.releng.targetplatform.impl.VarDefinitionContainerImpl
+	 * @see fr.obeo.releng.targetplatform.impl.TargetPlatformPackageImpl#getVarDefinitionContainer()
+	 * @generated
+	 */
+	int VAR_DEFINITION_CONTAINER = 5;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VAR_DEFINITION_CONTAINER__NAME = 0;
+
+	/**
+	 * The feature id for the '<em><b>Var Def List</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VAR_DEFINITION_CONTAINER__VAR_DEF_LIST = 1;
+
+	/**
+	 * The number of structural features of the '<em>Var Definition Container</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VAR_DEFINITION_CONTAINER_FEATURE_COUNT = 2;
+
+	/**
+	 * The number of operations of the '<em>Var Definition Container</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VAR_DEFINITION_CONTAINER_OPERATION_COUNT = 0;
+
+	/**
 	 * The meta object id for the '{@link fr.obeo.releng.targetplatform.impl.CompositeStringImpl <em>Composite String</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -550,7 +614,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @see fr.obeo.releng.targetplatform.impl.TargetPlatformPackageImpl#getCompositeString()
 	 * @generated
 	 */
-	int COMPOSITE_STRING = 5;
+	int COMPOSITE_STRING = 6;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -650,7 +714,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @see fr.obeo.releng.targetplatform.impl.TargetPlatformPackageImpl#getCompositeStringPart()
 	 * @generated
 	 */
-	int COMPOSITE_STRING_PART = 6;
+	int COMPOSITE_STRING_PART = 7;
 
 	/**
 	 * The feature id for the '<em><b>Composite String</b></em>' container reference.
@@ -741,7 +805,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @see fr.obeo.releng.targetplatform.impl.TargetPlatformPackageImpl#getVarCall()
 	 * @generated
 	 */
-	int VAR_CALL = 7;
+	int VAR_CALL = 8;
 
 	/**
 	 * The feature id for the '<em><b>Composite String</b></em>' container reference.
@@ -868,7 +932,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @see fr.obeo.releng.targetplatform.impl.TargetPlatformPackageImpl#getStaticString()
 	 * @generated
 	 */
-	int STATIC_STRING = 8;
+	int STATIC_STRING = 9;
 
 	/**
 	 * The feature id for the '<em><b>Composite String</b></em>' container reference.
@@ -986,7 +1050,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @see fr.obeo.releng.targetplatform.impl.TargetPlatformPackageImpl#getLocation()
 	 * @generated
 	 */
-	int LOCATION = 9;
+	int LOCATION = 10;
 
 	/**
 	 * The feature id for the '<em><b>Target Platform</b></em>' container reference.
@@ -1086,7 +1150,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @see fr.obeo.releng.targetplatform.impl.TargetPlatformPackageImpl#getIncludeDeclaration()
 	 * @generated
 	 */
-	int INCLUDE_DECLARATION = 10;
+	int INCLUDE_DECLARATION = 11;
 
 	/**
 	 * The feature id for the '<em><b>Target Platform</b></em>' container reference.
@@ -1168,7 +1232,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @see fr.obeo.releng.targetplatform.impl.TargetPlatformPackageImpl#getIU()
 	 * @generated
 	 */
-	int IU = 11;
+	int IU = 12;
 
 	/**
 	 * The feature id for the '<em><b>ID</b></em>' attribute.
@@ -1232,7 +1296,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @see fr.obeo.releng.targetplatform.impl.TargetPlatformPackageImpl#getOption()
 	 * @generated
 	 */
-	int OPTION = 12;
+	int OPTION = 13;
 
 	/**
 	 * The meta object id for the '<em>UUID</em>' data type.
@@ -1242,7 +1306,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @see fr.obeo.releng.targetplatform.impl.TargetPlatformPackageImpl#getUUID()
 	 * @generated
 	 */
-	int UUID = 13;
+	int UUID = 14;
 
 	/**
 	 * The meta object id for the '<em>Var Def List</em>' data type.
@@ -1252,7 +1316,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @see fr.obeo.releng.targetplatform.impl.TargetPlatformPackageImpl#getVarDefList()
 	 * @generated
 	 */
-	int VAR_DEF_LIST = 14;
+	int VAR_DEF_LIST = 15;
 
 	/**
 	 * The meta object id for the '<em>Locale</em>' data type.
@@ -1262,7 +1326,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @see fr.obeo.releng.targetplatform.impl.TargetPlatformPackageImpl#getLocale()
 	 * @generated
 	 */
-	int LOCALE = 15;
+	int LOCALE = 16;
 
 	/**
 	 * The meta object id for the '<em>Execution Environment</em>' data type.
@@ -1272,7 +1336,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @see fr.obeo.releng.targetplatform.impl.TargetPlatformPackageImpl#getExecutionEnvironment()
 	 * @generated
 	 */
-	int EXECUTION_ENVIRONMENT = 16;
+	int EXECUTION_ENVIRONMENT = 17;
 
 
 	/**
@@ -1328,6 +1392,17 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getTargetPlatform_VarCallFromOnlyImportedVariable();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link fr.obeo.releng.targetplatform.TargetPlatform#getPreDefinedVarContainer <em>Pre Defined Var Container</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Pre Defined Var Container</em>'.
+	 * @see fr.obeo.releng.targetplatform.TargetPlatform#getPreDefinedVarContainer()
+	 * @see #getTargetPlatform()
+	 * @generated
+	 */
+	EReference getTargetPlatform_PreDefinedVarContainer();
 
 	/**
 	 * Returns the meta object for the containment reference list '{@link fr.obeo.releng.targetplatform.TargetPlatform#getVarDef2OverrideInImportedTarget <em>Var Def2 Override In Imported Target</em>}'.
@@ -1557,6 +1632,17 @@ public interface TargetPlatformPackage extends EPackage {
 	EReference getVarDefinition_Value();
 
 	/**
+	 * Returns the meta object for the attribute '{@link fr.obeo.releng.targetplatform.VarDefinition#isConstant <em>Constant</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Constant</em>'.
+	 * @see fr.obeo.releng.targetplatform.VarDefinition#isConstant()
+	 * @see #getVarDefinition()
+	 * @generated
+	 */
+	EAttribute getVarDefinition_Constant();
+
+	/**
 	 * Returns the meta object for the attribute '{@link fr.obeo.releng.targetplatform.VarDefinition#getOverrideValue <em>Override Value</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1702,6 +1788,38 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 */
 	EOperation getVarDefinition__ToString();
+
+	/**
+	 * Returns the meta object for class '{@link fr.obeo.releng.targetplatform.VarDefinitionContainer <em>Var Definition Container</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Var Definition Container</em>'.
+	 * @see fr.obeo.releng.targetplatform.VarDefinitionContainer
+	 * @generated
+	 */
+	EClass getVarDefinitionContainer();
+
+	/**
+	 * Returns the meta object for the attribute '{@link fr.obeo.releng.targetplatform.VarDefinitionContainer#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Name</em>'.
+	 * @see fr.obeo.releng.targetplatform.VarDefinitionContainer#getName()
+	 * @see #getVarDefinitionContainer()
+	 * @generated
+	 */
+	EAttribute getVarDefinitionContainer_Name();
+
+	/**
+	 * Returns the meta object for the attribute '{@link fr.obeo.releng.targetplatform.VarDefinitionContainer#getVarDefList <em>Var Def List</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Var Def List</em>'.
+	 * @see fr.obeo.releng.targetplatform.VarDefinitionContainer#getVarDefList()
+	 * @see #getVarDefinitionContainer()
+	 * @generated
+	 */
+	EAttribute getVarDefinitionContainer_VarDefList();
 
 	/**
 	 * Returns the meta object for class '{@link fr.obeo.releng.targetplatform.CompositeString <em>Composite String</em>}'.
@@ -2377,6 +2495,14 @@ public interface TargetPlatformPackage extends EPackage {
 		EAttribute TARGET_PLATFORM__VAR_CALL_FROM_ONLY_IMPORTED_VARIABLE = eINSTANCE.getTargetPlatform_VarCallFromOnlyImportedVariable();
 
 		/**
+		 * The meta object literal for the '<em><b>Pre Defined Var Container</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference TARGET_PLATFORM__PRE_DEFINED_VAR_CONTAINER = eINSTANCE.getTargetPlatform_PreDefinedVarContainer();
+
+		/**
 		 * The meta object literal for the '<em><b>Var Def2 Override In Imported Target</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2553,6 +2679,14 @@ public interface TargetPlatformPackage extends EPackage {
 		EReference VAR_DEFINITION__VALUE = eINSTANCE.getVarDefinition_Value();
 
 		/**
+		 * The meta object literal for the '<em><b>Constant</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute VAR_DEFINITION__CONSTANT = eINSTANCE.getVarDefinition_Constant();
+
+		/**
 		 * The meta object literal for the '<em><b>Override Value</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2663,6 +2797,32 @@ public interface TargetPlatformPackage extends EPackage {
 		 * @generated
 		 */
 		EOperation VAR_DEFINITION___TO_STRING = eINSTANCE.getVarDefinition__ToString();
+
+		/**
+		 * The meta object literal for the '{@link fr.obeo.releng.targetplatform.impl.VarDefinitionContainerImpl <em>Var Definition Container</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see fr.obeo.releng.targetplatform.impl.VarDefinitionContainerImpl
+		 * @see fr.obeo.releng.targetplatform.impl.TargetPlatformPackageImpl#getVarDefinitionContainer()
+		 * @generated
+		 */
+		EClass VAR_DEFINITION_CONTAINER = eINSTANCE.getVarDefinitionContainer();
+
+		/**
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute VAR_DEFINITION_CONTAINER__NAME = eINSTANCE.getVarDefinitionContainer_Name();
+
+		/**
+		 * The meta object literal for the '<em><b>Var Def List</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute VAR_DEFINITION_CONTAINER__VAR_DEF_LIST = eINSTANCE.getVarDefinitionContainer_VarDefList();
 
 		/**
 		 * The meta object literal for the '{@link fr.obeo.releng.targetplatform.impl.CompositeStringImpl <em>Composite String</em>}' class.

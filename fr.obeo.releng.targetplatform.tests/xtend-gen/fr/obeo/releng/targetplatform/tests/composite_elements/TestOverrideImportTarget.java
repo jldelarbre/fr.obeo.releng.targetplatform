@@ -841,26 +841,94 @@ public class TestOverrideImportTarget {
       _builder.newLine();
       _builder.append("include \"bTarget.tpd\"");
       _builder.newLine();
-      _builder.append("define cst_a = \"overrideVal\"");
+      _builder.append("define const a = \"overrideVal\"");
       _builder.newLine();
       final TargetPlatform aTarget = this.parser.parse(_builder, URI.createURI("tmp:/aTarget.tpd"), resourceSet);
       StringConcatenation _builder_1 = new StringConcatenation();
       _builder_1.append("target \"bTarget\"");
       _builder_1.newLine();
-      _builder_1.append("define cst_a = \"baseVal\"");
+      _builder_1.append("define const a = \"baseVal\"");
       _builder_1.newLine();
-      _builder_1.append("define b = ${cst_a}");
+      _builder_1.append("define b = ${a}");
       _builder_1.newLine();
       this.parser.parse(_builder_1, URI.createURI("tmp:/bTarget.tpd"), resourceSet);
       final LinkedList<TargetPlatform> importedTargetPlatforms = this.indexBuilder.getImportedTargetPlatforms(aTarget);
       Assert.assertEquals(1, ((Object[])Conversions.unwrapArray(importedTargetPlatforms, Object.class)).length);
       final TargetPlatform bTargetPlatform = importedTargetPlatforms.getFirst();
       final VarDefinition varDefA = IterableExtensions.<VarDefinition>head(bTargetPlatform.getVarDefinition());
-      Assert.assertEquals("cst_a", varDefA.getName());
+      Assert.assertEquals("a", varDefA.getName());
       Assert.assertEquals(null, varDefA.getOverrideValue());
       final VarDefinition varDefB = bTargetPlatform.getVarDefinition().get(1);
       Assert.assertEquals("b", varDefB.getName());
       Assert.assertEquals("baseVal", IterableExtensions.<CompositeStringPart>head(varDefB.getValue().getStringParts()).getActualString());
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void testNotOverrideCstFromNotConst() {
+    try {
+      final XtextResourceSet resourceSet = this.resourceSetProvider.get();
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("target \"aTarget\"");
+      _builder.newLine();
+      _builder.append("include \"bTarget.tpd\"");
+      _builder.newLine();
+      _builder.append("define a = \"overrideVal\"");
+      _builder.newLine();
+      final TargetPlatform aTarget = this.parser.parse(_builder, URI.createURI("tmp:/aTarget.tpd"), resourceSet);
+      StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("target \"bTarget\"");
+      _builder_1.newLine();
+      _builder_1.append("define const a = \"baseVal\"");
+      _builder_1.newLine();
+      _builder_1.append("define b = ${a}");
+      _builder_1.newLine();
+      this.parser.parse(_builder_1, URI.createURI("tmp:/bTarget.tpd"), resourceSet);
+      final LinkedList<TargetPlatform> importedTargetPlatforms = this.indexBuilder.getImportedTargetPlatforms(aTarget);
+      Assert.assertEquals(1, ((Object[])Conversions.unwrapArray(importedTargetPlatforms, Object.class)).length);
+      final TargetPlatform bTargetPlatform = importedTargetPlatforms.getFirst();
+      final VarDefinition varDefA = IterableExtensions.<VarDefinition>head(bTargetPlatform.getVarDefinition());
+      Assert.assertEquals("a", varDefA.getName());
+      Assert.assertEquals(null, varDefA.getOverrideValue());
+      final VarDefinition varDefB = bTargetPlatform.getVarDefinition().get(1);
+      Assert.assertEquals("b", varDefB.getName());
+      Assert.assertEquals("baseVal", IterableExtensions.<CompositeStringPart>head(varDefB.getValue().getStringParts()).getActualString());
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void testOverrideFromConst() {
+    try {
+      final XtextResourceSet resourceSet = this.resourceSetProvider.get();
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("target \"aTarget\"");
+      _builder.newLine();
+      _builder.append("include \"bTarget.tpd\"");
+      _builder.newLine();
+      _builder.append("define const a = \"overrideVal\"");
+      _builder.newLine();
+      final TargetPlatform aTarget = this.parser.parse(_builder, URI.createURI("tmp:/aTarget.tpd"), resourceSet);
+      StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("target \"bTarget\"");
+      _builder_1.newLine();
+      _builder_1.append("define a = \"baseVal\"");
+      _builder_1.newLine();
+      _builder_1.append("define b = ${a}");
+      _builder_1.newLine();
+      this.parser.parse(_builder_1, URI.createURI("tmp:/bTarget.tpd"), resourceSet);
+      final LinkedList<TargetPlatform> importedTargetPlatforms = this.indexBuilder.getImportedTargetPlatforms(aTarget);
+      Assert.assertEquals(1, ((Object[])Conversions.unwrapArray(importedTargetPlatforms, Object.class)).length);
+      final TargetPlatform bTargetPlatform = importedTargetPlatforms.getFirst();
+      final VarDefinition varDefA = IterableExtensions.<VarDefinition>head(bTargetPlatform.getVarDefinition());
+      Assert.assertEquals("a", varDefA.getName());
+      Assert.assertEquals("overrideVal", varDefA.getOverrideValue());
+      final VarDefinition varDefB = bTargetPlatform.getVarDefinition().get(1);
+      Assert.assertEquals("b", varDefB.getName());
+      Assert.assertEquals("overrideVal", IterableExtensions.<CompositeStringPart>head(varDefB.getValue().getStringParts()).getActualString());
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }

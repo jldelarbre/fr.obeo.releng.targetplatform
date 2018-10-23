@@ -18,6 +18,7 @@ import org.eclipse.emf.common.util.EList;
  * <ul>
  *   <li>{@link fr.obeo.releng.targetplatform.VarDefinition#getName <em>Name</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.VarDefinition#getValue <em>Value</em>}</li>
+ *   <li>{@link fr.obeo.releng.targetplatform.VarDefinition#isConstant <em>Constant</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.VarDefinition#getOverrideValue <em>Override Value</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.VarDefinition#isVariableDefinitionCycleDetected <em>Variable Definition Cycle Detected</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.VarDefinition#getVarDefCycle <em>Var Def Cycle</em>}</li>
@@ -83,6 +84,33 @@ public interface VarDefinition extends TargetContent {
 	 * @generated
 	 */
 	void setValue(CompositeString value);
+
+	/**
+	 * Returns the value of the '<em><b>Constant</b></em>' attribute.
+	 * The default value is <code>"false"</code>.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Constant</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Constant</em>' attribute.
+	 * @see #setConstant(boolean)
+	 * @see fr.obeo.releng.targetplatform.TargetPlatformPackage#getVarDefinition_Constant()
+	 * @model default="false" unique="false"
+	 * @generated
+	 */
+	boolean isConstant();
+
+	/**
+	 * Sets the value of the '{@link fr.obeo.releng.targetplatform.VarDefinition#isConstant <em>Constant</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Constant</em>' attribute.
+	 * @see #isConstant()
+	 * @generated
+	 */
+	void setConstant(boolean value);
 
 	/**
 	 * Returns the value of the '<em><b>Override Value</b></em>' attribute.

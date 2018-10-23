@@ -11,8 +11,8 @@ import fr.obeo.releng.targetplatform.Location;
 import fr.obeo.releng.targetplatform.TargetPlatform;
 import fr.obeo.releng.targetplatform.VarDefinition;
 import fr.obeo.releng.targetplatform.tests.util.CustomTargetPlatformInjectorProviderTargetReloader;
-import fr.obeo.releng.targetplatform.util.CompositeElementResolver;
 import fr.obeo.releng.targetplatform.util.LocationIndexBuilder;
+import fr.obeo.releng.targetplatform.util.PredefinedVariableGenerator;
 import java.util.LinkedList;
 import java.util.List;
 import org.eclipse.emf.common.util.URI;
@@ -433,12 +433,12 @@ public class TestVariableVariableDefinition {
       Assert.assertEquals("var", varDef.getName());
       Assert.assertEquals("value", varDef.getValue().computeActualString());
       Assert.assertFalse(varDef.isImported());
-      final VarDefinition varDef2 = mainTpd.getVarDefinition().get((1 + CompositeElementResolver.NUM_PREDIFINED_VAR));
+      final VarDefinition varDef2 = mainTpd.getVarDefinition().get((1 + PredefinedVariableGenerator.NUM_PREDIFINED_VAR));
       Assert.assertEquals("twiceInheritedVar", varDef2.getName());
       Assert.assertEquals("value", varDef2.getValue().computeActualString());
       Assert.assertTrue(varDef2.isImported());
       Assert.assertFalse(varDef.isDiamondInherit());
-      Assert.assertEquals((2 + CompositeElementResolver.NUM_PREDIFINED_VAR), mainTpd.getVarDefinition().size());
+      Assert.assertEquals((2 + PredefinedVariableGenerator.NUM_PREDIFINED_VAR), mainTpd.getVarDefinition().size());
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -477,7 +477,7 @@ public class TestVariableVariableDefinition {
       final String varDefVal = varDef.getValue().computeActualString();
       Assert.assertTrue((varDefVal.equals("value1") || varDefVal.equals("value2")));
       Assert.assertFalse(varDef.isImported());
-      final VarDefinition varDef2 = mainTpd.getVarDefinition().get((1 + CompositeElementResolver.NUM_PREDIFINED_VAR));
+      final VarDefinition varDef2 = mainTpd.getVarDefinition().get((1 + PredefinedVariableGenerator.NUM_PREDIFINED_VAR));
       Assert.assertEquals("twiceInheritedVar", varDef2.getName());
       final String varDefVal2 = varDef2.getValue().computeActualString();
       Assert.assertTrue((varDefVal2.equals("value1") || varDefVal2.equals("value2")));
@@ -486,7 +486,7 @@ public class TestVariableVariableDefinition {
       Assert.assertEquals(2, varDef2.getImportedValues().size());
       Assert.assertTrue(varDef2.getImportedValues().contains("value1"));
       Assert.assertTrue(varDef2.getImportedValues().contains("value2"));
-      Assert.assertEquals((2 + CompositeElementResolver.NUM_PREDIFINED_VAR), mainTpd.getVarDefinition().size());
+      Assert.assertEquals((2 + PredefinedVariableGenerator.NUM_PREDIFINED_VAR), mainTpd.getVarDefinition().size());
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -532,7 +532,7 @@ public class TestVariableVariableDefinition {
       Assert.assertEquals("var", varDef.getName());
       Assert.assertEquals("value", varDef.getValue().computeActualString());
       Assert.assertFalse(varDef.isImported());
-      final VarDefinition varDef2 = mainTpd.getVarDefinition().get((1 + CompositeElementResolver.NUM_PREDIFINED_VAR));
+      final VarDefinition varDef2 = mainTpd.getVarDefinition().get((1 + PredefinedVariableGenerator.NUM_PREDIFINED_VAR));
       Assert.assertEquals("twiceInheritedVar", varDef2.getName());
       Assert.assertEquals("value", varDef2.getValue().computeActualString());
       Assert.assertTrue(varDef2.isImported());
@@ -541,7 +541,7 @@ public class TestVariableVariableDefinition {
       Assert.assertEquals("value", varDef2.getImportedValues().get(0));
       Assert.assertEquals("value", varDef2.getImportedValues().get(1));
       Assert.assertEquals("value", varDef2.getImportedValues().get(2));
-      Assert.assertEquals((2 + CompositeElementResolver.NUM_PREDIFINED_VAR), mainTpd.getVarDefinition().size());
+      Assert.assertEquals((2 + PredefinedVariableGenerator.NUM_PREDIFINED_VAR), mainTpd.getVarDefinition().size());
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -593,7 +593,7 @@ public class TestVariableVariableDefinition {
       Assert.assertEquals("var", varDef.getName());
       Assert.assertEquals("value", varDef.getValue().computeActualString());
       Assert.assertFalse(varDef.isImported());
-      final VarDefinition varDef2 = mainTpd.getVarDefinition().get((1 + CompositeElementResolver.NUM_PREDIFINED_VAR));
+      final VarDefinition varDef2 = mainTpd.getVarDefinition().get((1 + PredefinedVariableGenerator.NUM_PREDIFINED_VAR));
       Assert.assertEquals("twiceInheritedVar", varDef2.getName());
       Assert.assertEquals("value", varDef2.getValue().computeActualString());
       Assert.assertTrue(varDef2.isImported());
@@ -602,7 +602,7 @@ public class TestVariableVariableDefinition {
       Assert.assertEquals("value", varDef2.getImportedValues().get(0));
       Assert.assertEquals("value", varDef2.getImportedValues().get(1));
       Assert.assertEquals("value", varDef2.getImportedValues().get(2));
-      Assert.assertEquals((2 + CompositeElementResolver.NUM_PREDIFINED_VAR), mainTpd.getVarDefinition().size());
+      Assert.assertEquals((2 + PredefinedVariableGenerator.NUM_PREDIFINED_VAR), mainTpd.getVarDefinition().size());
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -647,13 +647,13 @@ public class TestVariableVariableDefinition {
       Assert.assertEquals("value", varDef.getValue().computeActualString());
       Assert.assertFalse(varDef.isImported());
       Assert.assertFalse(varDef.isDiamondInherit());
-      final VarDefinition varDef2 = mainTpd.getVarDefinition().get((1 + CompositeElementResolver.NUM_PREDIFINED_VAR));
+      final VarDefinition varDef2 = mainTpd.getVarDefinition().get((1 + PredefinedVariableGenerator.NUM_PREDIFINED_VAR));
       Assert.assertEquals("twiceInheritedVar", varDef2.getName());
       Assert.assertEquals("value", varDef2.getValue().computeActualString());
       Assert.assertEquals(1, varDef2.getImportedValues().size());
       Assert.assertTrue(varDef2.isImported());
       Assert.assertTrue(varDef2.isDiamondInherit());
-      Assert.assertEquals((2 + CompositeElementResolver.NUM_PREDIFINED_VAR), mainTpd.getVarDefinition().size());
+      Assert.assertEquals((2 + PredefinedVariableGenerator.NUM_PREDIFINED_VAR), mainTpd.getVarDefinition().size());
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -701,7 +701,7 @@ public class TestVariableVariableDefinition {
       Assert.assertTrue(("value".equals(varDefVal) || "valueSub2".equals(varDefVal)));
       Assert.assertFalse(varDef.isImported());
       Assert.assertFalse(varDef.isDiamondInherit());
-      final VarDefinition varDef2 = mainTpd.getVarDefinition().get((1 + CompositeElementResolver.NUM_PREDIFINED_VAR));
+      final VarDefinition varDef2 = mainTpd.getVarDefinition().get((1 + PredefinedVariableGenerator.NUM_PREDIFINED_VAR));
       Assert.assertEquals("twiceInheritedVar", varDef2.getName());
       final String varDef2Val = varDef2.getValue().computeActualString();
       Assert.assertTrue((varDef2Val.equals("value") || varDef2Val.equals("valueSub2")));
@@ -710,7 +710,7 @@ public class TestVariableVariableDefinition {
       Assert.assertTrue(varDef2.getImportedValues().contains("valueSub2"));
       Assert.assertTrue(varDef2.isImported());
       Assert.assertFalse(varDef2.isDiamondInherit());
-      Assert.assertEquals((2 + CompositeElementResolver.NUM_PREDIFINED_VAR), mainTpd.getVarDefinition().size());
+      Assert.assertEquals((2 + PredefinedVariableGenerator.NUM_PREDIFINED_VAR), mainTpd.getVarDefinition().size());
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -757,7 +757,7 @@ public class TestVariableVariableDefinition {
       Assert.assertEquals("value", varDef.getValue().computeActualString());
       Assert.assertFalse(varDef.isImported());
       Assert.assertFalse(varDef.isDiamondInherit());
-      final VarDefinition varDef2 = mainTpd.getVarDefinition().get((1 + CompositeElementResolver.NUM_PREDIFINED_VAR));
+      final VarDefinition varDef2 = mainTpd.getVarDefinition().get((1 + PredefinedVariableGenerator.NUM_PREDIFINED_VAR));
       Assert.assertEquals("twiceInheritedVar", varDef2.getName());
       Assert.assertEquals("value", varDef2.getValue().computeActualString());
       Assert.assertEquals(2, varDef2.getImportedValues().size());
@@ -765,7 +765,7 @@ public class TestVariableVariableDefinition {
       Assert.assertEquals("value", varDef2.getImportedValues().get(1));
       Assert.assertTrue(varDef2.isImported());
       Assert.assertFalse(varDef2.isDiamondInherit());
-      Assert.assertEquals((2 + CompositeElementResolver.NUM_PREDIFINED_VAR), mainTpd.getVarDefinition().size());
+      Assert.assertEquals((2 + PredefinedVariableGenerator.NUM_PREDIFINED_VAR), mainTpd.getVarDefinition().size());
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -818,13 +818,13 @@ public class TestVariableVariableDefinition {
       Assert.assertEquals("value", varDef.getValue().computeActualString());
       Assert.assertFalse(varDef.isImported());
       Assert.assertFalse(varDef.isDiamondInherit());
-      final VarDefinition varDef2 = mainTpd.getVarDefinition().get((1 + CompositeElementResolver.NUM_PREDIFINED_VAR));
+      final VarDefinition varDef2 = mainTpd.getVarDefinition().get((1 + PredefinedVariableGenerator.NUM_PREDIFINED_VAR));
       Assert.assertEquals("twiceInheritedVar", varDef2.getName());
       Assert.assertEquals("value", varDef2.getValue().computeActualString());
       Assert.assertEquals(1, varDef2.getImportedValues().size());
       Assert.assertTrue(varDef2.isImported());
       Assert.assertTrue(varDef2.isDiamondInherit());
-      Assert.assertEquals((2 + CompositeElementResolver.NUM_PREDIFINED_VAR), mainTpd.getVarDefinition().size());
+      Assert.assertEquals((2 + PredefinedVariableGenerator.NUM_PREDIFINED_VAR), mainTpd.getVarDefinition().size());
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -875,13 +875,13 @@ public class TestVariableVariableDefinition {
       Assert.assertEquals("value", varDef.getValue().computeActualString());
       Assert.assertFalse(varDef.isImported());
       Assert.assertFalse(varDef.isDiamondInherit());
-      final VarDefinition varDef2 = mainTpd.getVarDefinition().get((1 + CompositeElementResolver.NUM_PREDIFINED_VAR));
+      final VarDefinition varDef2 = mainTpd.getVarDefinition().get((1 + PredefinedVariableGenerator.NUM_PREDIFINED_VAR));
       Assert.assertEquals("twiceInheritedVar", varDef2.getName());
       Assert.assertEquals("value", varDef2.getValue().computeActualString());
       Assert.assertEquals(1, varDef2.getImportedValues().size());
       Assert.assertTrue(varDef2.isImported());
       Assert.assertTrue(varDef2.isDiamondInherit());
-      Assert.assertEquals((2 + CompositeElementResolver.NUM_PREDIFINED_VAR), mainTpd.getVarDefinition().size());
+      Assert.assertEquals((2 + PredefinedVariableGenerator.NUM_PREDIFINED_VAR), mainTpd.getVarDefinition().size());
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }

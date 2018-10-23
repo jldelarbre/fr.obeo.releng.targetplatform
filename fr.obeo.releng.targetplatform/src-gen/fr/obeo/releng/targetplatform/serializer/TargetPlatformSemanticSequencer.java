@@ -185,7 +185,7 @@ public class TargetPlatformSemanticSequencer extends AbstractDelegatingSemanticS
 	
 	/**
 	 * Constraint:
-	 *     (name=ID value=CompositeString)
+	 *     (constant?='const'? name=ID value=CompositeString)
 	 */
 	protected void sequence_VarDefinition(EObject context, VarDefinition semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

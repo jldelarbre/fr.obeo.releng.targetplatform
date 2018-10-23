@@ -170,36 +170,44 @@ public class TargetPlatformGrammarAccess extends AbstractGrammarElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "VarDefinition");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Keyword cDefineKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cNameIDTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
-		private final Keyword cEqualsSignKeyword_2 = (Keyword)cGroup.eContents().get(2);
-		private final Assignment cValueAssignment_3 = (Assignment)cGroup.eContents().get(3);
-		private final RuleCall cValueCompositeStringParserRuleCall_3_0 = (RuleCall)cValueAssignment_3.eContents().get(0);
+		private final Assignment cConstantAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final Keyword cConstantConstKeyword_1_0 = (Keyword)cConstantAssignment_1.eContents().get(0);
+		private final Assignment cNameAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cNameIDTerminalRuleCall_2_0 = (RuleCall)cNameAssignment_2.eContents().get(0);
+		private final Keyword cEqualsSignKeyword_3 = (Keyword)cGroup.eContents().get(3);
+		private final Assignment cValueAssignment_4 = (Assignment)cGroup.eContents().get(4);
+		private final RuleCall cValueCompositeStringParserRuleCall_4_0 = (RuleCall)cValueAssignment_4.eContents().get(0);
 		
 		//VarDefinition:
-		//	"define" name=ID "=" value=CompositeString;
+		//	"define" constant?="const"? name=ID "=" value=CompositeString;
 		public ParserRule getRule() { return rule; }
 
-		//"define" name=ID "=" value=CompositeString
+		//"define" constant?="const"? name=ID "=" value=CompositeString
 		public Group getGroup() { return cGroup; }
 
 		//"define"
 		public Keyword getDefineKeyword_0() { return cDefineKeyword_0; }
 
+		//constant?="const"?
+		public Assignment getConstantAssignment_1() { return cConstantAssignment_1; }
+
+		//"const"
+		public Keyword getConstantConstKeyword_1_0() { return cConstantConstKeyword_1_0; }
+
 		//name=ID
-		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
+		public Assignment getNameAssignment_2() { return cNameAssignment_2; }
 
 		//ID
-		public RuleCall getNameIDTerminalRuleCall_1_0() { return cNameIDTerminalRuleCall_1_0; }
+		public RuleCall getNameIDTerminalRuleCall_2_0() { return cNameIDTerminalRuleCall_2_0; }
 
 		//"="
-		public Keyword getEqualsSignKeyword_2() { return cEqualsSignKeyword_2; }
+		public Keyword getEqualsSignKeyword_3() { return cEqualsSignKeyword_3; }
 
 		//value=CompositeString
-		public Assignment getValueAssignment_3() { return cValueAssignment_3; }
+		public Assignment getValueAssignment_4() { return cValueAssignment_4; }
 
 		//CompositeString
-		public RuleCall getValueCompositeStringParserRuleCall_3_0() { return cValueCompositeStringParserRuleCall_3_0; }
+		public RuleCall getValueCompositeStringParserRuleCall_4_0() { return cValueCompositeStringParserRuleCall_4_0; }
 	}
 
 	public class CompositeStringElements extends AbstractParserRuleElementFinder {
@@ -782,7 +790,7 @@ public class TargetPlatformGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//VarDefinition:
-	//	"define" name=ID "=" value=CompositeString;
+	//	"define" constant?="const"? name=ID "=" value=CompositeString;
 	public VarDefinitionElements getVarDefinitionAccess() {
 		return pVarDefinition;
 	}

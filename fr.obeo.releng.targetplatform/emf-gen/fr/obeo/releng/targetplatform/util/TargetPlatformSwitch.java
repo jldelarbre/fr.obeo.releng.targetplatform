@@ -99,6 +99,12 @@ public class TargetPlatformSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case TargetPlatformPackage.VAR_DEFINITION_CONTAINER: {
+				VarDefinitionContainer varDefinitionContainer = (VarDefinitionContainer)theEObject;
+				T result = caseVarDefinitionContainer(varDefinitionContainer);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case TargetPlatformPackage.COMPOSITE_STRING: {
 				CompositeString compositeString = (CompositeString)theEObject;
 				T result = caseCompositeString(compositeString);
@@ -221,6 +227,21 @@ public class TargetPlatformSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseVarDefinition(VarDefinition object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Var Definition Container</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Var Definition Container</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseVarDefinitionContainer(VarDefinitionContainer object) {
 		return null;
 	}
 

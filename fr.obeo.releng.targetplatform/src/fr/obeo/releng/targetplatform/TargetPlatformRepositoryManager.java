@@ -70,6 +70,9 @@ public class TargetPlatformRepositoryManager extends MetadataRepositoryManager {
 				e1.printStackTrace();
 			}
 		}
+		if (result == null) {
+			result = new ProvisionException("Unable to load repository: " + location);
+		}
 		throw result;
 	}
 

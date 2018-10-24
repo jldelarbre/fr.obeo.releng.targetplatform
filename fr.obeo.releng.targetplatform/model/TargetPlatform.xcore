@@ -5,10 +5,13 @@ import com.google.common.base.Splitter
 import java.util.List
 import java.util.Locale
 import java.util.UUID
+import java.net.URI
 import org.eclipse.core.runtime.Platform
 import org.eclipse.emf.common.util.DelegatingEList$UnmodifiableEList
 import org.eclipse.jdt.launching.JavaRuntime
 import org.eclipse.xtext.nodemodel.impl.RootNode
+import org.eclipse.core.runtime.FileLocator
+import java.net.URL
 
 class TargetPlatform {
 	String name
@@ -186,7 +189,7 @@ class VarDefinition extends TargetContent {
 			}
 			else if (it instanceof VarCall) {
 				val calledVarDef = it.varName
-				if (calledVarDef.name === null) {
+				if (calledVarDef?.name === null) {
 					return false
 				}
 				if (calledVarDef.imported) {
@@ -355,6 +358,10 @@ class VarCall extends CompositeStringPart {
 	}
 	
 	op String getActualString(VarDefList alreadyCalledVariable) {
+		if (null === varName) {
+			return "";
+		}
+		
 		// Cycle detection at this stage
 		variableDefinitionCycleDetected = false;
 		if (varName.value !== null) {
@@ -375,11 +382,8 @@ class VarCall extends CompositeStringPart {
 		return varNameEffectiveValue
 	}
 	
-	op VarCall getCopy() {
-		val output = TargetPlatformFactory.eINSTANCE.createVarCall
-		output.varName = varName
-		return output
-	}
+	// Override in fr.obeo.releng.targetplatform.impl
+	op VarCall getCopy()
 	
 	op boolean isResolved() {
 		if (varName === null) {
@@ -431,12 +435,9 @@ class Location extends TargetContent {
 	Option[] options
 	contains IU[] ius opposite location
 	
-	op void resolveUri() {
-		if (uri !== null) {
-			return
-		}
-		uri = compositeUri.computeActualString
-	}
+	
+	// Override in fr.obeo.releng.targetplatform.impl
+	op void resolveUri()
 	
 	op void resolveIUsVersion() {
 		for (IU iu : ius) {
@@ -455,9 +456,8 @@ class IncludeDeclaration extends TargetContent {
 	
 	String importURI
 	
-	op void generateImportURI() {
-		importURI = compositeImportURI.computeActualString
-	}
+	// Override in fr.obeo.releng.targetplatform.impl
+	op void generateImportURI()
 	
 	op boolean isResolved() {
 		return compositeImportURI.isResolved

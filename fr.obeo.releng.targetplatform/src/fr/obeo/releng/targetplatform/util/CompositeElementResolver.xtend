@@ -12,6 +12,7 @@ import java.util.Set
 import java.util.stream.Collectors
 import org.eclipse.emf.common.util.EList
 import org.eclipse.swt.widgets.Display
+import java.util.stream.Collectors
 
 class CompositeElementResolver {
 	
@@ -169,6 +170,9 @@ class CompositeElementResolver {
 		]
 		.filter[
 			it.isWhollyDefinedByTarget
+		]
+		.filter[
+			!it.constant
 		]
 		.forEach[
 			val varDef4Overriding = it
@@ -361,7 +365,7 @@ class CompositeElementResolver {
 		val varCallFromImpVar = newHashSet()
 		for (varDef : targetContent) {
 			if (varDef instanceof VarDefinition) {
-				if (varCall.varName.name == varDef.name) {
+				if (varCall.varName?.name == varDef.name) {
 					varCall.originalVarName = varCall.varName
 					varCall.varName = varDef
 					if (varDef.imported) {

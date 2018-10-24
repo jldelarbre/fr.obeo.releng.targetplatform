@@ -16,9 +16,11 @@ class PredefinedVariableGenerator {
 	public static final String CST_TPD_FILENAME_NO_EXT = "tpdFileNameNoExtension"
 	public static final String CST_ABS_TPD_URI         = "absoluteTpdUri"
 	public static final String CST_ABS_TPD_PATH        = "absoluteTpdPath"
+	public static final String CST_ABS_TPD_DEVICE_PATH = "absoluteTpdDevicePath"
 	public static final String CST_TPD_DIR             = "tpdDir"
 	public static final String CST_ABS_TPD_DIR         = "absoluteTpdDir"
-	public static final int NUM_PREDIFINED_VAR = 9
+	public static final String CST_ABS_TPD_DEVICE_DIR  = "absoluteTpdDeviceDir"
+	public static final int NUM_PREDIFINED_VAR = 11
 	
 	public def createPreDefinedVariables(TargetPlatform targetPlatform) {
 		createPredefinedVariable(targetPlatform, CST_USER_DIR, System.getProperty("user.home"))
@@ -36,6 +38,7 @@ class PredefinedVariableGenerator {
 		val absoluteTpdPathVarValue = convertToAbsoluteUri(tpdPathVarValue)
 		createPredefinedVariable(targetPlatform, CST_ABS_TPD_URI, absoluteTpdPathVarValue.toString)
 		createPredefinedVariable(targetPlatform, CST_ABS_TPD_PATH, absoluteTpdPathVarValue.path)
+		createPredefinedVariable(targetPlatform, CST_ABS_TPD_DEVICE_PATH, absoluteTpdPathVarValue.devicePath)
 		val lastIndexTpdDir = tpdPathVarValue.path.toString.lastIndexOf("/")
 		if (lastIndexTpdDir != -1) {
 			val tpdDir = tpdPathVarValue.path.toString.substring(0, lastIndexTpdDir)
@@ -45,6 +48,11 @@ class PredefinedVariableGenerator {
 		if (lastIndexAbsTpdDir != -1) {
 			val absoluteTpdDir = absoluteTpdPathVarValue.path.toString.substring(0, lastIndexAbsTpdDir)
 			createPredefinedVariable(targetPlatform, CST_ABS_TPD_DIR, absoluteTpdDir)
+		}
+		val lastIndexAbsTpdDeviceDir = absoluteTpdPathVarValue.devicePath.toString.lastIndexOf("/")
+		if (lastIndexAbsTpdDeviceDir != -1) {
+			val absoluteTpdDeviceDir = absoluteTpdPathVarValue.devicePath.toString.substring(0, lastIndexAbsTpdDeviceDir)
+			createPredefinedVariable(targetPlatform, CST_ABS_TPD_DEVICE_DIR, absoluteTpdDeviceDir)
 		}
 	}
 	
@@ -73,6 +81,8 @@ class PredefinedVariableGenerator {
 			varDefinition.name.equals(CST_ABS_TPD_URI) ||
 			varDefinition.name.equals(CST_ABS_TPD_PATH) ||
 			varDefinition.name.equals(CST_TPD_DIR) ||
+			varDefinition.name.equals(CST_ABS_TPD_DEVICE_PATH) ||
+			varDefinition.name.equals(CST_ABS_TPD_DEVICE_DIR) ||
 			varDefinition.name.equals(CST_ABS_TPD_DIR)) {
 			return true
 		}

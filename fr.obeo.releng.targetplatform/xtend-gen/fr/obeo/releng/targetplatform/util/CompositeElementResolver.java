@@ -13,7 +13,6 @@ import fr.obeo.releng.targetplatform.VarDefinition;
 import fr.obeo.releng.targetplatform.util.ImportVariableManager;
 import fr.obeo.releng.targetplatform.util.LocationIndexBuilder;
 import fr.obeo.releng.targetplatform.util.PredefinedVariableGenerator;
-import fr.obeo.releng.targetplatform.util.ReferenceResolvingErrorClearer;
 import fr.obeo.releng.targetplatform.util.TargetReloader;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -22,7 +21,6 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Conversions;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
@@ -63,14 +61,6 @@ public class CompositeElementResolver {
       }
     };
     importedTargetPlatforms.forEach(_function);
-    this.cleanReferenceResolvingError(targetPlatform);
-  }
-  
-  private void cleanReferenceResolvingError(final TargetPlatform targetPlatform) {
-    String _string = targetPlatform.eResource().getURI().toString();
-    String _varCallFromOnlyImportedVariable = targetPlatform.getVarCallFromOnlyImportedVariable();
-    final ReferenceResolvingErrorClearer referenceResolvingErrorClearer = new ReferenceResolvingErrorClearer(_string, _varCallFromOnlyImportedVariable);
-    Display.getDefault().asyncExec(referenceResolvingErrorClearer);
   }
   
   private void overrideVariableDefinition(final TargetPlatform targetPlatform) {
@@ -509,7 +499,11 @@ public class CompositeElementResolver {
       final HashSet<String> varCallFromImpVar = CollectionLiterals.<String>newHashSet();
       for (final TargetContent varDef : targetContent) {
         if ((varDef instanceof VarDefinition)) {
-          String _name = varCall.getVarName().getName();
+          VarDefinition _varName = varCall.getVarName();
+          String _name = null;
+          if (_varName!=null) {
+            _name=_varName.getName();
+          }
           String _name_1 = ((VarDefinition)varDef).getName();
           boolean _equals = Objects.equal(_name, _name_1);
           if (_equals) {

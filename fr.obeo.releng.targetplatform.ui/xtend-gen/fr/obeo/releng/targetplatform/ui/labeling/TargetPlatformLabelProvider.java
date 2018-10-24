@@ -138,7 +138,11 @@ public class TargetPlatformLabelProvider extends DefaultEObjectLabelProvider {
   }
   
   public String text(final VarCall object) {
-    String _name = object.getVarName().getName();
+    VarDefinition _varName = object.getVarName();
+    String _name = null;
+    if (_varName!=null) {
+      _name=_varName.getName();
+    }
     String _plus = ("${" + _name);
     return (_plus + "}");
   }

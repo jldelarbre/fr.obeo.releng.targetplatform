@@ -557,7 +557,10 @@ public class VarDefinitionImpl extends MinimalEObjectImpl.Container implements V
 				else {
 					if ((it instanceof VarCall)) {
 						final VarDefinition calledVarDef = ((VarCall)it).getVarName();
-						String _name = calledVarDef.getName();
+						String _name = null;
+						if (calledVarDef!=null) {
+							_name=calledVarDef.getName();
+						}
 						boolean _tripleEquals = (_name == null);
 						if (_tripleEquals) {
 							return Boolean.valueOf(false);

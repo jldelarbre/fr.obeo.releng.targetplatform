@@ -250,7 +250,9 @@ public class IncludeDeclarationImpl extends MinimalEObjectImpl.Container impleme
 	 * @generated
 	 */
 	public void generateImportURI() {
-		this.setImportURI(this.getCompositeImportURI().computeActualString());
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
 	}
 
 	/**

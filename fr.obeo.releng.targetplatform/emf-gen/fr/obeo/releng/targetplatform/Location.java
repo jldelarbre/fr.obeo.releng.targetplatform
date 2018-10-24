@@ -142,7 +142,7 @@ public interface Location extends TargetContent {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='&lt;%java.lang.String%&gt; _uri = this.getUri();\nboolean _tripleNotEquals = (_uri != null);\nif (_tripleNotEquals)\n{\n\treturn;\n}\nthis.setUri(this.getCompositeUri().computeActualString());'"
+	 * @model
 	 * @generated
 	 */
 	void resolveUri();

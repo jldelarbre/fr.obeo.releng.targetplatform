@@ -76,7 +76,7 @@ public class TestValidation {
       _builder.append("target \"a target platform\"");
       _builder.newLine();
       _builder.newLine();
-      _builder.append("location \"my location URI\" {");
+      _builder.append("location \"my_location_URI\" {");
       _builder.newLine();
       _builder.append("\t");
       _builder.append("with source, allEnvironments, requirements, configurePhase");
@@ -96,7 +96,7 @@ public class TestValidation {
           EObject _sourceEObject = diag.getSourceEObject();
           Assert.assertTrue((_sourceEObject instanceof Location));
           EObject _sourceEObject_1 = diag.getSourceEObject();
-          Assert.assertEquals("my location URI", ((Location) _sourceEObject_1).getUri());
+          Assert.assertEquals("my_location_URI", ((Location) _sourceEObject_1).getUri());
           Assert.assertEquals(TargetPlatformValidator.CHECK__OPTIONS_SELF_EXCLUDING_ALL_ENV_REQUIRED, 
             diag.getIssueCode());
         }

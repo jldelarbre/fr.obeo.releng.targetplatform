@@ -5,13 +5,10 @@ import com.google.common.base.Splitter
 import java.util.List
 import java.util.Locale
 import java.util.UUID
-import java.net.URI
 import org.eclipse.core.runtime.Platform
 import org.eclipse.emf.common.util.DelegatingEList$UnmodifiableEList
 import org.eclipse.jdt.launching.JavaRuntime
 import org.eclipse.xtext.nodemodel.impl.RootNode
-import org.eclipse.core.runtime.FileLocator
-import java.net.URL
 
 class TargetPlatform {
 	String name
@@ -21,8 +18,6 @@ class TargetPlatform {
 	// A target could be modified when resolving composite elements or by importing variable from included target
 	// Used to determine if weather or not we have to force reload the target
 	boolean modified = "false"
-	
-	String varCallFromOnlyImportedVariable = ""
 	
 	contains VarDefinitionContainer preDefinedVarContainer
 	

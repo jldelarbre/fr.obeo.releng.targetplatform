@@ -161,9 +161,6 @@ class CompositeElementResolver {
 		.filter[
 			it.isWhollyDefinedByTarget
 		]
-		.filter[
-			!it.constant
-		]
 		.forEach[
 			val varDef4Overriding = it
 			val varDef4OverridingName = varDef4Overriding.name

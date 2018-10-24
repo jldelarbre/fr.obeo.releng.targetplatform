@@ -89,7 +89,7 @@ class TargetPlatformLabelProvider extends DefaultEObjectLabelProvider {
 			compositeElementResolver.resolveCompositeElements(object.eContainer as TargetPlatform)
 			object.generateImportURI
 		}
-		ss.append(object.importURI)
+		ss.append(object.compositeImportURI.computeActualString + " - " + object.importURI)
 		ss
 	}
 	

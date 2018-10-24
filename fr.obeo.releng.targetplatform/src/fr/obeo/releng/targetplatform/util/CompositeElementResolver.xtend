@@ -11,8 +11,6 @@ import java.util.List
 import java.util.Set
 import java.util.stream.Collectors
 import org.eclipse.emf.common.util.EList
-import org.eclipse.swt.widgets.Display
-import java.util.stream.Collectors
 
 class CompositeElementResolver {
 	
@@ -43,14 +41,6 @@ class CompositeElementResolver {
 		importedTargetPlatforms.forEach[
 			resolveLocations(it)
 		]
-		
-		cleanReferenceResolvingError(targetPlatform)
-	}
-	
-	private def cleanReferenceResolvingError(TargetPlatform targetPlatform) {
-		val referenceResolvingErrorClearer = new ReferenceResolvingErrorClearer(targetPlatform.eResource.URI.toString,
-																				targetPlatform.varCallFromOnlyImportedVariable)
-		Display.^default.asyncExec(referenceResolvingErrorClearer)
 	}
 	
 	private def overrideVariableDefinition(TargetPlatform targetPlatform) {

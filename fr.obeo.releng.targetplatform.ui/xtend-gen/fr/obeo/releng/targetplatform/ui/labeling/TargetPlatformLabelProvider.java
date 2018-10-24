@@ -120,7 +120,11 @@ public class TargetPlatformLabelProvider extends DefaultEObjectLabelProvider {
         this.compositeElementResolver.resolveCompositeElements(((TargetPlatform) _eContainer));
         object.generateImportURI();
       }
-      ss.append(object.getImportURI());
+      String _computeActualString = object.getCompositeImportURI().computeActualString();
+      String _plus = (_computeActualString + " - ");
+      String _importURI_1 = object.getImportURI();
+      String _plus_1 = (_plus + _importURI_1);
+      ss.append(_plus_1);
       _xblockexpression = ss;
     }
     return _xblockexpression;

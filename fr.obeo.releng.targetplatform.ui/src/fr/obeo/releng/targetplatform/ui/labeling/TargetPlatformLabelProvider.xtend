@@ -130,6 +130,10 @@ class TargetPlatformLabelProvider extends DefaultEObjectLabelProvider {
 	}
 	
 	def text(VarDefinition object) {
+		val targetPlatform = object.eContainer as TargetPlatform
+		if (targetPlatform.compositeElementsResolved == false) {
+			compositeElementResolver.resolveCompositeElements(targetPlatform)
+		}
 		object.name + " - (effective value = " + object.effectiveValue + ")"
 	}
 	

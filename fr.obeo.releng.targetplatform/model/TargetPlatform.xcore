@@ -9,6 +9,8 @@ import org.eclipse.core.runtime.Platform
 import org.eclipse.emf.common.util.DelegatingEList$UnmodifiableEList
 import org.eclipse.jdt.launching.JavaRuntime
 import org.eclipse.xtext.nodemodel.impl.RootNode
+import org.eclipse.core.runtime.Status
+import org.eclipse.core.runtime.IStatus
 
 class TargetPlatform {
 	String name
@@ -251,8 +253,6 @@ class VarDefinition extends TargetContent {
 	 * define variable has a self recursive definition. */
 	op String toString() {
 		
-		checkVarCycle
-		
 		var result = new StringBuffer(super.toString());
 		result.append(" (name: ")
 		result.append(name)
@@ -260,15 +260,6 @@ class VarDefinition extends TargetContent {
 		result.append(overrideValue)
 		result.append(", variableDefinitionCycleDetected: ")
 		result.append(variableDefinitionCycleDetected)
-		result.append(", varDefCycle: ")
-		
-		if (!variableDefinitionCycleDetected) {
-			result.append(varDefCycle)
-		}
-		else {
-			result.append("erroneous cyclic definition")
-		}
-		
 		result.append(')')
 		
 		return result.toString()
@@ -354,6 +345,17 @@ class VarCall extends CompositeStringPart {
 	
 	op String getActualString(VarDefList alreadyCalledVariable) {
 		if (null === varName) {
+			var context = "Context: "
+			var superContext = this.eContainer
+			while (superContext !== null) {
+				context += superContext.toString + " / "
+				superContext = superContext.eContainer
+			}
+			
+			val message = "The VarCall.varName can not be resolved by EMF.\n" + context;
+			val e = new NullPointerException(message);
+			TargetPlatformBundleActivator.getInstance().getLog()
+					.log(new Status(IStatus.ERROR, TargetPlatformBundleActivator.PLUGIN_ID, message, e));
 			return "";
 		}
 		

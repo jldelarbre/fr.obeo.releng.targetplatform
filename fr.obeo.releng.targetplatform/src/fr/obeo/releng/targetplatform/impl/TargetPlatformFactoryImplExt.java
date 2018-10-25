@@ -3,6 +3,7 @@ package fr.obeo.releng.targetplatform.impl;
 import fr.obeo.releng.targetplatform.IU;
 import fr.obeo.releng.targetplatform.IncludeDeclaration;
 import fr.obeo.releng.targetplatform.Location;
+import fr.obeo.releng.targetplatform.TargetPlatform;
 import fr.obeo.releng.targetplatform.VarCall;
 import fr.obeo.releng.targetplatform.impl.TargetPlatformFactoryImpl;
 
@@ -30,5 +31,10 @@ public class TargetPlatformFactoryImplExt extends TargetPlatformFactoryImpl {
 	@Override
 	public VarCall createVarCall() {
 		return new VarCallImplExt();
+	}
+	
+	@Override
+	public TargetPlatform createTargetPlatform() {
+		return TargetPlatformImplExt.build();
 	}
 }

@@ -66,7 +66,7 @@ class TestValidation {
 		val targetPlatform = parser.parse('''
 			target "a target platform"
 
-			location "my location URI" {
+			location "my_location_URI" {
 				with source, allEnvironments, requirements, configurePhase
 				org.eclipse.emf.sdk.feature.group;version="[2.9.0,3.0.0)"
 			}
@@ -76,7 +76,7 @@ class TestValidation {
 		tester.validator.checkAllEnvAndRequiredAreSelfExluding(fisrtLocation)
 		for (diag: tester.diagnose.allDiagnostics.filter(typeof(AbstractValidationDiagnostic))) {
 			assertTrue(diag.sourceEObject instanceof Location)
-			assertEquals("my location URI", (diag.sourceEObject as Location).uri)
+			assertEquals("my_location_URI", (diag.sourceEObject as Location).uri)
 			assertEquals(TargetPlatformValidator::CHECK__OPTIONS_SELF_EXCLUDING_ALL_ENV_REQUIRED, 
 				diag.issueCode
 			)

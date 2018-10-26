@@ -46,7 +46,7 @@ class TestOverrideVariableDefinition {
 	
 	@Test
 	def testVarDefinitionOverride1() {
-		val String[] args = #["overrideDefTarget.tpd", ImportVariableManager.OVERRIDE, "var1=overrideVal1", "var3=override val 3"]
+		val String[] args = #["overrideDefTarget.tpd", ImportVariableManager.OVERRIDE, "var1=overrideVal1", "var3=override_val_3"]
 		importVariableManager.processCommandLineArguments(args)
 		
 		val resourceSet = resourceSetProvider.get
@@ -65,7 +65,7 @@ class TestOverrideVariableDefinition {
 		assertEquals(0, locationIndex.size)
 		
 		val include = overrideDefTarget.includes.head
-		assertEquals("overrideVal1val2override val 3", include.importURI)
+		assertEquals("overrideVal1val2override_val_3", include.importURI)
 		
 		importVariableManager.clear
 		

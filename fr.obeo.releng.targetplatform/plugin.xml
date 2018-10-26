@@ -23,5 +23,12 @@
         </run>
      </application>
   </extension>
+  <extension
+        point="org.eclipse.emf.ecore.factory_override">
+     <factory
+           class="fr.obeo.releng.targetplatform.impl.TargetPlatformFactoryImplExt"
+           uri="fr.obeo.releng.targetplatform">
+     </factory>
+  </extension>
 
 </plugin>

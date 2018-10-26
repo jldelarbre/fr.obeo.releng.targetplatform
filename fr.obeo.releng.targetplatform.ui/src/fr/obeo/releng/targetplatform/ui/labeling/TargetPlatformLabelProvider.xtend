@@ -102,7 +102,7 @@ class TargetPlatformLabelProvider extends DefaultEObjectLabelProvider {
 	}
 	
 	def text(VarCall object) {
-		"${" + object.varName.name + "}"
+		"${" + object.varName?.name + "}"
 	}
 	
 	def image(Option object) {

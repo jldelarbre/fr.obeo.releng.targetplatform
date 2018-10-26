@@ -22,6 +22,7 @@ import java.util.List
 import java.util.Set
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.scoping.impl.ImportUriResolver
+import org.eclipse.emf.common.util.URI
 
 class LocationIndexBuilder {
 	
@@ -151,7 +152,10 @@ class LocationIndexBuilder {
 	def TargetPlatform getImportedTargetPlatform(Resource context, IncludeDeclaration include) {
 		var TargetPlatform ret = null;
 		include.generateImportURI
-		val resource = ResourceUtil.getResource(context, resolver.resolve(include));
+		var resource = ResourceUtil.getResource(context, resolver.resolve(include));
+		if (null === resource) {
+			resource = context.resourceSet.getResource(URI.createURI(resolver.resolve(include)), false)
+		}
 		var root = resource?.getContents()?.head;
 		if (root instanceof TargetPlatform) {
 			ret = root as TargetPlatform;

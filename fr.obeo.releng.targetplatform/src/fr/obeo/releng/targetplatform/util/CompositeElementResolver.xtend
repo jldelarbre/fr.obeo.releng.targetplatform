@@ -251,34 +251,8 @@ class CompositeElementResolver {
 				}
 			]
 		targetContent.addAll(toBeAddedDefine)
-		val varCallFromImpVar = updateVariableDefinition(targetContent)
-		updateVarCallFromImportedVar(targetPlatform, varCallFromImpVar)
+		updateVariableDefinition(targetContent)
 		targetPlatform.modified = true
-	}
-	
-	/* Purpose of updateVarCallFromImportedVar
-	 * see TestVariableVariableDefinition.testExtractVarCallFromOnlyImportedVariable
-	 * 
-	 * Consider the following case:
-	 * 
-	 * maintTpd.tpd
-	 * ============
-	 * target "mainTpd"
-	 * include "subTpd.tpd"
-	 * define var = ${impVar}
-	 * 
-	 * subTpd.tpd
-	 * ==========
-	 * target "subTpd"
-	 * define impVar = "value"
-	 * 
-	 * Inside mainTpd, we have the varCall ${impVar}, XTExt does not know how to manage variable call from imported target.
-	 * So it raises an error in eclipse editor. It is just a displayed warning and it does not disturb the generation of target.
-	 * 
-	 * To make a clearer editor display, we list all this case to clean them with method:
-	 */
-	private def updateVarCallFromImportedVar(TargetPlatform targetPlatform, Set<String> varCallFromImpVar) {
-		targetPlatform.varCallFromOnlyImportedVariable = varCallFromImpVar.toString.substring(1, varCallFromImpVar.toString.length - 1)
 	}
 	
 	private def VarDefinition searchAlreadyIncludeVarDef(VarDefinition varDef2Find, HashSet<VarDefinition> alreadyAddedVarDefs) {
@@ -332,36 +306,28 @@ class CompositeElementResolver {
 	 * the value "value2Sub" instead of "value2" => We have to update the newly created var2 in
 	 * "mainTpd" to make it refer to var2b of "mainTpd"
 	 */
-	private def Set<String> updateVariableDefinition(EList<TargetContent> targetContent) {
-		val varCallFromImpVar = newHashSet()
+	private def updateVariableDefinition(EList<TargetContent> targetContent) {
 		for (varDef : targetContent) {
 			if (varDef instanceof VarDefinition) {
 				for (stringPart : varDef.value.stringParts) {
 					if (stringPart instanceof VarCall) {
 						var varCall = stringPart as VarCall
-						val tmpVarCallFromImpVar = updateVariableCall(varCall, targetContent)
-						varCallFromImpVar.addAll(tmpVarCallFromImpVar)
+						updateVariableCall(varCall, targetContent)
 					}
 				}
 			}
 		}
-		varCallFromImpVar
 	}
 	
-	private def Set<String> updateVariableCall(VarCall varCall, EList<TargetContent> targetContent) {
-		val varCallFromImpVar = newHashSet()
+	private def updateVariableCall(VarCall varCall, EList<TargetContent> targetContent) {
 		for (varDef : targetContent) {
 			if (varDef instanceof VarDefinition) {
 				if (varCall.varName?.name == varDef.name) {
 					varCall.originalVarName = varCall.varName
 					varCall.varName = varDef
-					if (varDef.imported) {
-						varCallFromImpVar.add(varDef.name)
-					}
 				}
 			}
 		}
-		varCallFromImpVar
 	}
 	
 	def List<VarDefinition> checkVariableDefinitionCycle(VarDefinition varDef) {

@@ -56,7 +56,7 @@ public class TestOverrideVariableDefinition {
   @Test
   public void testVarDefinitionOverride1() {
     try {
-      final String[] args = { "overrideDefTarget.tpd", ImportVariableManager.OVERRIDE, "var1=overrideVal1", "var3=override val 3" };
+      final String[] args = { "overrideDefTarget.tpd", ImportVariableManager.OVERRIDE, "var1=overrideVal1", "var3=override_val_3" };
       this.importVariableManager.processCommandLineArguments(args);
       final XtextResourceSet resourceSet = this.resourceSetProvider.get();
       StringConcatenation _builder = new StringConcatenation();
@@ -75,7 +75,7 @@ public class TestOverrideVariableDefinition {
       final ListMultimap<String, Location> locationIndex = this.indexBuilder.getLocationIndex(overrideDefTarget);
       Assert.assertEquals(0, locationIndex.size());
       final IncludeDeclaration include = IterableExtensions.<IncludeDeclaration>head(overrideDefTarget.getIncludes());
-      Assert.assertEquals("overrideVal1val2override val 3", include.getImportURI());
+      Assert.assertEquals("overrideVal1val2override_val_3", include.getImportURI());
       this.importVariableManager.clear();
       TestOverrideVariableDefinition.preferenceSettings.setMaxRetry(PreferenceSettings.MAX_RETRIES);
       return;

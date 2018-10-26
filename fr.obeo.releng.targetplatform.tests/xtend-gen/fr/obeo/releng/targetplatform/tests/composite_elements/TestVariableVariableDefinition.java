@@ -14,14 +14,12 @@ import fr.obeo.releng.targetplatform.tests.util.CustomTargetPlatformInjectorProv
 import fr.obeo.releng.targetplatform.util.LocationIndexBuilder;
 import fr.obeo.releng.targetplatform.util.PredefinedVariableGenerator;
 import java.util.LinkedList;
-import java.util.List;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.junit4.InjectWith;
 import org.eclipse.xtext.junit4.XtextRunner;
 import org.eclipse.xtext.junit4.util.ParseHelper;
 import org.eclipse.xtext.resource.XtextResourceSet;
-import org.eclipse.xtext.xbase.lib.Conversions;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.junit.Assert;
@@ -882,81 +880,6 @@ public class TestVariableVariableDefinition {
       Assert.assertTrue(varDef2.isImported());
       Assert.assertTrue(varDef2.isDiamondInherit());
       Assert.assertEquals((2 + PredefinedVariableGenerator.NUM_PREDIFINED_VAR), mainTpd.getVarDefinition().size());
-    } catch (Throwable _e) {
-      throw Exceptions.sneakyThrow(_e);
-    }
-  }
-  
-  @Test
-  public void testExtractVarCallFromOnlyImportedVariable() {
-    try {
-      final XtextResourceSet resourceSet = this.resourceSetProvider.get();
-      StringConcatenation _builder = new StringConcatenation();
-      _builder.append("target \"mainTpd\"");
-      _builder.newLine();
-      _builder.append("include \"subTpd1.tpd\"");
-      _builder.newLine();
-      _builder.append("define localVar = \"myVar\"");
-      _builder.newLine();
-      _builder.append("define overrideVar = \"overrideVarVal\"");
-      _builder.newLine();
-      _builder.append("define var1 = ${impVar}");
-      _builder.newLine();
-      _builder.append("define var2 = ${impVar1} + ${impVar2}");
-      _builder.newLine();
-      _builder.append("define var3 = ${localVar}");
-      _builder.newLine();
-      _builder.append("define var4 = ${overrideVar}");
-      _builder.newLine();
-      _builder.append("define var5 = ${undefinedVar}");
-      _builder.newLine();
-      final TargetPlatform mainTpd = this.parser.parse(_builder, URI.createURI("tmp:/mainTpd.tpd"), resourceSet);
-      StringConcatenation _builder_1 = new StringConcatenation();
-      _builder_1.append("target \"subTpd1\"");
-      _builder_1.newLine();
-      _builder_1.append("include \"subSubTpd.tpd\"");
-      _builder_1.newLine();
-      _builder_1.append("define impVar = \"value\"");
-      _builder_1.newLine();
-      _builder_1.append("define impVar1 = \"value1\"");
-      _builder_1.newLine();
-      _builder_1.append("define overrideVar = \"overrideVarValOrig\"");
-      _builder_1.newLine();
-      this.parser.parse(_builder_1, URI.createURI("tmp:/subTpd1.tpd"), resourceSet);
-      StringConcatenation _builder_2 = new StringConcatenation();
-      _builder_2.append("target \"subSubTpd\"");
-      _builder_2.newLine();
-      _builder_2.append("define impVar2 = \"value2\"");
-      _builder_2.newLine();
-      this.parser.parse(_builder_2, URI.createURI("tmp:/subSubTpd.tpd"), resourceSet);
-      final ListMultimap<String, Location> locationIndex = this.indexBuilder.getLocationIndex(mainTpd);
-      Assert.assertEquals(0, locationIndex.size());
-      Assert.assertEquals(3, ((List<String>)Conversions.doWrapArray(mainTpd.getVarCallFromOnlyImportedVariable().split(", "))).size());
-      Assert.assertTrue(mainTpd.getVarCallFromOnlyImportedVariable().contains("impVar"));
-      Assert.assertTrue(mainTpd.getVarCallFromOnlyImportedVariable().contains("impVar1"));
-      Assert.assertTrue(mainTpd.getVarCallFromOnlyImportedVariable().contains("impVar2"));
-    } catch (Throwable _e) {
-      throw Exceptions.sneakyThrow(_e);
-    }
-  }
-  
-  @Test
-  public void testExtractVarCallFromOnlyImportedVariable_WithoutImport() {
-    try {
-      final XtextResourceSet resourceSet = this.resourceSetProvider.get();
-      StringConcatenation _builder = new StringConcatenation();
-      _builder.append("target \"mainTpd\"");
-      _builder.newLine();
-      _builder.append("define localVar = \"myVar\"");
-      _builder.newLine();
-      _builder.append("define var1 = ${impVar}");
-      _builder.newLine();
-      _builder.append("define var2 = ${localVar}");
-      _builder.newLine();
-      final TargetPlatform mainTpd = this.parser.parse(_builder, URI.createURI("tmp:/mainTpd.tpd"), resourceSet);
-      final ListMultimap<String, Location> locationIndex = this.indexBuilder.getLocationIndex(mainTpd);
-      Assert.assertEquals(0, locationIndex.size());
-      Assert.assertEquals("", mainTpd.getVarCallFromOnlyImportedVariable());
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }

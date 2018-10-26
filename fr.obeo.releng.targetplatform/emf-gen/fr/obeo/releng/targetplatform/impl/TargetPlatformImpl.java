@@ -50,7 +50,6 @@ import org.eclipse.xtext.xbase.lib.IterableExtensions;
  *   <li>{@link fr.obeo.releng.targetplatform.impl.TargetPlatformImpl#getName <em>Name</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.impl.TargetPlatformImpl#isCompositeElementsResolved <em>Composite Elements Resolved</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.impl.TargetPlatformImpl#isModified <em>Modified</em>}</li>
- *   <li>{@link fr.obeo.releng.targetplatform.impl.TargetPlatformImpl#getVarCallFromOnlyImportedVariable <em>Var Call From Only Imported Variable</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.impl.TargetPlatformImpl#getPreDefinedVarContainer <em>Pre Defined Var Container</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.impl.TargetPlatformImpl#getVarDef2OverrideInImportedTarget <em>Var Def2 Override In Imported Target</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.impl.TargetPlatformImpl#getContents <em>Contents</em>}</li>
@@ -123,26 +122,6 @@ public class TargetPlatformImpl extends MinimalEObjectImpl.Container implements 
 	 * @ordered
 	 */
 	protected boolean modified = MODIFIED_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getVarCallFromOnlyImportedVariable() <em>Var Call From Only Imported Variable</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getVarCallFromOnlyImportedVariable()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String VAR_CALL_FROM_ONLY_IMPORTED_VARIABLE_EDEFAULT = "";
-
-	/**
-	 * The cached value of the '{@link #getVarCallFromOnlyImportedVariable() <em>Var Call From Only Imported Variable</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getVarCallFromOnlyImportedVariable()
-	 * @generated
-	 * @ordered
-	 */
-	protected String varCallFromOnlyImportedVariable = VAR_CALL_FROM_ONLY_IMPORTED_VARIABLE_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getPreDefinedVarContainer() <em>Pre Defined Var Container</em>}' containment reference.
@@ -254,27 +233,6 @@ public class TargetPlatformImpl extends MinimalEObjectImpl.Container implements 
 		modified = newModified;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, TargetPlatformPackage.TARGET_PLATFORM__MODIFIED, oldModified, modified));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String getVarCallFromOnlyImportedVariable() {
-		return varCallFromOnlyImportedVariable;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setVarCallFromOnlyImportedVariable(String newVarCallFromOnlyImportedVariable) {
-		String oldVarCallFromOnlyImportedVariable = varCallFromOnlyImportedVariable;
-		varCallFromOnlyImportedVariable = newVarCallFromOnlyImportedVariable;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, TargetPlatformPackage.TARGET_PLATFORM__VAR_CALL_FROM_ONLY_IMPORTED_VARIABLE, oldVarCallFromOnlyImportedVariable, varCallFromOnlyImportedVariable));
 	}
 
 	/**
@@ -455,8 +413,6 @@ public class TargetPlatformImpl extends MinimalEObjectImpl.Container implements 
 				return isCompositeElementsResolved();
 			case TargetPlatformPackage.TARGET_PLATFORM__MODIFIED:
 				return isModified();
-			case TargetPlatformPackage.TARGET_PLATFORM__VAR_CALL_FROM_ONLY_IMPORTED_VARIABLE:
-				return getVarCallFromOnlyImportedVariable();
 			case TargetPlatformPackage.TARGET_PLATFORM__PRE_DEFINED_VAR_CONTAINER:
 				return getPreDefinedVarContainer();
 			case TargetPlatformPackage.TARGET_PLATFORM__VAR_DEF2_OVERRIDE_IN_IMPORTED_TARGET:
@@ -496,9 +452,6 @@ public class TargetPlatformImpl extends MinimalEObjectImpl.Container implements 
 			case TargetPlatformPackage.TARGET_PLATFORM__MODIFIED:
 				setModified((Boolean)newValue);
 				return;
-			case TargetPlatformPackage.TARGET_PLATFORM__VAR_CALL_FROM_ONLY_IMPORTED_VARIABLE:
-				setVarCallFromOnlyImportedVariable((String)newValue);
-				return;
 			case TargetPlatformPackage.TARGET_PLATFORM__PRE_DEFINED_VAR_CONTAINER:
 				setPreDefinedVarContainer((VarDefinitionContainer)newValue);
 				return;
@@ -531,9 +484,6 @@ public class TargetPlatformImpl extends MinimalEObjectImpl.Container implements 
 			case TargetPlatformPackage.TARGET_PLATFORM__MODIFIED:
 				setModified(MODIFIED_EDEFAULT);
 				return;
-			case TargetPlatformPackage.TARGET_PLATFORM__VAR_CALL_FROM_ONLY_IMPORTED_VARIABLE:
-				setVarCallFromOnlyImportedVariable(VAR_CALL_FROM_ONLY_IMPORTED_VARIABLE_EDEFAULT);
-				return;
 			case TargetPlatformPackage.TARGET_PLATFORM__PRE_DEFINED_VAR_CONTAINER:
 				setPreDefinedVarContainer((VarDefinitionContainer)null);
 				return;
@@ -561,8 +511,6 @@ public class TargetPlatformImpl extends MinimalEObjectImpl.Container implements 
 				return compositeElementsResolved != COMPOSITE_ELEMENTS_RESOLVED_EDEFAULT;
 			case TargetPlatformPackage.TARGET_PLATFORM__MODIFIED:
 				return modified != MODIFIED_EDEFAULT;
-			case TargetPlatformPackage.TARGET_PLATFORM__VAR_CALL_FROM_ONLY_IMPORTED_VARIABLE:
-				return VAR_CALL_FROM_ONLY_IMPORTED_VARIABLE_EDEFAULT == null ? varCallFromOnlyImportedVariable != null : !VAR_CALL_FROM_ONLY_IMPORTED_VARIABLE_EDEFAULT.equals(varCallFromOnlyImportedVariable);
 			case TargetPlatformPackage.TARGET_PLATFORM__PRE_DEFINED_VAR_CONTAINER:
 				return preDefinedVarContainer != null;
 			case TargetPlatformPackage.TARGET_PLATFORM__VAR_DEF2_OVERRIDE_IN_IMPORTED_TARGET:
@@ -599,8 +547,6 @@ public class TargetPlatformImpl extends MinimalEObjectImpl.Container implements 
 		result.append(compositeElementsResolved);
 		result.append(", modified: ");
 		result.append(modified);
-		result.append(", varCallFromOnlyImportedVariable: ");
-		result.append(varCallFromOnlyImportedVariable);
 		result.append(')');
 		return result.toString();
 	}

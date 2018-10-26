@@ -13,7 +13,6 @@ import fr.obeo.releng.targetplatform.VarDefinition;
 import fr.obeo.releng.targetplatform.util.ImportVariableManager;
 import fr.obeo.releng.targetplatform.util.LocationIndexBuilder;
 import fr.obeo.releng.targetplatform.util.PredefinedVariableGenerator;
-import fr.obeo.releng.targetplatform.util.ReferenceResolvingErrorClearer;
 import fr.obeo.releng.targetplatform.util.TargetReloader;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -22,7 +21,6 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Conversions;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
@@ -63,14 +61,6 @@ public class CompositeElementResolver {
       }
     };
     importedTargetPlatforms.forEach(_function);
-    this.cleanReferenceResolvingError(targetPlatform);
-  }
-  
-  private void cleanReferenceResolvingError(final TargetPlatform targetPlatform) {
-    String _string = targetPlatform.eResource().getURI().toString();
-    String _varCallFromOnlyImportedVariable = targetPlatform.getVarCallFromOnlyImportedVariable();
-    final ReferenceResolvingErrorClearer referenceResolvingErrorClearer = new ReferenceResolvingErrorClearer(_string, _varCallFromOnlyImportedVariable);
-    Display.getDefault().asyncExec(referenceResolvingErrorClearer);
   }
   
   private void overrideVariableDefinition(final TargetPlatform targetPlatform) {
@@ -366,38 +356,8 @@ public class CompositeElementResolver {
     };
     ImportedDefineFromSubTpd.forEach(_function);
     targetContent.addAll(toBeAddedDefine);
-    final Set<String> varCallFromImpVar = this.updateVariableDefinition(targetContent);
-    this.updateVarCallFromImportedVar(targetPlatform, varCallFromImpVar);
+    this.updateVariableDefinition(targetContent);
     targetPlatform.setModified(true);
-  }
-  
-  /**
-   * Purpose of updateVarCallFromImportedVar
-   * see TestVariableVariableDefinition.testExtractVarCallFromOnlyImportedVariable
-   * 
-   * Consider the following case:
-   * 
-   * maintTpd.tpd
-   * ============
-   * target "mainTpd"
-   * include "subTpd.tpd"
-   * define var = ${impVar}
-   * 
-   * subTpd.tpd
-   * ==========
-   * target "subTpd"
-   * define impVar = "value"
-   * 
-   * Inside mainTpd, we have the varCall ${impVar}, XTExt does not know how to manage variable call from imported target.
-   * So it raises an error in eclipse editor. It is just a displayed warning and it does not disturb the generation of target.
-   * 
-   * To make a clearer editor display, we list all this case to clean them with method:
-   */
-  private void updateVarCallFromImportedVar(final TargetPlatform targetPlatform, final Set<String> varCallFromImpVar) {
-    String _string = varCallFromImpVar.toString();
-    int _length = varCallFromImpVar.toString().length();
-    int _minus = (_length - 1);
-    targetPlatform.setVarCallFromOnlyImportedVariable(_string.substring(1, _minus));
   }
   
   private VarDefinition searchAlreadyIncludeVarDef(final VarDefinition varDef2Find, final HashSet<VarDefinition> alreadyAddedVarDefs) {
@@ -482,49 +442,36 @@ public class CompositeElementResolver {
    * the value "value2Sub" instead of "value2" => We have to update the newly created var2 in
    * "mainTpd" to make it refer to var2b of "mainTpd"
    */
-  private Set<String> updateVariableDefinition(final EList<TargetContent> targetContent) {
-    HashSet<String> _xblockexpression = null;
-    {
-      final HashSet<String> varCallFromImpVar = CollectionLiterals.<String>newHashSet();
-      for (final TargetContent varDef : targetContent) {
-        if ((varDef instanceof VarDefinition)) {
-          EList<CompositeStringPart> _stringParts = ((VarDefinition)varDef).getValue().getStringParts();
-          for (final CompositeStringPart stringPart : _stringParts) {
-            if ((stringPart instanceof VarCall)) {
-              VarCall varCall = ((VarCall) stringPart);
-              final Set<String> tmpVarCallFromImpVar = this.updateVariableCall(varCall, targetContent);
-              varCallFromImpVar.addAll(tmpVarCallFromImpVar);
-            }
+  private void updateVariableDefinition(final EList<TargetContent> targetContent) {
+    for (final TargetContent varDef : targetContent) {
+      if ((varDef instanceof VarDefinition)) {
+        EList<CompositeStringPart> _stringParts = ((VarDefinition)varDef).getValue().getStringParts();
+        for (final CompositeStringPart stringPart : _stringParts) {
+          if ((stringPart instanceof VarCall)) {
+            VarCall varCall = ((VarCall) stringPart);
+            this.updateVariableCall(varCall, targetContent);
           }
         }
       }
-      _xblockexpression = varCallFromImpVar;
     }
-    return _xblockexpression;
   }
   
-  private Set<String> updateVariableCall(final VarCall varCall, final EList<TargetContent> targetContent) {
-    HashSet<String> _xblockexpression = null;
-    {
-      final HashSet<String> varCallFromImpVar = CollectionLiterals.<String>newHashSet();
-      for (final TargetContent varDef : targetContent) {
-        if ((varDef instanceof VarDefinition)) {
-          String _name = varCall.getVarName().getName();
-          String _name_1 = ((VarDefinition)varDef).getName();
-          boolean _equals = Objects.equal(_name, _name_1);
-          if (_equals) {
-            varCall.setOriginalVarName(varCall.getVarName());
-            varCall.setVarName(((VarDefinition)varDef));
-            boolean _isImported = ((VarDefinition)varDef).isImported();
-            if (_isImported) {
-              varCallFromImpVar.add(((VarDefinition)varDef).getName());
-            }
-          }
+  private void updateVariableCall(final VarCall varCall, final EList<TargetContent> targetContent) {
+    for (final TargetContent varDef : targetContent) {
+      if ((varDef instanceof VarDefinition)) {
+        VarDefinition _varName = varCall.getVarName();
+        String _name = null;
+        if (_varName!=null) {
+          _name=_varName.getName();
+        }
+        String _name_1 = ((VarDefinition)varDef).getName();
+        boolean _equals = Objects.equal(_name, _name_1);
+        if (_equals) {
+          varCall.setOriginalVarName(varCall.getVarName());
+          varCall.setVarName(((VarDefinition)varDef));
         }
       }
-      _xblockexpression = varCallFromImpVar;
     }
-    return _xblockexpression;
   }
   
   public List<VarDefinition> checkVariableDefinitionCycle(final VarDefinition varDef) {

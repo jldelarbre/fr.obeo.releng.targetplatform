@@ -98,22 +98,13 @@ public interface TargetPlatformPackage extends EPackage {
 	int TARGET_PLATFORM__MODIFIED = 2;
 
 	/**
-	 * The feature id for the '<em><b>Var Call From Only Imported Variable</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TARGET_PLATFORM__VAR_CALL_FROM_ONLY_IMPORTED_VARIABLE = 3;
-
-	/**
 	 * The feature id for the '<em><b>Pre Defined Var Container</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TARGET_PLATFORM__PRE_DEFINED_VAR_CONTAINER = 4;
+	int TARGET_PLATFORM__PRE_DEFINED_VAR_CONTAINER = 3;
 
 	/**
 	 * The feature id for the '<em><b>Var Def2 Override In Imported Target</b></em>' containment reference list.
@@ -122,7 +113,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TARGET_PLATFORM__VAR_DEF2_OVERRIDE_IN_IMPORTED_TARGET = 5;
+	int TARGET_PLATFORM__VAR_DEF2_OVERRIDE_IN_IMPORTED_TARGET = 4;
 
 	/**
 	 * The feature id for the '<em><b>Contents</b></em>' containment reference list.
@@ -131,7 +122,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TARGET_PLATFORM__CONTENTS = 6;
+	int TARGET_PLATFORM__CONTENTS = 5;
 
 	/**
 	 * The feature id for the '<em><b>Includes</b></em>' reference list.
@@ -140,7 +131,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TARGET_PLATFORM__INCLUDES = 7;
+	int TARGET_PLATFORM__INCLUDES = 6;
 
 	/**
 	 * The feature id for the '<em><b>Options</b></em>' attribute list.
@@ -149,7 +140,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TARGET_PLATFORM__OPTIONS = 8;
+	int TARGET_PLATFORM__OPTIONS = 7;
 
 	/**
 	 * The feature id for the '<em><b>Locations</b></em>' reference list.
@@ -158,7 +149,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TARGET_PLATFORM__LOCATIONS = 9;
+	int TARGET_PLATFORM__LOCATIONS = 8;
 
 	/**
 	 * The feature id for the '<em><b>Environment</b></em>' reference.
@@ -167,7 +158,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TARGET_PLATFORM__ENVIRONMENT = 10;
+	int TARGET_PLATFORM__ENVIRONMENT = 9;
 
 	/**
 	 * The feature id for the '<em><b>Var Definition</b></em>' reference list.
@@ -176,7 +167,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TARGET_PLATFORM__VAR_DEFINITION = 11;
+	int TARGET_PLATFORM__VAR_DEFINITION = 10;
 
 	/**
 	 * The number of structural features of the '<em>Target Platform</em>' class.
@@ -185,7 +176,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TARGET_PLATFORM_FEATURE_COUNT = 12;
+	int TARGET_PLATFORM_FEATURE_COUNT = 11;
 
 	/**
 	 * The number of operations of the '<em>Target Platform</em>' class.
@@ -1383,17 +1374,6 @@ public interface TargetPlatformPackage extends EPackage {
 	EAttribute getTargetPlatform_Modified();
 
 	/**
-	 * Returns the meta object for the attribute '{@link fr.obeo.releng.targetplatform.TargetPlatform#getVarCallFromOnlyImportedVariable <em>Var Call From Only Imported Variable</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Var Call From Only Imported Variable</em>'.
-	 * @see fr.obeo.releng.targetplatform.TargetPlatform#getVarCallFromOnlyImportedVariable()
-	 * @see #getTargetPlatform()
-	 * @generated
-	 */
-	EAttribute getTargetPlatform_VarCallFromOnlyImportedVariable();
-
-	/**
 	 * Returns the meta object for the containment reference '{@link fr.obeo.releng.targetplatform.TargetPlatform#getPreDefinedVarContainer <em>Pre Defined Var Container</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2485,14 +2465,6 @@ public interface TargetPlatformPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute TARGET_PLATFORM__MODIFIED = eINSTANCE.getTargetPlatform_Modified();
-
-		/**
-		 * The meta object literal for the '<em><b>Var Call From Only Imported Variable</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute TARGET_PLATFORM__VAR_CALL_FROM_ONLY_IMPORTED_VARIABLE = eINSTANCE.getTargetPlatform_VarCallFromOnlyImportedVariable();
 
 		/**
 		 * The meta object literal for the '<em><b>Pre Defined Var Container</b></em>' containment reference feature.

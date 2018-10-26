@@ -304,12 +304,9 @@ public class LocationImpl extends MinimalEObjectImpl.Container implements Locati
 	 * @generated
 	 */
 	public void resolveUri() {
-		String _uri = this.getUri();
-		boolean _tripleNotEquals = (_uri != null);
-		if (_tripleNotEquals) {
-			return;
-		}
-		this.setUri(this.getCompositeUri().computeActualString());
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
 	}
 
 	/**

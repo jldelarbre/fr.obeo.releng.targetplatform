@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.scoping.impl.ImportUriResolver;
@@ -213,7 +214,11 @@ public class LocationIndexBuilder {
   public TargetPlatform getImportedTargetPlatform(final Resource context, final IncludeDeclaration include) {
     TargetPlatform ret = null;
     include.generateImportURI();
-    final Resource resource = ResourceUtil.getResource(context, this.resolver.resolve(include));
+    Resource resource = ResourceUtil.getResource(context, this.resolver.resolve(include));
+    boolean _tripleEquals = (null == resource);
+    if (_tripleEquals) {
+      resource = context.getResourceSet().getResource(URI.createURI(this.resolver.resolve(include)), false);
+    }
     EList<EObject> _contents = null;
     if (resource!=null) {
       _contents=resource.getContents();

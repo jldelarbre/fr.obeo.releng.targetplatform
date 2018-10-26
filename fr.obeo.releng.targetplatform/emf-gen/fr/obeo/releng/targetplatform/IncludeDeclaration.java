@@ -104,7 +104,7 @@ public interface IncludeDeclaration extends TargetContent {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='this.setImportURI(this.getCompositeImportURI().computeActualString());'"
+	 * @model
 	 * @generated
 	 */
 	void generateImportURI();

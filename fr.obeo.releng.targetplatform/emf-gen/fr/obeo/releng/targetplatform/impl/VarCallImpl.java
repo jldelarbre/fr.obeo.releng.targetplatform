@@ -3,7 +3,6 @@
 package fr.obeo.releng.targetplatform.impl;
 
 import fr.obeo.releng.targetplatform.CompositeString;
-import fr.obeo.releng.targetplatform.TargetPlatformFactory;
 import fr.obeo.releng.targetplatform.TargetPlatformPackage;
 import fr.obeo.releng.targetplatform.VarCall;
 import fr.obeo.releng.targetplatform.VarDefinition;
@@ -300,6 +299,11 @@ public class VarCallImpl extends MinimalEObjectImpl.Container implements VarCall
 	 * @generated
 	 */
 	public String getActualString(final List<VarDefinition> alreadyCalledVariable) {
+		VarDefinition _varName = this.getVarName();
+		boolean _tripleEquals = (null == _varName);
+		if (_tripleEquals) {
+			return "";
+		}
 		this.setVariableDefinitionCycleDetected(false);
 		CompositeString _value = this.getVarName().getValue();
 		boolean _tripleNotEquals = (_value != null);
@@ -330,9 +334,9 @@ public class VarCallImpl extends MinimalEObjectImpl.Container implements VarCall
 	 * @generated
 	 */
 	public VarCall getCopy() {
-		final VarCall output = TargetPlatformFactory.eINSTANCE.createVarCall();
-		output.setVarName(this.getVarName());
-		return output;
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
 	}
 
 	/**

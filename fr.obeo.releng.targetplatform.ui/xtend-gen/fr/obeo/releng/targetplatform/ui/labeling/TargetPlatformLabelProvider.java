@@ -120,7 +120,11 @@ public class TargetPlatformLabelProvider extends DefaultEObjectLabelProvider {
         this.compositeElementResolver.resolveCompositeElements(((TargetPlatform) _eContainer));
         object.generateImportURI();
       }
-      ss.append(object.getImportURI());
+      String _computeActualString = object.getCompositeImportURI().computeActualString();
+      String _plus = (_computeActualString + " - ");
+      String _importURI_1 = object.getImportURI();
+      String _plus_1 = (_plus + _importURI_1);
+      ss.append(_plus_1);
       _xblockexpression = ss;
     }
     return _xblockexpression;
@@ -138,7 +142,11 @@ public class TargetPlatformLabelProvider extends DefaultEObjectLabelProvider {
   }
   
   public String text(final VarCall object) {
-    String _name = object.getVarName().getName();
+    VarDefinition _varName = object.getVarName();
+    String _name = null;
+    if (_varName!=null) {
+      _name=_varName.getName();
+    }
     String _plus = ("${" + _name);
     return (_plus + "}");
   }

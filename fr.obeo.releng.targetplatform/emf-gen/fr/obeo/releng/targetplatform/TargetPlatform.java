@@ -18,7 +18,6 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link fr.obeo.releng.targetplatform.TargetPlatform#getName <em>Name</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.TargetPlatform#isCompositeElementsResolved <em>Composite Elements Resolved</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.TargetPlatform#isModified <em>Modified</em>}</li>
- *   <li>{@link fr.obeo.releng.targetplatform.TargetPlatform#getVarCallFromOnlyImportedVariable <em>Var Call From Only Imported Variable</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.TargetPlatform#getPreDefinedVarContainer <em>Pre Defined Var Container</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.TargetPlatform#getVarDef2OverrideInImportedTarget <em>Var Def2 Override In Imported Target</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.TargetPlatform#getContents <em>Contents</em>}</li>
@@ -113,33 +112,6 @@ public interface TargetPlatform extends EObject {
 	 * @generated
 	 */
 	void setModified(boolean value);
-
-	/**
-	 * Returns the value of the '<em><b>Var Call From Only Imported Variable</b></em>' attribute.
-	 * The default value is <code>""</code>.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Var Call From Only Imported Variable</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Var Call From Only Imported Variable</em>' attribute.
-	 * @see #setVarCallFromOnlyImportedVariable(String)
-	 * @see fr.obeo.releng.targetplatform.TargetPlatformPackage#getTargetPlatform_VarCallFromOnlyImportedVariable()
-	 * @model default="" unique="false"
-	 * @generated
-	 */
-	String getVarCallFromOnlyImportedVariable();
-
-	/**
-	 * Sets the value of the '{@link fr.obeo.releng.targetplatform.TargetPlatform#getVarCallFromOnlyImportedVariable <em>Var Call From Only Imported Variable</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Var Call From Only Imported Variable</em>' attribute.
-	 * @see #getVarCallFromOnlyImportedVariable()
-	 * @generated
-	 */
-	void setVarCallFromOnlyImportedVariable(String value);
 
 	/**
 	 * Returns the value of the '<em><b>Pre Defined Var Container</b></em>' containment reference.

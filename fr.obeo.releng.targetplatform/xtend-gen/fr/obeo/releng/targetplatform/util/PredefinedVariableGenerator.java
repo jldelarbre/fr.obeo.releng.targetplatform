@@ -27,11 +27,15 @@ public class PredefinedVariableGenerator {
   
   public final static String CST_ABS_TPD_PATH = "absoluteTpdPath";
   
+  public final static String CST_ABS_TPD_DEVICE_PATH = "absoluteTpdDevicePath";
+  
   public final static String CST_TPD_DIR = "tpdDir";
   
   public final static String CST_ABS_TPD_DIR = "absoluteTpdDir";
   
-  public final static int NUM_PREDIFINED_VAR = 9;
+  public final static String CST_ABS_TPD_DEVICE_DIR = "absoluteTpdDeviceDir";
+  
+  public final static int NUM_PREDIFINED_VAR = 11;
   
   public boolean createPreDefinedVariables(final TargetPlatform targetPlatform) {
     boolean _xblockexpression = false;
@@ -52,18 +56,24 @@ public class PredefinedVariableGenerator {
       final URI absoluteTpdPathVarValue = PredefinedVariableGenerator.convertToAbsoluteUri(tpdPathVarValue);
       this.createPredefinedVariable(targetPlatform, PredefinedVariableGenerator.CST_ABS_TPD_URI, absoluteTpdPathVarValue.toString());
       this.createPredefinedVariable(targetPlatform, PredefinedVariableGenerator.CST_ABS_TPD_PATH, absoluteTpdPathVarValue.path());
+      this.createPredefinedVariable(targetPlatform, PredefinedVariableGenerator.CST_ABS_TPD_DEVICE_PATH, absoluteTpdPathVarValue.devicePath());
       final int lastIndexTpdDir = tpdPathVarValue.path().toString().lastIndexOf("/");
       if ((lastIndexTpdDir != (-1))) {
         final String tpdDir = tpdPathVarValue.path().toString().substring(0, lastIndexTpdDir);
         this.createPredefinedVariable(targetPlatform, PredefinedVariableGenerator.CST_TPD_DIR, tpdDir);
       }
       final int lastIndexAbsTpdDir = absoluteTpdPathVarValue.path().toString().lastIndexOf("/");
-      boolean _xifexpression = false;
       if ((lastIndexAbsTpdDir != (-1))) {
+        final String absoluteTpdDir = absoluteTpdPathVarValue.path().toString().substring(0, lastIndexAbsTpdDir);
+        this.createPredefinedVariable(targetPlatform, PredefinedVariableGenerator.CST_ABS_TPD_DIR, absoluteTpdDir);
+      }
+      final int lastIndexAbsTpdDeviceDir = absoluteTpdPathVarValue.devicePath().toString().lastIndexOf("/");
+      boolean _xifexpression = false;
+      if ((lastIndexAbsTpdDeviceDir != (-1))) {
         boolean _xblockexpression_1 = false;
         {
-          final String absoluteTpdDir = absoluteTpdPathVarValue.path().toString().substring(0, lastIndexAbsTpdDir);
-          _xblockexpression_1 = this.createPredefinedVariable(targetPlatform, PredefinedVariableGenerator.CST_ABS_TPD_DIR, absoluteTpdDir);
+          final String absoluteTpdDeviceDir = absoluteTpdPathVarValue.devicePath().toString().substring(0, lastIndexAbsTpdDeviceDir);
+          _xblockexpression_1 = this.createPredefinedVariable(targetPlatform, PredefinedVariableGenerator.CST_ABS_TPD_DEVICE_DIR, absoluteTpdDeviceDir);
         }
         _xifexpression = _xblockexpression_1;
       }
@@ -103,7 +113,7 @@ public class PredefinedVariableGenerator {
   }
   
   public boolean isPredefinedVariable(final VarDefinition varDefinition) {
-    if (((((((((varDefinition.getName().equals(PredefinedVariableGenerator.CST_USER_DIR) || 
+    if (((((((((((varDefinition.getName().equals(PredefinedVariableGenerator.CST_USER_DIR) || 
       varDefinition.getName().equals(PredefinedVariableGenerator.CST_TPD_URI)) || 
       varDefinition.getName().equals(PredefinedVariableGenerator.CST_TPD_PATH)) || 
       varDefinition.getName().equals(PredefinedVariableGenerator.CST_TPD_FILENAME)) || 
@@ -111,6 +121,8 @@ public class PredefinedVariableGenerator {
       varDefinition.getName().equals(PredefinedVariableGenerator.CST_ABS_TPD_URI)) || 
       varDefinition.getName().equals(PredefinedVariableGenerator.CST_ABS_TPD_PATH)) || 
       varDefinition.getName().equals(PredefinedVariableGenerator.CST_TPD_DIR)) || 
+      varDefinition.getName().equals(PredefinedVariableGenerator.CST_ABS_TPD_DEVICE_PATH)) || 
+      varDefinition.getName().equals(PredefinedVariableGenerator.CST_ABS_TPD_DEVICE_DIR)) || 
       varDefinition.getName().equals(PredefinedVariableGenerator.CST_ABS_TPD_DIR))) {
       return true;
     }

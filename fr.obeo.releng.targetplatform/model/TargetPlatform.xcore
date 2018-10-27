@@ -354,17 +354,14 @@ class VarCall extends CompositeStringPart {
 	
 	op String getActualString(VarDefList alreadyCalledVariable) {
 		if (null === varName) {
-			var context = "Context: "
+			var message = "Unresolved varCall: "
 			var superContext = this.eContainer
 			while (superContext !== null) {
-				context += superContext.toString + " / "
+				message += superContext.toString + " / "
 				superContext = superContext.eContainer
 			}
-			
-			val message = "The VarCall.varName can not be resolved by EMF.\n" + context;
-			val e = new NullPointerException(message);
 			TargetPlatformBundleActivator.getInstance().getLog()
-					.log(new Status(IStatus.ERROR, TargetPlatformBundleActivator.PLUGIN_ID, message, e));
+					.log(new Status(IStatus.INFO, TargetPlatformBundleActivator.PLUGIN_ID, message));
 			return "";
 		}
 		

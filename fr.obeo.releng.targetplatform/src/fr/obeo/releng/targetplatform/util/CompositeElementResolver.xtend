@@ -11,132 +11,156 @@ import java.util.List
 import java.util.Set
 import java.util.stream.Collectors
 import org.eclipse.emf.common.util.EList
+import fr.obeo.releng.targetplatform.IncludeDeclaration
+import java.util.Map
 
 class CompositeElementResolver {
-	
+
 	@Inject
 	PredefinedVariableGenerator predefinedVariableGenerator
-	
+
 	@Inject
 	LocationIndexBuilder locationIndexBuilder
-	
+
 	@Inject
 	ImportVariableManager importVariableManager;
-	
+
 	@Inject
 	TargetReloader targetReloader;
-	
+
 	/* Composite elements are string defined by a concatenation of static string and variable call:
-	 * "string1" + ${var1} + "aaa" + ${var2} +... */ 
+	 * "string1" + ${var1} + "aaa" + ${var2} +... */
 	def resolveCompositeElements(TargetPlatform targetPlatform) {
 		if (targetPlatform.compositeElementsResolved == true) {
 			return
 		}
-		
-		overrideVariableDefinition(targetPlatform)
-		
+
+//		targetReloader.registerTargetPlatform(targetPlatform)
+//		overrideVariableDefinition(targetPlatform)
 		searchAndAppendDefineFromIncludedTpd(targetPlatform)
 		resolveLocations(targetPlatform)
-		val importedTargetPlatforms = locationIndexBuilder.getImportedTargetPlatformsDoNotResolveCompositeElement(targetPlatform)
-		importedTargetPlatforms.forEach[
+		val importedTargetPlatforms = locationIndexBuilder.
+			getImportedTargetPlatformsDoNotResolveCompositeElement(targetPlatform)
+		importedTargetPlatforms.forEach [
 			resolveLocations(it)
+			it.compositeElementsResolved = true
 		]
-	}
-	
-	private def overrideVariableDefinition(TargetPlatform targetPlatform) {
-		val alreadyVisitedTarget = newHashSet()
-		overrideVariableDefinition(targetPlatform, alreadyVisitedTarget)
-	}
-	
-	/* Override value of variable definition with command line or environment variable */
-	private def void overrideVariableDefinition(TargetPlatform targetPlatform, Set<TargetPlatform> alreadyVisitedTarget) {
-		
-		alreadyVisitedTarget.add(targetPlatform)
-		
-		targetPlatform.varDefinition
-			.forEach[
-				val varDef = it
-				val varDefName = varDef.name
-				
-				val variableValue = importVariableManager.getVariableValue(varDefName)
-				if (variableValue !== null) {
-					varDef.overrideValue = variableValue
-				}
-				targetPlatform.modified = true
-			]
+		targetPlatform.compositeElementsResolved = true
 
-		val directlyImportedTargetPlatforms = searchDirectlyImportedTpd(targetPlatform)
-		directlyImportedTargetPlatforms
-			.filter[
-				//Prevent from circular include
-				!alreadyVisitedTarget.contains(it)
+		println("\nAAAAAAAAAAAAAAAAAAaaa")
+		println(targetPlatform.name)
+		targetPlatform.varDefinition.forEach [
+			println("\t" + it.name + " = " + it.effectiveValue)
+		]
+		targetPlatform.importedTargetPlatforms.forEach [
+			println("\tTarget: " + it.value.name + " - " + it.key.importURI)
+			it.value.varDefinition.forEach [
+				println("\t\t" + it.name + " = " + it.effectiveValue)
 			]
-			.forEach[
-				val importedTarget = it
-				var reloadedImportTarget = it
-				if (importedTarget.modified) {
-					reloadedImportTarget = targetReloader.forceReloadTarget(targetPlatform, importedTarget)
-				}
-				overrideVariableDefinition(reloadedImportTarget, newHashSet(alreadyVisitedTarget))
-			]
+		]
+		println("ZZZZZZZZZZZZZZZZZZZZZZZZZZZ\n")
 	}
-	
+
+//	private def overrideVariableDefinition(TargetPlatform targetPlatform) {
+//		val alreadyVisitedTarget = newHashSet()
+//		overrideVariableDefinition(targetPlatform, alreadyVisitedTarget)
+//	}
+	/* Override value of variable definition with command line or environment variable */
+	private def void overrideVariableDefinition(
+		TargetPlatform targetPlatform /*, Set<TargetPlatform> alreadyVisitedTarget*/ ) {
+
+//		alreadyVisitedTarget.add(targetPlatform)
+		targetPlatform.varDefinition.forEach [
+			val varDef = it
+			val varDefName = varDef.name
+
+			val variableValue = importVariableManager.getVariableValue(varDefName)
+			if (variableValue !== null) {
+				varDef.overrideValue = variableValue
+			}
+//				targetPlatform.modified = true
+		]
+
+//		val directlyImportedTargetPlatforms = searchDirectlyImportedTpd(targetPlatform)
+//		directlyImportedTargetPlatforms
+//			.filter[
+//				//Prevent from circular include
+//				!alreadyVisitedTarget.contains(it)
+//			]
+//			.forEach[
+//				val importedTarget = it
+//				var reloadedImportTarget = it
+//				if (importedTarget.modified) {
+//					reloadedImportTarget = targetReloader.forceReloadTarget(targetPlatform, importedTarget)
+//				}
+//				overrideVariableDefinition(reloadedImportTarget, newHashSet(alreadyVisitedTarget))
+//			]
+	}
+
 	/* Resolve location ("location" directive) means resolve variable call used in location declaration */
 	private def resolveLocations(TargetPlatform targetPlatform) {
-		targetPlatform.locations.forEach[
+		targetPlatform.locations.forEach [
 			it.resolveUri
 			it.resolveIUsVersion
 		]
-		targetPlatform.compositeElementsResolved = true
-		targetPlatform.modified = true
+//		targetPlatform.compositeElementsResolved = true
+//		targetPlatform.modified = true
 	}
-	
+
 	private def searchAndAppendDefineFromIncludedTpd(TargetPlatform targetPlatform) {
 		val alreadyVisitedTarget = newHashSet()
 		searchAndAppendDefineFromIncludedTpd(targetPlatform, alreadyVisitedTarget)
 	}
-	
+
 	/* Search and append to the list of "define": variable definition of the current tpd file (targetPlatform)
 	 * the list of "define" found in sub tpd: imported with "include" directive */
-	private def void searchAndAppendDefineFromIncludedTpd(TargetPlatform targetPlatform, Set<TargetPlatform> alreadyVisitedTarget) {
+	private def void searchAndAppendDefineFromIncludedTpd(TargetPlatform targetPlatform,
+		Set<TargetPlatform> alreadyVisitedTarget) {
 		val ImportedDefineFromSubTpd = newHashSet()
-		val processedTargetPlatform = newLinkedList()
-		
+		val processedTargetPlatform = newHashMap()
+
 		alreadyVisitedTarget.add(targetPlatform)
-		
+
 		predefinedVariableGenerator.createPreDefinedVariables(targetPlatform)
-		
+		overrideVariableDefinition(targetPlatform)
+
 		var directlyImportedTargetPlatforms = searchDirectlyImportedTpd(targetPlatform)
-		
-		while(directlyImportedTargetPlatforms.size > processedTargetPlatform.size) {
-			directlyImportedTargetPlatforms
-				.filter[
-					//Prevent from circular include
-					!alreadyVisitedTarget.contains(it)
-				]
-				.filter[
-					!processedTargetPlatform.contains(it)
-				]
-				.forEach[
-					var notProcessedTargetPlatform = it
-					overrideVariableDefinition(notProcessedTargetPlatform, alreadyVisitedTarget)
-					overrideImportedTargetVariable(notProcessedTargetPlatform, targetPlatform)
-					searchAndAppendDefineFromIncludedTpd(notProcessedTargetPlatform, newHashSet(alreadyVisitedTarget))
-					notProcessedTargetPlatform.varDefinition.forEach[
-						ImportedDefineFromSubTpd.add(it)
-					]
-				]
-			val newlyProcessedTarget = directlyImportedTargetPlatforms
-				.filter [
-					!processedTargetPlatform.contains(it)
-				]
-				.toSet
-			processedTargetPlatform.addAll(newlyProcessedTarget)
+
+		while (getDistinctTargetPlatforms(directlyImportedTargetPlatforms).size > processedTargetPlatform.size) {
+			directlyImportedTargetPlatforms = directlyImportedTargetPlatforms.mapValues[
+				// Prevent from circular include
+				if (processedTargetPlatform.containsKey(it)) {
+					processedTargetPlatform.get(it)
+				} else {
+					if (alreadyVisitedTarget.contains(it)) {
+						processedTargetPlatform.put(it, it)
+						it
+					} else {
+						val notProcessedTargetPlatform = it
+						val reloadedTargetPlatform = targetReloader.getUpToDateTarget(targetPlatform,
+							notProcessedTargetPlatform)
+						processedTargetPlatform.put(it, reloadedTargetPlatform)
+						overrideImportedTargetVariable(reloadedTargetPlatform, targetPlatform)
+						searchAndAppendDefineFromIncludedTpd(reloadedTargetPlatform, newHashSet(alreadyVisitedTarget))
+						reloadedTargetPlatform.varDefinition.forEach [
+							ImportedDefineFromSubTpd.add(it)
+						]
+						reloadedTargetPlatform
+					}
+				}
+			].immutableCopy
+
 			mergeImportedDefine(targetPlatform, ImportedDefineFromSubTpd)
 			directlyImportedTargetPlatforms = searchDirectlyImportedTpd(targetPlatform)
 		}
+
+		targetPlatform.importedTargetPlatforms.putAll(directlyImportedTargetPlatforms)
 	}
-	
+
+	private def Set<TargetPlatform> getDistinctTargetPlatforms(Map<?, TargetPlatform> targetPlatform) {
+		return newHashSet(targetPlatform.values);
+	}
+
 	/**
 	 * Override variable of the imported tpd with the one of the tpd importer.
 	 * 
@@ -153,117 +177,95 @@ class CompositeElementResolver {
 	 * 
 	 * In this case varA of targetB will be override with the value "valA"
 	 */
-	private def overrideImportedTargetVariable(TargetPlatform importedTargetPlatform, TargetPlatform importerTargetPlatform) {
+	private def overrideImportedTargetVariable(TargetPlatform importedTargetPlatform,
+		TargetPlatform importerTargetPlatform) {
 		val varDefImporter = importerTargetPlatform.varDefinition
-		varDefImporter.filter[
+		varDefImporter.filter [
 			!it.imported
-		]
-		.filter[
+		].filter [
 			it.isWhollyDefinedByTarget
-		]
-		.forEach[
+		].forEach [
 			val varDef4Overriding = it
 			val varDef4OverridingName = varDef4Overriding.name
 			val varDef4OverridingValue = varDef4Overriding.getEffectiveValue()
 			overrideCurrentVarDef(importedTargetPlatform, varDef4OverridingName, varDef4OverridingValue)
 		]
-		importerTargetPlatform.varDef2OverrideInImportedTarget.forEach[
+		importerTargetPlatform.varDef2OverrideInImportedTarget.forEach [
 			val varDef4Overriding = it
 			val varDef4OverridingName = varDef4Overriding.name
 			val varDef4OverridingValue = varDef4Overriding.overrideValue
 			overrideCurrentVarDef(importedTargetPlatform, varDef4OverridingName, varDef4OverridingValue)
 		]
 	}
-	
-	private def overrideCurrentVarDef(TargetPlatform importedTargetPlatform, String varDef4OverridingName, String varDef4OverridingValue) {
+
+	private def overrideCurrentVarDef(TargetPlatform importedTargetPlatform, String varDef4OverridingName,
+		String varDef4OverridingValue) {
 		val varDef2Override = importedTargetPlatform.varDefinition.findFirst[it.name.equals(varDef4OverridingName)]
 		if (varDef2Override !== null) {
 			if (!varDef2Override.constant) {
 				varDef2Override.overrideValue = varDef4OverridingValue
 			}
-		}
-		else {
+		} else {
 			val varDef = TargetPlatformFactory.eINSTANCE.createVarDefinition
 			varDef.name = varDef4OverridingName
 			varDef.overrideValue = varDef4OverridingValue
 			importedTargetPlatform.varDef2OverrideInImportedTarget.add(varDef)
 		}
 	}
-	
+
 	/* Targets that are directly imported, with an "include" directive present in the current
 	 * target: "targetPlatform". Do not look for target imported through an imported target */
-	private def List<TargetPlatform> searchDirectlyImportedTpd(TargetPlatform targetPlatform) {
-		val directlyImportedTargetPlatforms = targetPlatform.includes
-			.filter[
-				it.isResolved
-			]
-			.map[
-				locationIndexBuilder.getImportedTargetPlatform(targetPlatform.eResource, it)
-			]
-			.filter[
-				it !== null
-			]
-			.toList
-			
-		// Avoid the case where user includes the same target twice (Avoid NPE)
-		//
-		// target "A"
-		// include "someTargetUsedTwice.tpd"
-		// include "someTargetUsedTwice.tpd"
-		//
-		val directlyImportedTargetPlatformsNoDuplicate = directlyImportedTargetPlatforms.stream.distinct.collect(Collectors.toList())
-		directlyImportedTargetPlatformsNoDuplicate
+	private def Map<IncludeDeclaration, TargetPlatform> searchDirectlyImportedTpd(TargetPlatform targetPlatform) {
+		targetPlatform.includes.filter[it.isResolved].toInvertedMap [
+			locationIndexBuilder.getImportedTargetPlatform(targetPlatform.eResource, it)
+		].filter[p1, p2|null !== p2]
 	}
-	
+
 	/*
 	 * "variable define" of deepest include are override by "define" of lowest level
 	 */
 	private def mergeImportedDefine(TargetPlatform targetPlatform, Set<VarDefinition> ImportedDefineFromSubTpd) {
 		val toBeAddedDefine = newHashSet()
 		val targetContent = targetPlatform.contents
-		ImportedDefineFromSubTpd
-			.forEach[
-				val currentImportedDefine = it
-				var boolean toBeAdded = targetContent
-					.filter[
-						it instanceof VarDefinition
-					]
-					.forall[
-						val alreadyExistingDefine = it as VarDefinition
-						val varName = alreadyExistingDefine.name
-						!currentImportedDefine.name.equals(varName)
-					]
-				if (toBeAdded) {
-					if (varDefNeverInclude(currentImportedDefine, toBeAddedDefine)) {
-						val currentImportedDefineCopy = createImportedCopy(currentImportedDefine)
-						toBeAddedDefine.add(currentImportedDefineCopy)
-					}
-					else {
-						val alreadyAddedVarDef = searchAlreadyIncludeVarDef(currentImportedDefine, toBeAddedDefine)
-						val diamondlyInherited = currentImportedDefine.sourceUUID.equals(alreadyAddedVarDef.sourceUUID)
-						if (diamondlyInherited) {
-							alreadyAddedVarDef.diamondInherit = true
-						}
-						else {
-							alreadyAddedVarDef.importedValues.add(currentImportedDefine.value.computeActualString)
-						}
+		ImportedDefineFromSubTpd.forEach [
+			val currentImportedDefine = it
+			var boolean toBeAdded = targetContent.filter [
+				it instanceof VarDefinition
+			].forall [
+				val alreadyExistingDefine = it as VarDefinition
+				val varName = alreadyExistingDefine.name
+				!currentImportedDefine.name.equals(varName)
+			]
+			if (toBeAdded) {
+				if (varDefNeverInclude(currentImportedDefine, toBeAddedDefine)) {
+					val currentImportedDefineCopy = createImportedCopy(currentImportedDefine)
+					toBeAddedDefine.add(currentImportedDefineCopy)
+				} else {
+					val alreadyAddedVarDef = searchAlreadyIncludeVarDef(currentImportedDefine, toBeAddedDefine)
+					val diamondlyInherited = currentImportedDefine.sourceUUID.equals(alreadyAddedVarDef.sourceUUID)
+					if (diamondlyInherited) {
+						alreadyAddedVarDef.diamondInherit = true
+					} else {
+						alreadyAddedVarDef.importedValues.add(currentImportedDefine.value.computeActualString)
 					}
 				}
-			]
+			}
+		]
 		targetContent.addAll(toBeAddedDefine)
 		updateVariableDefinition(targetContent)
-		targetPlatform.modified = true
+//		targetPlatform.modified = true
 	}
-	
-	private def VarDefinition searchAlreadyIncludeVarDef(VarDefinition varDef2Find, HashSet<VarDefinition> alreadyAddedVarDefs) {
+
+	private def VarDefinition searchAlreadyIncludeVarDef(VarDefinition varDef2Find,
+		HashSet<VarDefinition> alreadyAddedVarDefs) {
 		val varDefNameToFind = varDef2Find.name
-		val alreadyAddedVarDef = alreadyAddedVarDefs.findFirst[
+		val alreadyAddedVarDef = alreadyAddedVarDefs.findFirst [
 			val currentVarDef = it
 			varDefNameToFind.compareTo(currentVarDef.name) == 0
 		]
 		alreadyAddedVarDef
 	}
-	
+
 	private def VarDefinition createImportedCopy(VarDefinition currentImportedDefine) {
 		val currentImportedDefineCopy = TargetPlatformFactory.eINSTANCE.createVarDefinition
 		currentImportedDefineCopy.name = currentImportedDefine.name
@@ -275,15 +277,15 @@ class CompositeElementResolver {
 		currentImportedDefineCopy.constant = currentImportedDefine.constant
 		currentImportedDefineCopy
 	}
-	
+
 	private def boolean varDefNeverInclude(VarDefinition varDefToCheck, HashSet<VarDefinition> alreadyAddedVarDef) {
 		val varDefToCheckName = varDefToCheck.name
-		alreadyAddedVarDef.forall[
+		alreadyAddedVarDef.forall [
 			val currentVarDef = it
 			!(varDefToCheckName.compareTo(currentVarDef.name) == 0)
 		]
 	}
-	
+
 	/*
 	 * @param targetContent Elements contained in the target, we only processed variable definition.
 	 * 
@@ -318,7 +320,7 @@ class CompositeElementResolver {
 			}
 		}
 	}
-	
+
 	private def updateVariableCall(VarCall varCall, EList<TargetContent> targetContent) {
 		for (varDef : targetContent) {
 			if (varDef instanceof VarDefinition) {
@@ -329,7 +331,7 @@ class CompositeElementResolver {
 			}
 		}
 	}
-	
+
 	def List<VarDefinition> checkVariableDefinitionCycle(VarDefinition varDef) {
 		varDef.checkVarCycle
 		return varDef.varDefCycle

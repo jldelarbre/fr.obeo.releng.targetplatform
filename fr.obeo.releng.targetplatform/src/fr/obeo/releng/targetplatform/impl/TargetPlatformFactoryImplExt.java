@@ -1,5 +1,7 @@
 package fr.obeo.releng.targetplatform.impl;
 
+import java.util.Map.Entry;
+
 import fr.obeo.releng.targetplatform.IU;
 import fr.obeo.releng.targetplatform.IncludeDeclaration;
 import fr.obeo.releng.targetplatform.Location;
@@ -36,5 +38,10 @@ public class TargetPlatformFactoryImplExt extends TargetPlatformFactoryImpl {
 	@Override
 	public TargetPlatform createTargetPlatform() {
 		return TargetPlatformImplExt.build();
+	}
+	
+	@Override
+	public Entry<IncludeDeclaration, TargetPlatform> createTargetPlatformIncludeDeclarationEntry() {
+		return new TargetPlatformIncludeDeclarationEntryImplExt();
 	}
 }

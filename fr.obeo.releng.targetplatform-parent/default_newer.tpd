@@ -1,0 +1,23 @@
+target "Target Platform DSL 2.7.0" with source requirements
+
+location "http://download.eclipse.org/releases/2018-09" {
+	org.eclipse.equinox.p2.sdk.feature.group [3.11.100,4.0.0)
+	org.eclipse.sdk.feature.group [4.9.0,5.0.0)
+	org.eclipse.pde.core [3.12.100,4.0.0)
+	org.eclipse.emf.ecore.xcore.feature.group [1.7.0,2.0.0)
+	org.eclipse.emf.ecore.xcore.source.feature.group [1.7.0,2.0.0)
+	org.eclipse.xtext.ui.feature.group [2.15.0,3.0.0)
+	org.eclipse.xtext.ui.source [2.15.0,3.0.0)
+	org.eclipse.xtext.runtime.feature.group [2.15.0,3.0.0)
+	org.eclipse.xtext.junit4 [2.15.0,3.0.0)
+	org.eclipse.xtext.junit4.source [2.15.0,3.0.0)
+	org.objectweb.asm
+	org.objectweb.asm.source
+
+}
+
+// required for resolving dependencies of Xtext
+location "http://download.eclipse.org/modeling/emft/mwe/updates/releases/" {
+	org.eclipse.emf.mwe2.launcher.feature.group
+}
+location "http://download.eclipse.org/modeling/m2t/updates/releases/"

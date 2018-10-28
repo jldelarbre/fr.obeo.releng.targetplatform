@@ -6,6 +6,7 @@ import fr.obeo.releng.targetplatform.*;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.UUID;
 
 import org.eclipse.emf.ecore.EClass;
@@ -63,6 +64,7 @@ public class TargetPlatformFactoryImpl extends EFactoryImpl implements TargetPla
 	@Override
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
+			case TargetPlatformPackage.TARGET_PLATFORM_INCLUDE_DECLARATION_ENTRY: return (EObject)createTargetPlatformIncludeDeclarationEntry();
 			case TargetPlatformPackage.TARGET_PLATFORM: return createTargetPlatform();
 			case TargetPlatformPackage.OPTIONS: return createOptions();
 			case TargetPlatformPackage.ENVIRONMENT: return createEnvironment();
@@ -123,6 +125,16 @@ public class TargetPlatformFactoryImpl extends EFactoryImpl implements TargetPla
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Map.Entry<IncludeDeclaration, TargetPlatform> createTargetPlatformIncludeDeclarationEntry() {
+		TargetPlatformIncludeDeclarationEntryImpl targetPlatformIncludeDeclarationEntry = new TargetPlatformIncludeDeclarationEntryImpl();
+		return targetPlatformIncludeDeclarationEntry;
 	}
 
 	/**

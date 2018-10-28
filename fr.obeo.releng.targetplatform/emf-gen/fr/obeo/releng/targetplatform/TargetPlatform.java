@@ -3,6 +3,7 @@
 package fr.obeo.releng.targetplatform;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.EMap;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -17,10 +18,11 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  *   <li>{@link fr.obeo.releng.targetplatform.TargetPlatform#getName <em>Name</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.TargetPlatform#isCompositeElementsResolved <em>Composite Elements Resolved</em>}</li>
- *   <li>{@link fr.obeo.releng.targetplatform.TargetPlatform#isModified <em>Modified</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.TargetPlatform#getPreDefinedVarContainer <em>Pre Defined Var Container</em>}</li>
+ *   <li>{@link fr.obeo.releng.targetplatform.TargetPlatform#isInvalidateByEmfXtext <em>Invalidate By Emf Xtext</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.TargetPlatform#getVarDef2OverrideInImportedTarget <em>Var Def2 Override In Imported Target</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.TargetPlatform#getContents <em>Contents</em>}</li>
+ *   <li>{@link fr.obeo.releng.targetplatform.TargetPlatform#getImportedTargetPlatforms <em>Imported Target Platforms</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.TargetPlatform#getIncludes <em>Includes</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.TargetPlatform#getOptions <em>Options</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.TargetPlatform#getLocations <em>Locations</em>}</li>
@@ -87,33 +89,6 @@ public interface TargetPlatform extends EObject {
 	void setCompositeElementsResolved(boolean value);
 
 	/**
-	 * Returns the value of the '<em><b>Modified</b></em>' attribute.
-	 * The default value is <code>"false"</code>.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Modified</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Modified</em>' attribute.
-	 * @see #setModified(boolean)
-	 * @see fr.obeo.releng.targetplatform.TargetPlatformPackage#getTargetPlatform_Modified()
-	 * @model default="false" unique="false"
-	 * @generated
-	 */
-	boolean isModified();
-
-	/**
-	 * Sets the value of the '{@link fr.obeo.releng.targetplatform.TargetPlatform#isModified <em>Modified</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Modified</em>' attribute.
-	 * @see #isModified()
-	 * @generated
-	 */
-	void setModified(boolean value);
-
-	/**
 	 * Returns the value of the '<em><b>Pre Defined Var Container</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -138,6 +113,33 @@ public interface TargetPlatform extends EObject {
 	 * @generated
 	 */
 	void setPreDefinedVarContainer(VarDefinitionContainer value);
+
+	/**
+	 * Returns the value of the '<em><b>Invalidate By Emf Xtext</b></em>' attribute.
+	 * The default value is <code>"false"</code>.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Invalidate By Emf Xtext</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Invalidate By Emf Xtext</em>' attribute.
+	 * @see #setInvalidateByEmfXtext(boolean)
+	 * @see fr.obeo.releng.targetplatform.TargetPlatformPackage#getTargetPlatform_InvalidateByEmfXtext()
+	 * @model default="false" unique="false"
+	 * @generated
+	 */
+	boolean isInvalidateByEmfXtext();
+
+	/**
+	 * Sets the value of the '{@link fr.obeo.releng.targetplatform.TargetPlatform#isInvalidateByEmfXtext <em>Invalidate By Emf Xtext</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Invalidate By Emf Xtext</em>' attribute.
+	 * @see #isInvalidateByEmfXtext()
+	 * @generated
+	 */
+	void setInvalidateByEmfXtext(boolean value);
 
 	/**
 	 * Returns the value of the '<em><b>Var Def2 Override In Imported Target</b></em>' containment reference list.
@@ -172,6 +174,23 @@ public interface TargetPlatform extends EObject {
 	 * @generated
 	 */
 	EList<TargetContent> getContents();
+
+	/**
+	 * Returns the value of the '<em><b>Imported Target Platforms</b></em>' map.
+	 * The key is of type {@link fr.obeo.releng.targetplatform.IncludeDeclaration},
+	 * and the value is of type {@link fr.obeo.releng.targetplatform.TargetPlatform},
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Imported Target Platforms</em>' map isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Imported Target Platforms</em>' map.
+	 * @see fr.obeo.releng.targetplatform.TargetPlatformPackage#getTargetPlatform_ImportedTargetPlatforms()
+	 * @model mapType="fr.obeo.releng.targetplatform.TargetPlatformIncludeDeclarationEntry&lt;fr.obeo.releng.targetplatform.IncludeDeclaration, fr.obeo.releng.targetplatform.TargetPlatform&gt;"
+	 * @generated
+	 */
+	EMap<IncludeDeclaration, TargetPlatform> getImportedTargetPlatforms();
 
 	/**
 	 * Returns the value of the '<em><b>Includes</b></em>' reference list.

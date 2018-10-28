@@ -4,6 +4,8 @@ package fr.obeo.releng.targetplatform.util;
 
 import fr.obeo.releng.targetplatform.*;
 
+import java.util.Map;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
@@ -66,6 +68,12 @@ public class TargetPlatformSwitch<T> extends Switch<T> {
 	@Override
 	protected T doSwitch(int classifierID, EObject theEObject) {
 		switch (classifierID) {
+			case TargetPlatformPackage.TARGET_PLATFORM_INCLUDE_DECLARATION_ENTRY: {
+				@SuppressWarnings("unchecked") Map.Entry<IncludeDeclaration, TargetPlatform> targetPlatformIncludeDeclarationEntry = (Map.Entry<IncludeDeclaration, TargetPlatform>)theEObject;
+				T result = caseTargetPlatformIncludeDeclarationEntry(targetPlatformIncludeDeclarationEntry);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case TargetPlatformPackage.TARGET_PLATFORM: {
 				TargetPlatform targetPlatform = (TargetPlatform)theEObject;
 				T result = caseTargetPlatform(targetPlatform);
@@ -153,6 +161,21 @@ public class TargetPlatformSwitch<T> extends Switch<T> {
 			}
 			default: return defaultCase(theEObject);
 		}
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Include Declaration Entry</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Include Declaration Entry</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseTargetPlatformIncludeDeclarationEntry(Map.Entry<IncludeDeclaration, TargetPlatform> object) {
+		return null;
 	}
 
 	/**

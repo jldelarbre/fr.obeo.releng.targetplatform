@@ -4,6 +4,8 @@ package fr.obeo.releng.targetplatform.util;
 
 import fr.obeo.releng.targetplatform.*;
 
+import java.util.Map;
+
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 
@@ -67,6 +69,10 @@ public class TargetPlatformAdapterFactory extends AdapterFactoryImpl {
 	 */
 	protected TargetPlatformSwitch<Adapter> modelSwitch =
 		new TargetPlatformSwitch<Adapter>() {
+			@Override
+			public Adapter caseTargetPlatformIncludeDeclarationEntry(Map.Entry<IncludeDeclaration, TargetPlatform> object) {
+				return createTargetPlatformIncludeDeclarationEntryAdapter();
+			}
 			@Override
 			public Adapter caseTargetPlatform(TargetPlatform object) {
 				return createTargetPlatformAdapter();
@@ -138,6 +144,20 @@ public class TargetPlatformAdapterFactory extends AdapterFactoryImpl {
 		return modelSwitch.doSwitch((EObject)target);
 	}
 
+
+	/**
+	 * Creates a new adapter for an object of class '{@link java.util.Map.Entry <em>Include Declaration Entry</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see java.util.Map.Entry
+	 * @generated
+	 */
+	public Adapter createTargetPlatformIncludeDeclarationEntryAdapter() {
+		return null;
+	}
 
 	/**
 	 * Creates a new adapter for an object of class '{@link fr.obeo.releng.targetplatform.TargetPlatform <em>Target Platform</em>}'.

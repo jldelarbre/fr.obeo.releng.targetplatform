@@ -22,8 +22,6 @@ import fr.obeo.releng.targetplatform.TargetPlatform;
 import fr.obeo.releng.targetplatform.VarCall;
 import fr.obeo.releng.targetplatform.VarDefinition;
 import fr.obeo.releng.targetplatform.VarDefinitionContainer;
-import fr.obeo.releng.targetplatform.util.CompositeElementResolver;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.xtext.ui.label.DefaultEObjectLabelProvider;
@@ -36,9 +34,6 @@ import org.eclipse.xtext.ui.label.DefaultEObjectLabelProvider;
 @SuppressWarnings("all")
 public class TargetPlatformLabelProvider extends DefaultEObjectLabelProvider {
   @Inject
-  private CompositeElementResolver compositeElementResolver;
-  
-  @Inject
   public TargetPlatformLabelProvider(final AdapterFactoryLabelProvider delegate) {
     super(delegate);
   }
@@ -47,20 +42,19 @@ public class TargetPlatformLabelProvider extends DefaultEObjectLabelProvider {
     StyledString _xblockexpression = null;
     {
       final StyledString ss = new StyledString();
-      String _uri = object.getUri();
-      boolean _tripleEquals = (_uri == null);
-      if (_tripleEquals) {
-        EObject _eContainer = object.eContainer();
-        this.compositeElementResolver.resolveCompositeElements(((TargetPlatform) _eContainer));
-        object.resolveUri();
-      }
-      ss.append(object.getUri());
       String _iD = object.getID();
       boolean _tripleNotEquals = (_iD != null);
       if (_tripleNotEquals) {
         String _iD_1 = object.getID();
-        String _plus = (" " + _iD_1);
+        String _plus = (_iD_1 + " - ");
         ss.append(_plus, StyledString.DECORATIONS_STYLER);
+      }
+      String _uri = object.getUri();
+      boolean _tripleNotEquals_1 = (_uri != null);
+      if (_tripleNotEquals_1) {
+        ss.append(object.getUri());
+      } else {
+        ss.append("Unable to resolve URI");
       }
       _xblockexpression = ss;
     }
@@ -93,16 +87,7 @@ public class TargetPlatformLabelProvider extends DefaultEObjectLabelProvider {
   }
   
   public String text(final TargetPlatform object) {
-    String _xblockexpression = null;
-    {
-      boolean _isCompositeElementsResolved = object.isCompositeElementsResolved();
-      boolean _not = (!_isCompositeElementsResolved);
-      if (_not) {
-        this.compositeElementResolver.resolveCompositeElements(object);
-      }
-      _xblockexpression = object.getName();
-    }
-    return _xblockexpression;
+    return object.getName();
   }
   
   public String image(final TargetPlatform object) {
@@ -113,17 +98,10 @@ public class TargetPlatformLabelProvider extends DefaultEObjectLabelProvider {
     StyledString _xblockexpression = null;
     {
       final StyledString ss = new StyledString();
-      String _importURI = object.getImportURI();
-      boolean _tripleEquals = (_importURI == null);
-      if (_tripleEquals) {
-        EObject _eContainer = object.eContainer();
-        this.compositeElementResolver.resolveCompositeElements(((TargetPlatform) _eContainer));
-        object.generateImportURI();
-      }
       String _computeActualString = object.getCompositeImportURI().computeActualString();
       String _plus = (_computeActualString + " - ");
-      String _importURI_1 = object.getImportURI();
-      String _plus_1 = (_plus + _importURI_1);
+      String _importURI = object.getImportURI();
+      String _plus_1 = (_plus + _importURI);
       ss.append(_plus_1);
       _xblockexpression = ss;
     }
@@ -135,10 +113,18 @@ public class TargetPlatformLabelProvider extends DefaultEObjectLabelProvider {
   }
   
   public String text(final CompositeString object) {
-    String _name = object.getName();
-    String _plus = (_name + " = ");
-    String _computeActualString = object.computeActualString();
-    return (_plus + _computeActualString);
+    String _xifexpression = null;
+    boolean _isResolved = object.isResolved();
+    if (_isResolved) {
+      String _name = object.getName();
+      String _plus = (_name + " = ");
+      String _computeActualString = object.computeActualString();
+      _xifexpression = (_plus + _computeActualString);
+    } else {
+      String _name_1 = object.getName();
+      _xifexpression = (_name_1 + " = <unresolved composite string>");
+    }
+    return _xifexpression;
   }
   
   public String text(final VarCall object) {

@@ -30,5 +30,5 @@ public interface TargetReloader {
    * 
    * The same consideration applies with other declarations like "include" as with "define"
    */
-  public abstract TargetPlatform forceReloadTarget(final TargetPlatform targetPlatformBase, final TargetPlatform importedTargetPlatform);
+  public abstract TargetPlatform getUpToDateTarget(final TargetPlatform targetPlatformBase, final TargetPlatform importedTargetPlatform);
 }

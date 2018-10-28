@@ -549,6 +549,11 @@ public class VarDefinitionImpl extends MinimalEObjectImpl.Container implements V
 	 * @generated
 	 */
 	public boolean isWhollyDefinedByTargetNoCycleChecked() {
+		CompositeString _value = this.getValue();
+		boolean _tripleEquals = (_value == null);
+		if (_tripleEquals) {
+			return false;
+		}
 		final Function1<CompositeStringPart, Boolean> _function = new Function1<CompositeStringPart, Boolean>() {
 			public Boolean apply(final CompositeStringPart it) {
 				if ((it instanceof StaticString)) {
@@ -587,6 +592,11 @@ public class VarDefinitionImpl extends MinimalEObjectImpl.Container implements V
 		this.setVariableDefinitionCycleDetected(false);
 		this.setVarDefCycle(CollectionLiterals.<VarDefinition>newArrayList());
 		this.getVarDefCycle().add(this);
+		CompositeString _value = this.getValue();
+		boolean _tripleEquals = (_value == null);
+		if (_tripleEquals) {
+			return;
+		}
 		this.getValue().computeActualString(this.getVarDefCycle());
 		this.setVariableDefinitionCycleDetected(this.getValue().isVariableDefinitionCycleDetected());
 		boolean _isVariableDefinitionCycleDetected = this.isVariableDefinitionCycleDetected();
@@ -672,7 +682,6 @@ public class VarDefinitionImpl extends MinimalEObjectImpl.Container implements V
 	 * @generated
 	 */
 	public String toString() {
-		this.checkVarCycle();
 		String _string = super.toString();
 		StringBuffer result = new StringBuffer(_string);
 		result.append(" (name: ");
@@ -681,15 +690,6 @@ public class VarDefinitionImpl extends MinimalEObjectImpl.Container implements V
 		result.append(this.getOverrideValue());
 		result.append(", variableDefinitionCycleDetected: ");
 		result.append(this.isVariableDefinitionCycleDetected());
-		result.append(", varDefCycle: ");
-		boolean _isVariableDefinitionCycleDetected = this.isVariableDefinitionCycleDetected();
-		boolean _not = (!_isVariableDefinitionCycleDetected);
-		if (_not) {
-			result.append(this.getVarDefCycle());
-		}
-		else {
-			result.append("erroneous cyclic definition");
-		}
 		result.append(")");
 		return result.toString();
 	}

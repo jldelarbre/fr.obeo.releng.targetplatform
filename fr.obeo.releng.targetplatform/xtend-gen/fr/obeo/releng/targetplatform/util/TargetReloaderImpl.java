@@ -11,13 +11,12 @@ import org.eclipse.xtext.xbase.lib.IterableExtensions;
 @SuppressWarnings("all")
 public class TargetReloaderImpl implements TargetReloader {
   @Override
-  public TargetPlatform forceReloadTarget(final TargetPlatform targetPlatformBase, final TargetPlatform importedTargetPlatform) {
+  public TargetPlatform getUpToDateTarget(final TargetPlatform targetPlatformBase, final TargetPlatform importedTargetPlatform) {
     TargetPlatform ret = null;
-    final Resource context = targetPlatformBase.eResource();
+    final Resource selfContext = importedTargetPlatform.eResource();
     final String importTargetUri = importedTargetPlatform.eResource().getURI().toString();
-    final Resource resource = EcoreUtil2.getResource(context, importTargetUri);
-    resource.unload();
-    final Resource resourceUpdated = EcoreUtil2.getResource(context, importTargetUri);
+    selfContext.unload();
+    final Resource resourceUpdated = EcoreUtil2.getResource(selfContext, importTargetUri);
     EList<EObject> _contents = null;
     if (resourceUpdated!=null) {
       _contents=resourceUpdated.getContents();

@@ -61,6 +61,52 @@ public interface TargetPlatformPackage extends EPackage {
 	TargetPlatformPackage eINSTANCE = fr.obeo.releng.targetplatform.impl.TargetPlatformPackageImpl.init();
 
 	/**
+	 * The meta object id for the '{@link fr.obeo.releng.targetplatform.impl.TargetPlatformIncludeDeclarationEntryImpl <em>Include Declaration Entry</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see fr.obeo.releng.targetplatform.impl.TargetPlatformIncludeDeclarationEntryImpl
+	 * @see fr.obeo.releng.targetplatform.impl.TargetPlatformPackageImpl#getTargetPlatformIncludeDeclarationEntry()
+	 * @generated
+	 */
+	int TARGET_PLATFORM_INCLUDE_DECLARATION_ENTRY = 0;
+
+	/**
+	 * The feature id for the '<em><b>Value</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TARGET_PLATFORM_INCLUDE_DECLARATION_ENTRY__VALUE = 0;
+
+	/**
+	 * The feature id for the '<em><b>Key</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TARGET_PLATFORM_INCLUDE_DECLARATION_ENTRY__KEY = 1;
+
+	/**
+	 * The number of structural features of the '<em>Include Declaration Entry</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TARGET_PLATFORM_INCLUDE_DECLARATION_ENTRY_FEATURE_COUNT = 2;
+
+	/**
+	 * The number of operations of the '<em>Include Declaration Entry</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TARGET_PLATFORM_INCLUDE_DECLARATION_ENTRY_OPERATION_COUNT = 0;
+
+	/**
 	 * The meta object id for the '{@link fr.obeo.releng.targetplatform.impl.TargetPlatformImpl <em>Target Platform</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -68,7 +114,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @see fr.obeo.releng.targetplatform.impl.TargetPlatformPackageImpl#getTargetPlatform()
 	 * @generated
 	 */
-	int TARGET_PLATFORM = 0;
+	int TARGET_PLATFORM = 1;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -89,22 +135,22 @@ public interface TargetPlatformPackage extends EPackage {
 	int TARGET_PLATFORM__COMPOSITE_ELEMENTS_RESOLVED = 1;
 
 	/**
-	 * The feature id for the '<em><b>Modified</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TARGET_PLATFORM__MODIFIED = 2;
-
-	/**
 	 * The feature id for the '<em><b>Pre Defined Var Container</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TARGET_PLATFORM__PRE_DEFINED_VAR_CONTAINER = 3;
+	int TARGET_PLATFORM__PRE_DEFINED_VAR_CONTAINER = 2;
+
+	/**
+	 * The feature id for the '<em><b>Invalidate By Emf Xtext</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TARGET_PLATFORM__INVALIDATE_BY_EMF_XTEXT = 3;
 
 	/**
 	 * The feature id for the '<em><b>Var Def2 Override In Imported Target</b></em>' containment reference list.
@@ -125,13 +171,22 @@ public interface TargetPlatformPackage extends EPackage {
 	int TARGET_PLATFORM__CONTENTS = 5;
 
 	/**
+	 * The feature id for the '<em><b>Imported Target Platforms</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TARGET_PLATFORM__IMPORTED_TARGET_PLATFORMS = 6;
+
+	/**
 	 * The feature id for the '<em><b>Includes</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TARGET_PLATFORM__INCLUDES = 6;
+	int TARGET_PLATFORM__INCLUDES = 7;
 
 	/**
 	 * The feature id for the '<em><b>Options</b></em>' attribute list.
@@ -140,7 +195,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TARGET_PLATFORM__OPTIONS = 7;
+	int TARGET_PLATFORM__OPTIONS = 8;
 
 	/**
 	 * The feature id for the '<em><b>Locations</b></em>' reference list.
@@ -149,7 +204,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TARGET_PLATFORM__LOCATIONS = 8;
+	int TARGET_PLATFORM__LOCATIONS = 9;
 
 	/**
 	 * The feature id for the '<em><b>Environment</b></em>' reference.
@@ -158,7 +213,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TARGET_PLATFORM__ENVIRONMENT = 9;
+	int TARGET_PLATFORM__ENVIRONMENT = 10;
 
 	/**
 	 * The feature id for the '<em><b>Var Definition</b></em>' reference list.
@@ -167,7 +222,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TARGET_PLATFORM__VAR_DEFINITION = 10;
+	int TARGET_PLATFORM__VAR_DEFINITION = 11;
 
 	/**
 	 * The number of structural features of the '<em>Target Platform</em>' class.
@@ -176,7 +231,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TARGET_PLATFORM_FEATURE_COUNT = 11;
+	int TARGET_PLATFORM_FEATURE_COUNT = 12;
 
 	/**
 	 * The number of operations of the '<em>Target Platform</em>' class.
@@ -195,7 +250,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @see fr.obeo.releng.targetplatform.impl.TargetPlatformPackageImpl#getTargetContent()
 	 * @generated
 	 */
-	int TARGET_CONTENT = 1;
+	int TARGET_CONTENT = 2;
 
 	/**
 	 * The feature id for the '<em><b>Target Platform</b></em>' container reference.
@@ -232,7 +287,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @see fr.obeo.releng.targetplatform.impl.TargetPlatformPackageImpl#getOptions()
 	 * @generated
 	 */
-	int OPTIONS = 2;
+	int OPTIONS = 3;
 
 	/**
 	 * The feature id for the '<em><b>Target Platform</b></em>' container reference.
@@ -278,7 +333,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @see fr.obeo.releng.targetplatform.impl.TargetPlatformPackageImpl#getEnvironment()
 	 * @generated
 	 */
-	int ENVIRONMENT = 3;
+	int ENVIRONMENT = 4;
 
 	/**
 	 * The feature id for the '<em><b>Target Platform</b></em>' container reference.
@@ -369,7 +424,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @see fr.obeo.releng.targetplatform.impl.TargetPlatformPackageImpl#getVarDefinition()
 	 * @generated
 	 */
-	int VAR_DEFINITION = 4;
+	int VAR_DEFINITION = 5;
 
 	/**
 	 * The feature id for the '<em><b>Target Platform</b></em>' container reference.
@@ -559,7 +614,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @see fr.obeo.releng.targetplatform.impl.TargetPlatformPackageImpl#getVarDefinitionContainer()
 	 * @generated
 	 */
-	int VAR_DEFINITION_CONTAINER = 5;
+	int VAR_DEFINITION_CONTAINER = 6;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -605,7 +660,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @see fr.obeo.releng.targetplatform.impl.TargetPlatformPackageImpl#getCompositeString()
 	 * @generated
 	 */
-	int COMPOSITE_STRING = 6;
+	int COMPOSITE_STRING = 7;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -705,7 +760,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @see fr.obeo.releng.targetplatform.impl.TargetPlatformPackageImpl#getCompositeStringPart()
 	 * @generated
 	 */
-	int COMPOSITE_STRING_PART = 7;
+	int COMPOSITE_STRING_PART = 8;
 
 	/**
 	 * The feature id for the '<em><b>Composite String</b></em>' container reference.
@@ -796,7 +851,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @see fr.obeo.releng.targetplatform.impl.TargetPlatformPackageImpl#getVarCall()
 	 * @generated
 	 */
-	int VAR_CALL = 8;
+	int VAR_CALL = 9;
 
 	/**
 	 * The feature id for the '<em><b>Composite String</b></em>' container reference.
@@ -923,7 +978,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @see fr.obeo.releng.targetplatform.impl.TargetPlatformPackageImpl#getStaticString()
 	 * @generated
 	 */
-	int STATIC_STRING = 9;
+	int STATIC_STRING = 10;
 
 	/**
 	 * The feature id for the '<em><b>Composite String</b></em>' container reference.
@@ -1041,7 +1096,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @see fr.obeo.releng.targetplatform.impl.TargetPlatformPackageImpl#getLocation()
 	 * @generated
 	 */
-	int LOCATION = 10;
+	int LOCATION = 11;
 
 	/**
 	 * The feature id for the '<em><b>Target Platform</b></em>' container reference.
@@ -1141,7 +1196,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @see fr.obeo.releng.targetplatform.impl.TargetPlatformPackageImpl#getIncludeDeclaration()
 	 * @generated
 	 */
-	int INCLUDE_DECLARATION = 11;
+	int INCLUDE_DECLARATION = 12;
 
 	/**
 	 * The feature id for the '<em><b>Target Platform</b></em>' container reference.
@@ -1223,7 +1278,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @see fr.obeo.releng.targetplatform.impl.TargetPlatformPackageImpl#getIU()
 	 * @generated
 	 */
-	int IU = 12;
+	int IU = 13;
 
 	/**
 	 * The feature id for the '<em><b>ID</b></em>' attribute.
@@ -1287,7 +1342,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @see fr.obeo.releng.targetplatform.impl.TargetPlatformPackageImpl#getOption()
 	 * @generated
 	 */
-	int OPTION = 13;
+	int OPTION = 14;
 
 	/**
 	 * The meta object id for the '<em>UUID</em>' data type.
@@ -1297,7 +1352,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @see fr.obeo.releng.targetplatform.impl.TargetPlatformPackageImpl#getUUID()
 	 * @generated
 	 */
-	int UUID = 14;
+	int UUID = 15;
 
 	/**
 	 * The meta object id for the '<em>Var Def List</em>' data type.
@@ -1307,7 +1362,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @see fr.obeo.releng.targetplatform.impl.TargetPlatformPackageImpl#getVarDefList()
 	 * @generated
 	 */
-	int VAR_DEF_LIST = 15;
+	int VAR_DEF_LIST = 16;
 
 	/**
 	 * The meta object id for the '<em>Locale</em>' data type.
@@ -1317,7 +1372,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @see fr.obeo.releng.targetplatform.impl.TargetPlatformPackageImpl#getLocale()
 	 * @generated
 	 */
-	int LOCALE = 16;
+	int LOCALE = 17;
 
 	/**
 	 * The meta object id for the '<em>Execution Environment</em>' data type.
@@ -1327,8 +1382,43 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @see fr.obeo.releng.targetplatform.impl.TargetPlatformPackageImpl#getExecutionEnvironment()
 	 * @generated
 	 */
-	int EXECUTION_ENVIRONMENT = 17;
+	int EXECUTION_ENVIRONMENT = 18;
 
+
+	/**
+	 * Returns the meta object for class '{@link java.util.Map.Entry <em>Include Declaration Entry</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Include Declaration Entry</em>'.
+	 * @see java.util.Map.Entry
+	 * @model features="value key" 
+	 *        valueType="fr.obeo.releng.targetplatform.TargetPlatform"
+	 *        keyType="fr.obeo.releng.targetplatform.IncludeDeclaration"
+	 * @generated
+	 */
+	EClass getTargetPlatformIncludeDeclarationEntry();
+
+	/**
+	 * Returns the meta object for the reference '{@link java.util.Map.Entry <em>Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Value</em>'.
+	 * @see java.util.Map.Entry
+	 * @see #getTargetPlatformIncludeDeclarationEntry()
+	 * @generated
+	 */
+	EReference getTargetPlatformIncludeDeclarationEntry_Value();
+
+	/**
+	 * Returns the meta object for the reference '{@link java.util.Map.Entry <em>Key</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Key</em>'.
+	 * @see java.util.Map.Entry
+	 * @see #getTargetPlatformIncludeDeclarationEntry()
+	 * @generated
+	 */
+	EReference getTargetPlatformIncludeDeclarationEntry_Key();
 
 	/**
 	 * Returns the meta object for class '{@link fr.obeo.releng.targetplatform.TargetPlatform <em>Target Platform</em>}'.
@@ -1363,17 +1453,6 @@ public interface TargetPlatformPackage extends EPackage {
 	EAttribute getTargetPlatform_CompositeElementsResolved();
 
 	/**
-	 * Returns the meta object for the attribute '{@link fr.obeo.releng.targetplatform.TargetPlatform#isModified <em>Modified</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Modified</em>'.
-	 * @see fr.obeo.releng.targetplatform.TargetPlatform#isModified()
-	 * @see #getTargetPlatform()
-	 * @generated
-	 */
-	EAttribute getTargetPlatform_Modified();
-
-	/**
 	 * Returns the meta object for the containment reference '{@link fr.obeo.releng.targetplatform.TargetPlatform#getPreDefinedVarContainer <em>Pre Defined Var Container</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1383,6 +1462,17 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getTargetPlatform_PreDefinedVarContainer();
+
+	/**
+	 * Returns the meta object for the attribute '{@link fr.obeo.releng.targetplatform.TargetPlatform#isInvalidateByEmfXtext <em>Invalidate By Emf Xtext</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Invalidate By Emf Xtext</em>'.
+	 * @see fr.obeo.releng.targetplatform.TargetPlatform#isInvalidateByEmfXtext()
+	 * @see #getTargetPlatform()
+	 * @generated
+	 */
+	EAttribute getTargetPlatform_InvalidateByEmfXtext();
 
 	/**
 	 * Returns the meta object for the containment reference list '{@link fr.obeo.releng.targetplatform.TargetPlatform#getVarDef2OverrideInImportedTarget <em>Var Def2 Override In Imported Target</em>}'.
@@ -1405,6 +1495,17 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getTargetPlatform_Contents();
+
+	/**
+	 * Returns the meta object for the map '{@link fr.obeo.releng.targetplatform.TargetPlatform#getImportedTargetPlatforms <em>Imported Target Platforms</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the map '<em>Imported Target Platforms</em>'.
+	 * @see fr.obeo.releng.targetplatform.TargetPlatform#getImportedTargetPlatforms()
+	 * @see #getTargetPlatform()
+	 * @generated
+	 */
+	EReference getTargetPlatform_ImportedTargetPlatforms();
 
 	/**
 	 * Returns the meta object for the reference list '{@link fr.obeo.releng.targetplatform.TargetPlatform#getIncludes <em>Includes</em>}'.
@@ -2433,6 +2534,32 @@ public interface TargetPlatformPackage extends EPackage {
 	 */
 	interface Literals {
 		/**
+		 * The meta object literal for the '{@link fr.obeo.releng.targetplatform.impl.TargetPlatformIncludeDeclarationEntryImpl <em>Include Declaration Entry</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see fr.obeo.releng.targetplatform.impl.TargetPlatformIncludeDeclarationEntryImpl
+		 * @see fr.obeo.releng.targetplatform.impl.TargetPlatformPackageImpl#getTargetPlatformIncludeDeclarationEntry()
+		 * @generated
+		 */
+		EClass TARGET_PLATFORM_INCLUDE_DECLARATION_ENTRY = eINSTANCE.getTargetPlatformIncludeDeclarationEntry();
+
+		/**
+		 * The meta object literal for the '<em><b>Value</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference TARGET_PLATFORM_INCLUDE_DECLARATION_ENTRY__VALUE = eINSTANCE.getTargetPlatformIncludeDeclarationEntry_Value();
+
+		/**
+		 * The meta object literal for the '<em><b>Key</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference TARGET_PLATFORM_INCLUDE_DECLARATION_ENTRY__KEY = eINSTANCE.getTargetPlatformIncludeDeclarationEntry_Key();
+
+		/**
 		 * The meta object literal for the '{@link fr.obeo.releng.targetplatform.impl.TargetPlatformImpl <em>Target Platform</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2459,20 +2586,20 @@ public interface TargetPlatformPackage extends EPackage {
 		EAttribute TARGET_PLATFORM__COMPOSITE_ELEMENTS_RESOLVED = eINSTANCE.getTargetPlatform_CompositeElementsResolved();
 
 		/**
-		 * The meta object literal for the '<em><b>Modified</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute TARGET_PLATFORM__MODIFIED = eINSTANCE.getTargetPlatform_Modified();
-
-		/**
 		 * The meta object literal for the '<em><b>Pre Defined Var Container</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
 		EReference TARGET_PLATFORM__PRE_DEFINED_VAR_CONTAINER = eINSTANCE.getTargetPlatform_PreDefinedVarContainer();
+
+		/**
+		 * The meta object literal for the '<em><b>Invalidate By Emf Xtext</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute TARGET_PLATFORM__INVALIDATE_BY_EMF_XTEXT = eINSTANCE.getTargetPlatform_InvalidateByEmfXtext();
 
 		/**
 		 * The meta object literal for the '<em><b>Var Def2 Override In Imported Target</b></em>' containment reference list feature.
@@ -2489,6 +2616,14 @@ public interface TargetPlatformPackage extends EPackage {
 		 * @generated
 		 */
 		EReference TARGET_PLATFORM__CONTENTS = eINSTANCE.getTargetPlatform_Contents();
+
+		/**
+		 * The meta object literal for the '<em><b>Imported Target Platforms</b></em>' map feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference TARGET_PLATFORM__IMPORTED_TARGET_PLATFORMS = eINSTANCE.getTargetPlatform_ImportedTargetPlatforms();
 
 		/**
 		 * The meta object literal for the '<em><b>Includes</b></em>' reference list feature.

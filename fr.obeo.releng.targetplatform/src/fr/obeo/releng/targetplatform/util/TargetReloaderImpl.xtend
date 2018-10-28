@@ -11,14 +11,18 @@ class TargetReloaderImpl implements TargetReloader {
 	// URI prefix from eclipse: platform:/
 	// URI prefix from command line: file:/
 	override getUpToDateTarget(TargetPlatform targetPlatformBase, TargetPlatform importedTargetPlatform) {
+		//targetPlatformBase not necessary
 		var TargetPlatform ret = null;
 		
- 		val context	= targetPlatformBase.eResource
+// 		val context	= targetPlatformBase.eResource
+ 		val selfContext	= importedTargetPlatform.eResource
  		val importTargetUri = importedTargetPlatform.eResource.URI.toString
  		
- 		val resource = EcoreUtil2.getResource(context, importTargetUri);
- 		resource.unload
- 		val resourceUpdated = EcoreUtil2.getResource(context, importTargetUri);
+// 		val resource = EcoreUtil2.getResource(context, importTargetUri);
+// 		resource.unload
+ 		selfContext.unload
+// 		val resourceUpdated = EcoreUtil2.getResource(context, importTargetUri);
+ 		val resourceUpdated = EcoreUtil2.getResource(selfContext, importTargetUri);
 		var root = resourceUpdated?.getContents()?.head;
  		if (root instanceof TargetPlatform) {
 			ret = root as TargetPlatform;

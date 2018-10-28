@@ -29,6 +29,8 @@ class TargetPlatform {
 	
 	contains VarDefinitionContainer preDefinedVarContainer
 	
+	boolean invalidateByEmfXtext = "false"
+	
 	// To understand the usage of varDef2OverrideInImportedTarget see tests: TestOverrideImportTarget.testOverrideRecursive
 	// and TestOverrideImportTarget.testOverrideRecursiveWithJump
 	// In the second test, the intermediate tpd has no varDefinition, so we have to propagate them through the
@@ -189,6 +191,10 @@ class VarDefinition extends TargetContent {
 	}
 	
 	op boolean isWhollyDefinedByTargetNoCycleChecked() {
+		if (value === null) {
+			// Same case as in "checkVarCycle" below
+			return false
+		}
 		return value.stringParts.forall[
 			if (it instanceof StaticString) {
 				return true
@@ -211,6 +217,17 @@ class VarDefinition extends TargetContent {
 		variableDefinitionCycleDetected = false
 		varDefCycle = newArrayList
 		varDefCycle.add(this)
+		if (value === null) {
+			// This case may occur when you are typing a new define
+			// When the line is not finished like:
+			//
+			// define maVar
+			//
+			// instead of
+			//
+			// define maVar="value"
+			return
+		}
 		value.computeActualString(varDefCycle)
 		
 		variableDefinitionCycleDetected = value.variableDefinitionCycleDetected

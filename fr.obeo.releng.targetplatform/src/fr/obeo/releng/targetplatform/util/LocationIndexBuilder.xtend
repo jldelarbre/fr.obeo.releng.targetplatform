@@ -43,11 +43,14 @@ class LocationIndexBuilder {
 			newLinkedList(targetPlatform)
 		).filter[
 			if (it.uri === null) {
-				val context = "Context: location id=" + it.ID + " / in target: " + it.eContainer.toString
-				val message = "The location.uri can not be resolved.\n" + context;
-				val e = new NullPointerException(message);
+				// URI location not resolved could be a normal case: Just send a warning
+				var message = "Location "
+				if (it.ID !== null) {
+					message += '(id=' + it.ID + ") "
+				}
+				message += "in target: " + (it.eContainer as TargetPlatform).name + " could not be resolved"
 				TargetPlatformBundleActivator.getInstance().getLog()
-					.log(new Status(IStatus.ERROR, TargetPlatformBundleActivator.PLUGIN_ID, message, e));
+					.log(new Status(IStatus.WARNING, TargetPlatformBundleActivator.PLUGIN_ID, message));
 			}
 			null !== it.uri
 		]

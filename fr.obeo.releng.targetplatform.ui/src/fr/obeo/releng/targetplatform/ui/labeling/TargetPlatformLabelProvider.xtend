@@ -47,9 +47,14 @@ class TargetPlatformLabelProvider extends DefaultEObjectLabelProvider {
 //			compositeElementResolver.resolveCompositeElements(object.eContainer as TargetPlatform)
 //			object.resolveUri
 //		}
-		ss.append(object.uri);
 		if (object.getID() !== null) {
-			ss.append(" " + object.getID(), StyledString.DECORATIONS_STYLER);
+			ss.append(object.getID() + " - ", StyledString.DECORATIONS_STYLER);
+		}
+		if (object.uri !== null) {
+			ss.append(object.uri);
+		}
+		else {
+			ss.append("Unable to resolve URI")
 		}
 		ss;
 	}

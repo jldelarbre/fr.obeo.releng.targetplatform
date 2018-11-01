@@ -29,5 +29,7 @@ interface TargetReloader {
 	 * 
 	 * The same consideration applies with other declarations like "include" as with "define"
 	 */
-	def TargetPlatform forceReloadTarget(TargetPlatform targetPlatformBase, TargetPlatform importedTargetPlatform)
+	def TargetPlatform getUpToDateTarget(TargetPlatform targetPlatformBase, TargetPlatform importedTargetPlatform)
+	
+//	def void registerTargetPlatform(TargetPlatform targetPlatform)
 }

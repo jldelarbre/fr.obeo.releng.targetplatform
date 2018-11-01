@@ -15,21 +15,26 @@ import org.eclipse.xtext.util.LazyStringInputStream
  */
 class TargetReloaderTestImpl implements TargetReloader {
 	
-	override forceReloadTarget(TargetPlatform targetPlatformBase, TargetPlatform importedTargetPlatform) {
-		var TargetPlatform ret = null;
-		
-		val xTextLazyResource = importedTargetPlatform.eResource as LazyLinkingResource
-		val targetFileContent = xTextLazyResource.parseResult.rootNode.text
-		
-		xTextLazyResource.unload
-		xTextLazyResource.load(new LazyStringInputStream(targetFileContent), null)
-		
-		var root = xTextLazyResource?.getContents()?.head;
-		if (root instanceof TargetPlatform) {
-			ret = root as TargetPlatform;
-		}
-		
-		return ret
+	override getUpToDateTarget(TargetPlatform targetPlatformBase, TargetPlatform importedTargetPlatform) {
+//		var TargetPlatform ret = null;
+//		
+//		val xTextLazyResource = importedTargetPlatform.eResource as LazyLinkingResource
+//		val targetFileContent = xTextLazyResource.parseResult.rootNode.text
+//		
+//		xTextLazyResource.unload
+//		xTextLazyResource.load(new LazyStringInputStream(targetFileContent), null)
+//		
+//		var root = xTextLazyResource?.getContents()?.head;
+//		if (root instanceof TargetPlatform) {
+//			ret = root as TargetPlatform;
+//		}
+//		
+//		return ret
+		return importedTargetPlatform
 	}
+	
+//	override registerTargetPlatform(TargetPlatform targetPlatform) {
+//		//throw new UnsupportedOperationException("TODO: auto-generated method stub")
+//	}
 	
 }

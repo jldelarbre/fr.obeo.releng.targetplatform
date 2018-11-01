@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?pde?>
+<!-- generated with https://github.com/mbarbero/fr.obeo.releng.targetplatform -->
+<target name="Debug Target Platform DSL 2.7.0" sequenceNumber="1540591700">
+  <locations>
+    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
+      <unit id="org.eclipse.equinox.p2.sdk.feature.group" version="3.11.0.v20180515-1348"/>
+      <unit id="org.eclipse.sdk.feature.group" version="4.8.0.v20180611-0826"/>
+      <unit id="org.eclipse.pde.core" version="3.12.0.v20180516-1159"/>
+      <unit id="org.eclipse.platform.feature.group" version="4.8.0.v20180611-0656"/>
+      <unit id="org.eclipse.rcp.feature.group" version="4.8.0.v20180611-0656"/>
+      <unit id="org.eclipse.equinox.p2.installer" version="1.1.0.v20180103-0918"/>
+      <repository location="http://download.eclipse.org/eclipse/updates/4.8"/>
+    </location>
+    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
+      <unit id="org.eclipse.emf.ecore.xcore.feature.group" version="1.2.2.v20150202-0452"/>
+      <unit id="org.eclipse.emf.ecore.xcore.source.feature.group" version="1.2.2.v20150202-0452"/>
+      <repository location="http://download.eclipse.org/modeling/emf/emf/updates/2.10.x/"/>
+    </location>
+    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
+      <unit id="org.eclipse.xtext.ui.feature.group" version="2.7.2.v201409160908"/>
+      <unit id="org.eclipse.xtext.ui.source.feature.group" version="2.7.2.v201409160908"/>
+      <unit id="org.eclipse.xtext.runtime.feature.group" version="2.7.2.v201409160908"/>
+      <unit id="org.eclipse.xtext.runtime.source.feature.group" version="2.7.2.v201409160908"/>
+      <unit id="org.eclipse.xtext.junit4" version="2.7.2.v201409160908"/>
+      <unit id="org.eclipse.xtext.junit4.source" version="2.7.2.v201409160908"/>
+      <unit id="org.objectweb.asm" version="5.0.1.v201404251740"/>
+      <unit id="org.objectweb.asm.source" version="5.0.1.v201404251740"/>
+      <repository location="http://download.eclipse.org/modeling/tmf/xtext/updates/releases/maintenance/R201409160908/"/>
+    </location>
+    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
+      <repository location="http://download.eclipse.org/modeling/emft/mwe/updates/releases/R201409021027/mwe/"/>
+    </location>
+    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
+      <repository location="http://download.eclipse.org/modeling/emft/mwe/updates/releases/R201409021051/mwe2lang/"/>
+    </location>
+    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
+      <repository location="http://download.eclipse.org/modeling/m2t/xpand/updates/releases/R201406030414"/>
+    </location>
+  </locations>
+</target>

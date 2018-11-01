@@ -23,31 +23,44 @@ import java.util.Set
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.scoping.impl.ImportUriResolver
 import org.eclipse.emf.common.util.URI
+import fr.obeo.releng.targetplatform.TargetPlatformBundleActivator
+import org.eclipse.core.runtime.IStatus
+import org.eclipse.core.runtime.Status
 
 class LocationIndexBuilder {
-	
+
 	@Inject
 	ImportUriResolver resolver;
-	
+
 	@Inject
 	CompositeElementResolver compositeElementResolver
-	
+
 	def ListMultimap<String, Location> getLocationIndex(TargetPlatform targetPlatform) {
 		compositeElementResolver.resolveCompositeElements(targetPlatform)
-		
-		val locationList = getLocations(
-			newLinkedHashSet(targetPlatform), 
+
+		var locationList = getLocations(
+			newLinkedHashSet(targetPlatform),
 			newLinkedList(targetPlatform)
-		)
+		).filter[
+			if (it.uri === null) {
+				val context = "Context: location id=" + it.ID + " / in target: " + it.eContainer.toString
+				val message = "The location.uri can not be resolved.\n" + context;
+				val e = new NullPointerException(message);
+				TargetPlatformBundleActivator.getInstance().getLog()
+					.log(new Status(IStatus.ERROR, TargetPlatformBundleActivator.PLUGIN_ID, message, e));
+			}
+			null !== it.uri
+		]
+		
 		return LinkedListMultimap.create(Multimaps.index(locationList, [uri]))
 	}
-	
+
 	private def List<Location> getLocations(Set<TargetPlatform> visited, List<TargetPlatform> toBeVisited) {
 		val locations = newArrayList()
-		
-		toBeVisited.forEach[
+
+		toBeVisited.forEach [
 			val includes = newLinkedList
-			it.contents.reverseView.forEach[content|
+			it.contents.reverseView.forEach [ content |
 				if (content instanceof Location) {
 					if (!includes.empty) {
 						locations.addAll(getLocationFromVisitedIncludes(it, includes, visited))
@@ -58,7 +71,7 @@ class LocationIndexBuilder {
 					includes.add(content)
 				}
 			]
-			
+
 			if (!includes.empty) {
 				locations.addAll(getLocationFromVisitedIncludes(it, includes, visited))
 				includes.clear
@@ -66,15 +79,15 @@ class LocationIndexBuilder {
 		]
 		return locations
 	}
-	
-	private def getLocationFromVisitedIncludes(TargetPlatform parent, List<IncludeDeclaration> includes, Set<TargetPlatform> visited) {
-		val importedLocation = includes
-			.map[getImportedTargetPlatform(parent.eResource, it)]
-			.filterNull
-			.filter[!visited.contains(it)].toList
-		
+
+	private def getLocationFromVisitedIncludes(TargetPlatform parent, List<IncludeDeclaration> includes,
+		Set<TargetPlatform> visited) {
+		val importedLocation = includes.map[getImportedTargetPlatform(parent.eResource, it)].filterNull.filter [
+			!visited.contains(it)
+		].toList
+
 		visited.addAll(importedLocation)
-		
+
 		return getLocations(visited, importedLocation)
 	}
 
@@ -93,17 +106,18 @@ class LocationIndexBuilder {
 		compositeElementResolver.resolveCompositeElements(targetPlatform)
 		return getImportedTargetPlatformsDoNotResolveCompositeElement(targetPlatform)
 	}
-	
+
 	def getImportedTargetPlatformsDoNotResolveCompositeElement(TargetPlatform targetPlatform) {
 		val visited = newLinkedHashSet();
 		val queue = newLinkedList();
 		val includeRet = newLinkedList();
 		queue.addLast(targetPlatform)
 		visited.add(targetPlatform)
-		while(!queue.empty) {
+		while (!queue.empty) {
 			val tr = newLinkedList();
 			val t = queue.removeLast
-			for(unvisited : t.includes.filter[it.resolved].map[getImportedTargetPlatform(t.eResource, it)].filterNull) {
+			for (unvisited : t.includes.filter[it.resolved].map[getImportedTargetPlatform(t.eResource, it)].
+				filterNull) {
 				if (!visited.contains(unvisited)) {
 					visited.add(unvisited)
 					queue.addLast(unvisited)
@@ -119,32 +133,32 @@ class LocationIndexBuilder {
 		compositeElementResolver.resolveCompositeElements(targetPlatform)
 		val acc = newLinkedHashSet();
 		val s = newLinkedList();
-		
-		return 
-			if (checkIncludeCycle(targetPlatform, acc, s)) {
-				s.reverse
-			} else {
-				newImmutableList()
-			}
+
+		return if (checkIncludeCycle(targetPlatform, acc, s)) {
+			s.reverse
+		} else {
+			newImmutableList()
+		}
 	}
-	
-	private def boolean checkIncludeCycle(TargetPlatform targetPlatform, Set<TargetPlatform> visited, LinkedList<TargetPlatform> s) {
+
+	private def boolean checkIncludeCycle(TargetPlatform targetPlatform, Set<TargetPlatform> visited,
+		LinkedList<TargetPlatform> s) {
 		s.addFirst(targetPlatform)
 		val context = targetPlatform.eResource
 		val includedTPs = targetPlatform.includes.map[getImportedTargetPlatform(context, it)].filterNull.toSet
-		for(includedTP : includedTPs) {
+		for (includedTP : includedTPs) {
 			if (s.contains(includedTP)) {
 				s.addFirst(includedTP)
 				return true
 			}
-			
+
 			visited.add(includedTP)
-			
+
 			if (checkIncludeCycle(includedTP, visited, s)) {
 				return true;
 			}
 		}
-		
+
 		s.removeFirst
 		return false
 	}

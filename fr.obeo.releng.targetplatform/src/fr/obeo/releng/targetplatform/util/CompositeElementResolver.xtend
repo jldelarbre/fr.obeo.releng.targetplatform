@@ -322,7 +322,7 @@ class CompositeElementResolver {
 	private def updateVariableCall(VarCall varCall, EList<TargetContent> targetContent) {
 		for (varDef : targetContent) {
 			if (varDef instanceof VarDefinition) {
-				if (varCall.varName?.name == varDef.name) {
+				if (varCall.varName.name == varDef.name) {
 					varCall.originalVarName = varCall.varName
 					varCall.varName = varDef
 				}

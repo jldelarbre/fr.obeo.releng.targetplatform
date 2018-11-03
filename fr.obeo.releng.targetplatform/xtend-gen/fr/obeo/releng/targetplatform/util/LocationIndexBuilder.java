@@ -19,6 +19,7 @@ import fr.obeo.releng.targetplatform.IncludeDeclaration;
 import fr.obeo.releng.targetplatform.Location;
 import fr.obeo.releng.targetplatform.TargetContent;
 import fr.obeo.releng.targetplatform.TargetPlatform;
+import fr.obeo.releng.targetplatform.TargetPlatformBundleActivator;
 import fr.obeo.releng.targetplatform.util.CompositeElementResolver;
 import fr.obeo.releng.targetplatform.util.ResourceUtil;
 import java.util.ArrayList;
@@ -27,6 +28,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
+import org.eclipse.core.runtime.ILog;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -47,16 +51,50 @@ public class LocationIndexBuilder {
   
   public ListMultimap<String, Location> getLocationIndex(final TargetPlatform targetPlatform) {
     this.compositeElementResolver.resolveCompositeElements(targetPlatform);
-    final List<Location> locationList = this.getLocations(
+    final Function1<Location, Boolean> _function = new Function1<Location, Boolean>() {
+      @Override
+      public Boolean apply(final Location it) {
+        boolean _xblockexpression = false;
+        {
+          String _uri = it.getUri();
+          boolean _tripleEquals = (_uri == null);
+          if (_tripleEquals) {
+            String message = "Location ";
+            String _iD = it.getID();
+            boolean _tripleNotEquals = (_iD != null);
+            if (_tripleNotEquals) {
+              String _message = message;
+              String _iD_1 = it.getID();
+              String _plus = ("(id=" + _iD_1);
+              String _plus_1 = (_plus + ") ");
+              message = (_message + _plus_1);
+            }
+            String _message_1 = message;
+            EObject _eContainer = it.eContainer();
+            String _name = ((TargetPlatform) _eContainer).getName();
+            String _plus_2 = ("in target: " + _name);
+            String _plus_3 = (_plus_2 + " could not be resolved");
+            message = (_message_1 + _plus_3);
+            ILog _log = TargetPlatformBundleActivator.getInstance().getLog();
+            Status _status = new Status(IStatus.WARNING, TargetPlatformBundleActivator.PLUGIN_ID, message);
+            _log.log(_status);
+          }
+          String _uri_1 = it.getUri();
+          _xblockexpression = (null != _uri_1);
+        }
+        return Boolean.valueOf(_xblockexpression);
+      }
+    };
+    Iterable<Location> locationList = IterableExtensions.<Location>filter(this.getLocations(
       CollectionLiterals.<TargetPlatform>newLinkedHashSet(targetPlatform), 
-      CollectionLiterals.<TargetPlatform>newLinkedList(targetPlatform));
-    final Function<Location, String> _function = new Function<Location, String>() {
+      CollectionLiterals.<TargetPlatform>newLinkedList(targetPlatform)), _function);
+    final Function<Location, String> _function_1 = new Function<Location, String>() {
       @Override
       public String apply(final Location it) {
         return it.getUri();
       }
     };
-    return LinkedListMultimap.<String, Location>create(Multimaps.<String, Location>index(locationList, _function));
+    return LinkedListMultimap.<String, Location>create(Multimaps.<String, Location>index(locationList, _function_1));
   }
   
   private List<Location> getLocations(final Set<TargetPlatform> visited, final List<TargetPlatform> toBeVisited) {

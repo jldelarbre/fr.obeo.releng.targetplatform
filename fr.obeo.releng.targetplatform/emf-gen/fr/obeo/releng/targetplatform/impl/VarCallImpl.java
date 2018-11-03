@@ -3,6 +3,7 @@
 package fr.obeo.releng.targetplatform.impl;
 
 import fr.obeo.releng.targetplatform.CompositeString;
+import fr.obeo.releng.targetplatform.TargetPlatformBundleActivator;
 import fr.obeo.releng.targetplatform.TargetPlatformPackage;
 import fr.obeo.releng.targetplatform.VarCall;
 import fr.obeo.releng.targetplatform.VarDefinition;
@@ -12,12 +13,17 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.runtime.ILog;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -302,6 +308,20 @@ public class VarCallImpl extends MinimalEObjectImpl.Container implements VarCall
 		VarDefinition _varName = this.getVarName();
 		boolean _tripleEquals = (null == _varName);
 		if (_tripleEquals) {
+			String message = "Unresolved varCall: ";
+			EObject superContext = this.eContainer();
+			while ((superContext != null)) {
+				{
+					String _message = message;
+					String _string = superContext.toString();
+					String _plus = (_string + " / ");
+					message = (_message + _plus);
+					superContext = superContext.eContainer();
+				}
+			}
+			ILog _log = TargetPlatformBundleActivator.getInstance().getLog();
+			Status _status = new Status(IStatus.INFO, TargetPlatformBundleActivator.PLUGIN_ID, message);
+			_log.log(_status);
 			return "";
 		}
 		this.setVariableDefinitionCycleDetected(false);

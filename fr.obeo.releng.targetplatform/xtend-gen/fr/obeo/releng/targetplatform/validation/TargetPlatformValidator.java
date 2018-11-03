@@ -150,6 +150,15 @@ public class TargetPlatformValidator extends AbstractTargetPlatformValidator {
   public final static String CHECK__NO_DUPLICATED_DEFINE = "CHECK__NO_DUPLICATED_DEFINE";
   
   @Check
+  public void checkEmfXtextInvalidation(final TargetPlatform targetPlatform) {
+    this.compositeElementResolver.resolveCompositeElements(targetPlatform);
+    boolean _isInvalidateByEmfXtext = targetPlatform.isInvalidateByEmfXtext();
+    if (_isInvalidateByEmfXtext) {
+      this.error("EMF/xText has killed my internal state. Please, append a new line at the end of file to make me fill better", targetPlatform, TargetPlatformPackage.Literals.TARGET_PLATFORM__INVALIDATE_BY_EMF_XTEXT);
+    }
+  }
+  
+  @Check
   public void checkAllEnvAndRequiredAreSelfExluding(final TargetPlatform targetPlatform) {
     final Function1<Options, EList<Option>> _function = new Function1<Options, EList<Option>>() {
       @Override

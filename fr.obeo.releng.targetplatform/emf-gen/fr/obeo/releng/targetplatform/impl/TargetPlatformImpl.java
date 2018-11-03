@@ -24,8 +24,10 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.DelegatingEList.UnmodifiableEList;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.EMap;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -33,6 +35,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
+import org.eclipse.emf.ecore.util.EcoreEMap;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
@@ -49,10 +52,11 @@ import org.eclipse.xtext.xbase.lib.IterableExtensions;
  * <ul>
  *   <li>{@link fr.obeo.releng.targetplatform.impl.TargetPlatformImpl#getName <em>Name</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.impl.TargetPlatformImpl#isCompositeElementsResolved <em>Composite Elements Resolved</em>}</li>
- *   <li>{@link fr.obeo.releng.targetplatform.impl.TargetPlatformImpl#isModified <em>Modified</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.impl.TargetPlatformImpl#getPreDefinedVarContainer <em>Pre Defined Var Container</em>}</li>
+ *   <li>{@link fr.obeo.releng.targetplatform.impl.TargetPlatformImpl#isInvalidateByEmfXtext <em>Invalidate By Emf Xtext</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.impl.TargetPlatformImpl#getVarDef2OverrideInImportedTarget <em>Var Def2 Override In Imported Target</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.impl.TargetPlatformImpl#getContents <em>Contents</em>}</li>
+ *   <li>{@link fr.obeo.releng.targetplatform.impl.TargetPlatformImpl#getImportedTargetPlatforms <em>Imported Target Platforms</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.impl.TargetPlatformImpl#getIncludes <em>Includes</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.impl.TargetPlatformImpl#getOptions <em>Options</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.impl.TargetPlatformImpl#getLocations <em>Locations</em>}</li>
@@ -104,26 +108,6 @@ public class TargetPlatformImpl extends MinimalEObjectImpl.Container implements 
 	protected boolean compositeElementsResolved = COMPOSITE_ELEMENTS_RESOLVED_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isModified() <em>Modified</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isModified()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final boolean MODIFIED_EDEFAULT = false;
-
-	/**
-	 * The cached value of the '{@link #isModified() <em>Modified</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isModified()
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean modified = MODIFIED_EDEFAULT;
-
-	/**
 	 * The cached value of the '{@link #getPreDefinedVarContainer() <em>Pre Defined Var Container</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -132,6 +116,26 @@ public class TargetPlatformImpl extends MinimalEObjectImpl.Container implements 
 	 * @ordered
 	 */
 	protected VarDefinitionContainer preDefinedVarContainer;
+
+	/**
+	 * The default value of the '{@link #isInvalidateByEmfXtext() <em>Invalidate By Emf Xtext</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isInvalidateByEmfXtext()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean INVALIDATE_BY_EMF_XTEXT_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isInvalidateByEmfXtext() <em>Invalidate By Emf Xtext</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isInvalidateByEmfXtext()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean invalidateByEmfXtext = INVALIDATE_BY_EMF_XTEXT_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getVarDef2OverrideInImportedTarget() <em>Var Def2 Override In Imported Target</em>}' containment reference list.
@@ -152,6 +156,16 @@ public class TargetPlatformImpl extends MinimalEObjectImpl.Container implements 
 	 * @ordered
 	 */
 	protected EList<TargetContent> contents;
+
+	/**
+	 * The cached value of the '{@link #getImportedTargetPlatforms() <em>Imported Target Platforms</em>}' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getImportedTargetPlatforms()
+	 * @generated
+	 * @ordered
+	 */
+	protected EMap<IncludeDeclaration, TargetPlatform> importedTargetPlatforms;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -219,27 +233,6 @@ public class TargetPlatformImpl extends MinimalEObjectImpl.Container implements 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean isModified() {
-		return modified;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setModified(boolean newModified) {
-		boolean oldModified = modified;
-		modified = newModified;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, TargetPlatformPackage.TARGET_PLATFORM__MODIFIED, oldModified, modified));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public VarDefinitionContainer getPreDefinedVarContainer() {
 		return preDefinedVarContainer;
 	}
@@ -283,6 +276,27 @@ public class TargetPlatformImpl extends MinimalEObjectImpl.Container implements 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public boolean isInvalidateByEmfXtext() {
+		return invalidateByEmfXtext;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setInvalidateByEmfXtext(boolean newInvalidateByEmfXtext) {
+		boolean oldInvalidateByEmfXtext = invalidateByEmfXtext;
+		invalidateByEmfXtext = newInvalidateByEmfXtext;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TargetPlatformPackage.TARGET_PLATFORM__INVALIDATE_BY_EMF_XTEXT, oldInvalidateByEmfXtext, invalidateByEmfXtext));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EList<VarDefinition> getVarDef2OverrideInImportedTarget() {
 		if (varDef2OverrideInImportedTarget == null) {
 			varDef2OverrideInImportedTarget = new EObjectContainmentEList<VarDefinition>(VarDefinition.class, this, TargetPlatformPackage.TARGET_PLATFORM__VAR_DEF2_OVERRIDE_IN_IMPORTED_TARGET);
@@ -300,6 +314,18 @@ public class TargetPlatformImpl extends MinimalEObjectImpl.Container implements 
 			contents = new EObjectContainmentWithInverseEList<TargetContent>(TargetContent.class, this, TargetPlatformPackage.TARGET_PLATFORM__CONTENTS, TargetPlatformPackage.TARGET_CONTENT__TARGET_PLATFORM);
 		}
 		return contents;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EMap<IncludeDeclaration, TargetPlatform> getImportedTargetPlatforms() {
+		if (importedTargetPlatforms == null) {
+			importedTargetPlatforms = new EcoreEMap<IncludeDeclaration,TargetPlatform>(TargetPlatformPackage.Literals.TARGET_PLATFORM_INCLUDE_DECLARATION_ENTRY, TargetPlatformIncludeDeclarationEntryImpl.class, this, TargetPlatformPackage.TARGET_PLATFORM__IMPORTED_TARGET_PLATFORMS);
+		}
+		return importedTargetPlatforms;
 	}
 
 	/**
@@ -395,6 +421,8 @@ public class TargetPlatformImpl extends MinimalEObjectImpl.Container implements 
 				return ((InternalEList<?>)getVarDef2OverrideInImportedTarget()).basicRemove(otherEnd, msgs);
 			case TargetPlatformPackage.TARGET_PLATFORM__CONTENTS:
 				return ((InternalEList<?>)getContents()).basicRemove(otherEnd, msgs);
+			case TargetPlatformPackage.TARGET_PLATFORM__IMPORTED_TARGET_PLATFORMS:
+				return ((InternalEList<?>)getImportedTargetPlatforms()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -411,14 +439,17 @@ public class TargetPlatformImpl extends MinimalEObjectImpl.Container implements 
 				return getName();
 			case TargetPlatformPackage.TARGET_PLATFORM__COMPOSITE_ELEMENTS_RESOLVED:
 				return isCompositeElementsResolved();
-			case TargetPlatformPackage.TARGET_PLATFORM__MODIFIED:
-				return isModified();
 			case TargetPlatformPackage.TARGET_PLATFORM__PRE_DEFINED_VAR_CONTAINER:
 				return getPreDefinedVarContainer();
+			case TargetPlatformPackage.TARGET_PLATFORM__INVALIDATE_BY_EMF_XTEXT:
+				return isInvalidateByEmfXtext();
 			case TargetPlatformPackage.TARGET_PLATFORM__VAR_DEF2_OVERRIDE_IN_IMPORTED_TARGET:
 				return getVarDef2OverrideInImportedTarget();
 			case TargetPlatformPackage.TARGET_PLATFORM__CONTENTS:
 				return getContents();
+			case TargetPlatformPackage.TARGET_PLATFORM__IMPORTED_TARGET_PLATFORMS:
+				if (coreType) return getImportedTargetPlatforms();
+				else return getImportedTargetPlatforms().map();
 			case TargetPlatformPackage.TARGET_PLATFORM__INCLUDES:
 				return getIncludes();
 			case TargetPlatformPackage.TARGET_PLATFORM__OPTIONS:
@@ -449,11 +480,11 @@ public class TargetPlatformImpl extends MinimalEObjectImpl.Container implements 
 			case TargetPlatformPackage.TARGET_PLATFORM__COMPOSITE_ELEMENTS_RESOLVED:
 				setCompositeElementsResolved((Boolean)newValue);
 				return;
-			case TargetPlatformPackage.TARGET_PLATFORM__MODIFIED:
-				setModified((Boolean)newValue);
-				return;
 			case TargetPlatformPackage.TARGET_PLATFORM__PRE_DEFINED_VAR_CONTAINER:
 				setPreDefinedVarContainer((VarDefinitionContainer)newValue);
+				return;
+			case TargetPlatformPackage.TARGET_PLATFORM__INVALIDATE_BY_EMF_XTEXT:
+				setInvalidateByEmfXtext((Boolean)newValue);
 				return;
 			case TargetPlatformPackage.TARGET_PLATFORM__VAR_DEF2_OVERRIDE_IN_IMPORTED_TARGET:
 				getVarDef2OverrideInImportedTarget().clear();
@@ -462,6 +493,9 @@ public class TargetPlatformImpl extends MinimalEObjectImpl.Container implements 
 			case TargetPlatformPackage.TARGET_PLATFORM__CONTENTS:
 				getContents().clear();
 				getContents().addAll((Collection<? extends TargetContent>)newValue);
+				return;
+			case TargetPlatformPackage.TARGET_PLATFORM__IMPORTED_TARGET_PLATFORMS:
+				((EStructuralFeature.Setting)getImportedTargetPlatforms()).set(newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -481,17 +515,20 @@ public class TargetPlatformImpl extends MinimalEObjectImpl.Container implements 
 			case TargetPlatformPackage.TARGET_PLATFORM__COMPOSITE_ELEMENTS_RESOLVED:
 				setCompositeElementsResolved(COMPOSITE_ELEMENTS_RESOLVED_EDEFAULT);
 				return;
-			case TargetPlatformPackage.TARGET_PLATFORM__MODIFIED:
-				setModified(MODIFIED_EDEFAULT);
-				return;
 			case TargetPlatformPackage.TARGET_PLATFORM__PRE_DEFINED_VAR_CONTAINER:
 				setPreDefinedVarContainer((VarDefinitionContainer)null);
+				return;
+			case TargetPlatformPackage.TARGET_PLATFORM__INVALIDATE_BY_EMF_XTEXT:
+				setInvalidateByEmfXtext(INVALIDATE_BY_EMF_XTEXT_EDEFAULT);
 				return;
 			case TargetPlatformPackage.TARGET_PLATFORM__VAR_DEF2_OVERRIDE_IN_IMPORTED_TARGET:
 				getVarDef2OverrideInImportedTarget().clear();
 				return;
 			case TargetPlatformPackage.TARGET_PLATFORM__CONTENTS:
 				getContents().clear();
+				return;
+			case TargetPlatformPackage.TARGET_PLATFORM__IMPORTED_TARGET_PLATFORMS:
+				getImportedTargetPlatforms().clear();
 				return;
 		}
 		super.eUnset(featureID);
@@ -509,14 +546,16 @@ public class TargetPlatformImpl extends MinimalEObjectImpl.Container implements 
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case TargetPlatformPackage.TARGET_PLATFORM__COMPOSITE_ELEMENTS_RESOLVED:
 				return compositeElementsResolved != COMPOSITE_ELEMENTS_RESOLVED_EDEFAULT;
-			case TargetPlatformPackage.TARGET_PLATFORM__MODIFIED:
-				return modified != MODIFIED_EDEFAULT;
 			case TargetPlatformPackage.TARGET_PLATFORM__PRE_DEFINED_VAR_CONTAINER:
 				return preDefinedVarContainer != null;
+			case TargetPlatformPackage.TARGET_PLATFORM__INVALIDATE_BY_EMF_XTEXT:
+				return invalidateByEmfXtext != INVALIDATE_BY_EMF_XTEXT_EDEFAULT;
 			case TargetPlatformPackage.TARGET_PLATFORM__VAR_DEF2_OVERRIDE_IN_IMPORTED_TARGET:
 				return varDef2OverrideInImportedTarget != null && !varDef2OverrideInImportedTarget.isEmpty();
 			case TargetPlatformPackage.TARGET_PLATFORM__CONTENTS:
 				return contents != null && !contents.isEmpty();
+			case TargetPlatformPackage.TARGET_PLATFORM__IMPORTED_TARGET_PLATFORMS:
+				return importedTargetPlatforms != null && !importedTargetPlatforms.isEmpty();
 			case TargetPlatformPackage.TARGET_PLATFORM__INCLUDES:
 				return !getIncludes().isEmpty();
 			case TargetPlatformPackage.TARGET_PLATFORM__OPTIONS:
@@ -545,8 +584,8 @@ public class TargetPlatformImpl extends MinimalEObjectImpl.Container implements 
 		result.append(name);
 		result.append(", compositeElementsResolved: ");
 		result.append(compositeElementsResolved);
-		result.append(", modified: ");
-		result.append(modified);
+		result.append(", invalidateByEmfXtext: ");
+		result.append(invalidateByEmfXtext);
 		result.append(')');
 		return result.toString();
 	}

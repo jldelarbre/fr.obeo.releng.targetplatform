@@ -901,12 +901,15 @@ public class TargetPlatformGrammarAccess extends AbstractGrammarElementFinder {
 		return getVersionRangeAccess().getRule();
 	}
 
+	//// Override annotation may cause trouble when generating the grammar: you can remove it just for this operation
+	////@Override 
 	//terminal INT returns ecore::EInt:
 	//	"0".."9"+;
 	public TerminalRule getINTRule() {
 		return tINT;
 	} 
 
+	////@Override 
 	//terminal ID returns ecore::EString:
 	//	"^"? ("a".."z" | "A".."Z" | "_") ("."? ("a".."z" | "A".."Z" | "^" | "_" | "-" | "0".."9"))*;
 	public TerminalRule getIDRule() {

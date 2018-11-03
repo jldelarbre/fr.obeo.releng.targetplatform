@@ -36,6 +36,7 @@ import org.eclipse.xtext.junit4.InjectWith;
 import org.eclipse.xtext.junit4.XtextRunner;
 import org.eclipse.xtext.junit4.util.ParseHelper;
 import org.eclipse.xtext.junit4.validation.ValidatorTester;
+import org.eclipse.xtext.linking.lazy.LazyLinkingResource;
 import org.eclipse.xtext.resource.XtextResourceSet;
 import org.eclipse.xtext.validation.AbstractValidationDiagnostic;
 import org.eclipse.xtext.validation.EValidatorRegistrar;
@@ -432,6 +433,8 @@ public class TestValidation {
       _builder_1.append("location A \"locationURI2\"");
       _builder_1.newLine();
       final TargetPlatform tpb = this.parser.parse(_builder_1, URI.createURI("tmp:/b.tpd"), resourceSet);
+      Resource _eResource = tpb.eResource();
+      final LazyLinkingResource lazyResourceTpb = ((LazyLinkingResource) _eResource);
       Assert.assertTrue(tpa.eResource().getErrors().isEmpty());
       tester.validator().checkIDUniqueOnAllLocations(tpa);
       List<AbstractValidationDiagnostic> diagnotics = IterableExtensions.<AbstractValidationDiagnostic>toList(Iterables.<AbstractValidationDiagnostic>filter(tester.diagnose().getAllDiagnostics(), AbstractValidationDiagnostic.class));
@@ -446,8 +449,10 @@ public class TestValidation {
       Assert.assertEquals(TargetPlatformValidator.CHECK__LOCATION_ID_UNIQNESS, diagnotics.get(1).getIssueCode());
       EObject _sourceEObject_3 = diagnotics.get(1).getSourceEObject();
       Assert.assertEquals("b.tpd", ((IncludeDeclaration) _sourceEObject_3).getImportURI());
-      Assert.assertTrue(tpb.eResource().getErrors().isEmpty());
-      tester.validator().checkIDUniqueOnAllLocations(tpb);
+      EObject _head = IterableExtensions.<EObject>head(lazyResourceTpb.getContents());
+      final TargetPlatform updatedTpb = ((TargetPlatform) _head);
+      Assert.assertTrue(updatedTpb.eResource().getErrors().isEmpty());
+      tester.validator().checkIDUniqueOnAllLocations(updatedTpb);
       diagnotics = IterableExtensions.<AbstractValidationDiagnostic>toList(Iterables.<AbstractValidationDiagnostic>filter(tester.diagnose().getAllDiagnostics(), AbstractValidationDiagnostic.class));
       Assert.assertEquals(0, diagnotics.size());
     } catch (Throwable _e) {
@@ -474,12 +479,16 @@ public class TestValidation {
       _builder_1.append("location A \"locationURI1\"");
       _builder_1.newLine();
       final TargetPlatform tpb = this.parser.parse(_builder_1, URI.createURI("tmp:/b.tpd"), resourceSet);
+      Resource _eResource = tpb.eResource();
+      final LazyLinkingResource lazyResourceTpb = ((LazyLinkingResource) _eResource);
       Assert.assertTrue(tpa.eResource().getErrors().isEmpty());
       tester.validator().checkIDUniqueOnAllLocations(tpa);
       List<AbstractValidationDiagnostic> diagnotics = IterableExtensions.<AbstractValidationDiagnostic>toList(Iterables.<AbstractValidationDiagnostic>filter(tester.diagnose().getAllDiagnostics(), AbstractValidationDiagnostic.class));
       Assert.assertEquals(0, diagnotics.size());
-      Assert.assertTrue(tpb.eResource().getErrors().isEmpty());
-      tester.validator().checkIDUniqueOnAllLocations(tpb);
+      EObject _head = IterableExtensions.<EObject>head(lazyResourceTpb.getContents());
+      final TargetPlatform updatedTpb = ((TargetPlatform) _head);
+      Assert.assertTrue(updatedTpb.eResource().getErrors().isEmpty());
+      tester.validator().checkIDUniqueOnAllLocations(updatedTpb);
       diagnotics = IterableExtensions.<AbstractValidationDiagnostic>toList(Iterables.<AbstractValidationDiagnostic>filter(tester.diagnose().getAllDiagnostics(), AbstractValidationDiagnostic.class));
       Assert.assertEquals(0, diagnotics.size());
     } catch (Throwable _e) {
@@ -1447,6 +1456,10 @@ public class TestValidation {
       _builder_2.append("location C \"locationURI1\"");
       _builder_2.newLine();
       final TargetPlatform tpc = this.parser.parse(_builder_2, URI.createURI("tmp:/c.tpd"), resourceSet);
+      Resource _eResource = tpb.eResource();
+      final LazyLinkingResource lazyResourceTpb = ((LazyLinkingResource) _eResource);
+      Resource _eResource_1 = tpc.eResource();
+      final LazyLinkingResource lazyResourceTpc = ((LazyLinkingResource) _eResource_1);
       Assert.assertTrue(tpa.eResource().getErrors().isEmpty());
       tester.validator().checkSameIDForAllLocationWithSameURI(tpa);
       List<AbstractValidationDiagnostic> diagnotics = IterableExtensions.<AbstractValidationDiagnostic>toList(Iterables.<AbstractValidationDiagnostic>filter(tester.diagnose().getAllDiagnostics(), AbstractValidationDiagnostic.class));
@@ -1470,8 +1483,10 @@ public class TestValidation {
         }
       };
       diagnotics.forEach(_function_1);
-      Assert.assertTrue(tpb.eResource().getErrors().isEmpty());
-      tester.validator().checkSameIDForAllLocationWithSameURI(tpb);
+      EObject _head = IterableExtensions.<EObject>head(lazyResourceTpb.getContents());
+      final TargetPlatform updatedTpb = ((TargetPlatform) _head);
+      Assert.assertTrue(updatedTpb.eResource().getErrors().isEmpty());
+      tester.validator().checkSameIDForAllLocationWithSameURI(updatedTpb);
       diagnotics = IterableExtensions.<AbstractValidationDiagnostic>toList(Iterables.<AbstractValidationDiagnostic>filter(tester.diagnose().getAllDiagnostics(), AbstractValidationDiagnostic.class));
       Assert.assertEquals(1, diagnotics.size());
       final Function1<AbstractValidationDiagnostic, Boolean> _function_2 = new Function1<AbstractValidationDiagnostic, Boolean>() {
@@ -1493,8 +1508,10 @@ public class TestValidation {
         }
       };
       diagnotics.forEach(_function_3);
-      Assert.assertTrue(tpc.eResource().getErrors().isEmpty());
-      tester.validator().checkSameIDForAllLocationWithSameURI(tpc);
+      EObject _head_1 = IterableExtensions.<EObject>head(lazyResourceTpc.getContents());
+      final TargetPlatform updatedTpc = ((TargetPlatform) _head_1);
+      Assert.assertTrue(updatedTpc.eResource().getErrors().isEmpty());
+      tester.validator().checkSameIDForAllLocationWithSameURI(updatedTpc);
       diagnotics = IterableExtensions.<AbstractValidationDiagnostic>toList(Iterables.<AbstractValidationDiagnostic>filter(tester.diagnose().getAllDiagnostics(), AbstractValidationDiagnostic.class));
       Assert.assertEquals(0, diagnotics.size());
     } catch (Throwable _e) {
@@ -1529,6 +1546,10 @@ public class TestValidation {
       _builder_2.append("location A \"locationURI1\"");
       _builder_2.newLine();
       final TargetPlatform tpc = this.parser.parse(_builder_2, URI.createURI("tmp:/c.tpd"), resourceSet);
+      Resource _eResource = tpb.eResource();
+      final LazyLinkingResource lazyResourceTpb = ((LazyLinkingResource) _eResource);
+      Resource _eResource_1 = tpc.eResource();
+      final LazyLinkingResource lazyResourceTpc = ((LazyLinkingResource) _eResource_1);
       Assert.assertTrue(tpa.eResource().getErrors().isEmpty());
       tester.validator().checkSameIDForAllLocationWithSameURI(tpa);
       List<AbstractValidationDiagnostic> diagnotics = IterableExtensions.<AbstractValidationDiagnostic>toList(Iterables.<AbstractValidationDiagnostic>filter(tester.diagnose().getAllDiagnostics(), AbstractValidationDiagnostic.class));
@@ -1552,8 +1573,10 @@ public class TestValidation {
         }
       };
       diagnotics.forEach(_function_1);
-      Assert.assertTrue(tpb.eResource().getErrors().isEmpty());
-      tester.validator().checkSameIDForAllLocationWithSameURI(tpb);
+      EObject _head = IterableExtensions.<EObject>head(lazyResourceTpb.getContents());
+      final TargetPlatform updatedTpb = ((TargetPlatform) _head);
+      Assert.assertTrue(updatedTpb.eResource().getErrors().isEmpty());
+      tester.validator().checkSameIDForAllLocationWithSameURI(updatedTpb);
       diagnotics = IterableExtensions.<AbstractValidationDiagnostic>toList(Iterables.<AbstractValidationDiagnostic>filter(tester.diagnose().getAllDiagnostics(), AbstractValidationDiagnostic.class));
       Assert.assertEquals(1, diagnotics.size());
       final Function1<AbstractValidationDiagnostic, Boolean> _function_2 = new Function1<AbstractValidationDiagnostic, Boolean>() {
@@ -1575,8 +1598,10 @@ public class TestValidation {
         }
       };
       diagnotics.forEach(_function_3);
-      Assert.assertTrue(tpc.eResource().getErrors().isEmpty());
-      tester.validator().checkSameIDForAllLocationWithSameURI(tpc);
+      EObject _head_1 = IterableExtensions.<EObject>head(lazyResourceTpc.getContents());
+      final TargetPlatform updatedTpc = ((TargetPlatform) _head_1);
+      Assert.assertTrue(updatedTpc.eResource().getErrors().isEmpty());
+      tester.validator().checkSameIDForAllLocationWithSameURI(updatedTpc);
       diagnotics = IterableExtensions.<AbstractValidationDiagnostic>toList(Iterables.<AbstractValidationDiagnostic>filter(tester.diagnose().getAllDiagnostics(), AbstractValidationDiagnostic.class));
       Assert.assertEquals(0, diagnotics.size());
     } catch (Throwable _e) {
@@ -1611,6 +1636,10 @@ public class TestValidation {
       _builder_2.append("location \"locationURI1\"");
       _builder_2.newLine();
       final TargetPlatform tpc = this.parser.parse(_builder_2, URI.createURI("tmp:/c.tpd"), resourceSet);
+      Resource _eResource = tpb.eResource();
+      final LazyLinkingResource lazyResourceTpb = ((LazyLinkingResource) _eResource);
+      Resource _eResource_1 = tpc.eResource();
+      final LazyLinkingResource lazyResourceTpc = ((LazyLinkingResource) _eResource_1);
       Assert.assertTrue(tpa.eResource().getErrors().isEmpty());
       tester.validator().checkSameIDForAllLocationWithSameURI(tpa);
       List<AbstractValidationDiagnostic> diagnotics = IterableExtensions.<AbstractValidationDiagnostic>toList(Iterables.<AbstractValidationDiagnostic>filter(tester.diagnose().getAllDiagnostics(), AbstractValidationDiagnostic.class));
@@ -1634,8 +1663,10 @@ public class TestValidation {
         }
       };
       diagnotics.forEach(_function_1);
-      Assert.assertTrue(tpb.eResource().getErrors().isEmpty());
-      tester.validator().checkSameIDForAllLocationWithSameURI(tpb);
+      EObject _head = IterableExtensions.<EObject>head(lazyResourceTpb.getContents());
+      final TargetPlatform updatedTpb = ((TargetPlatform) _head);
+      Assert.assertTrue(updatedTpb.eResource().getErrors().isEmpty());
+      tester.validator().checkSameIDForAllLocationWithSameURI(updatedTpb);
       diagnotics = IterableExtensions.<AbstractValidationDiagnostic>toList(Iterables.<AbstractValidationDiagnostic>filter(tester.diagnose().getAllDiagnostics(), AbstractValidationDiagnostic.class));
       Assert.assertEquals(1, diagnotics.size());
       final Function1<AbstractValidationDiagnostic, Boolean> _function_2 = new Function1<AbstractValidationDiagnostic, Boolean>() {
@@ -1657,8 +1688,10 @@ public class TestValidation {
         }
       };
       diagnotics.forEach(_function_3);
-      Assert.assertTrue(tpc.eResource().getErrors().isEmpty());
-      tester.validator().checkSameIDForAllLocationWithSameURI(tpc);
+      EObject _head_1 = IterableExtensions.<EObject>head(lazyResourceTpc.getContents());
+      final TargetPlatform updatedTpc = ((TargetPlatform) _head_1);
+      Assert.assertTrue(updatedTpc.eResource().getErrors().isEmpty());
+      tester.validator().checkSameIDForAllLocationWithSameURI(updatedTpc);
       diagnotics = IterableExtensions.<AbstractValidationDiagnostic>toList(Iterables.<AbstractValidationDiagnostic>filter(tester.diagnose().getAllDiagnostics(), AbstractValidationDiagnostic.class));
       Assert.assertEquals(0, diagnotics.size());
     } catch (Throwable _e) {
@@ -1729,6 +1762,10 @@ public class TestValidation {
       _builder_2.append("location C \"locationURI1\"");
       _builder_2.newLine();
       final TargetPlatform tpc = this.parser.parse(_builder_2, URI.createURI("tmp:/c.tpd"), resourceSet);
+      Resource _eResource = tpb.eResource();
+      final LazyLinkingResource lazyResourceTpb = ((LazyLinkingResource) _eResource);
+      Resource _eResource_1 = tpc.eResource();
+      final LazyLinkingResource lazyResourceTpc = ((LazyLinkingResource) _eResource_1);
       Assert.assertTrue(tpa.eResource().getErrors().isEmpty());
       tester.validator().checkSameIDForAllLocationWithSameURI(tpa);
       List<AbstractValidationDiagnostic> diagnotics = IterableExtensions.<AbstractValidationDiagnostic>toList(Iterables.<AbstractValidationDiagnostic>filter(tester.diagnose().getAllDiagnostics(), AbstractValidationDiagnostic.class));
@@ -1752,8 +1789,10 @@ public class TestValidation {
         }
       };
       diagnotics.forEach(_function_1);
-      Assert.assertTrue(tpb.eResource().getErrors().isEmpty());
-      tester.validator().checkSameIDForAllLocationWithSameURI(tpb);
+      EObject _head = IterableExtensions.<EObject>head(lazyResourceTpb.getContents());
+      final TargetPlatform updatedTpb = ((TargetPlatform) _head);
+      Assert.assertTrue(updatedTpb.eResource().getErrors().isEmpty());
+      tester.validator().checkSameIDForAllLocationWithSameURI(updatedTpb);
       diagnotics = IterableExtensions.<AbstractValidationDiagnostic>toList(Iterables.<AbstractValidationDiagnostic>filter(tester.diagnose().getAllDiagnostics(), AbstractValidationDiagnostic.class));
       Assert.assertEquals(1, diagnotics.size());
       final Function1<AbstractValidationDiagnostic, Boolean> _function_2 = new Function1<AbstractValidationDiagnostic, Boolean>() {
@@ -1775,8 +1814,10 @@ public class TestValidation {
         }
       };
       diagnotics.forEach(_function_3);
-      Assert.assertTrue(tpc.eResource().getErrors().isEmpty());
-      tester.validator().checkSameIDForAllLocationWithSameURI(tpc);
+      EObject _head_1 = IterableExtensions.<EObject>head(lazyResourceTpc.getContents());
+      final TargetPlatform updatedTpc = ((TargetPlatform) _head_1);
+      Assert.assertTrue(updatedTpc.eResource().getErrors().isEmpty());
+      tester.validator().checkSameIDForAllLocationWithSameURI(updatedTpc);
       diagnotics = IterableExtensions.<AbstractValidationDiagnostic>toList(Iterables.<AbstractValidationDiagnostic>filter(tester.diagnose().getAllDiagnostics(), AbstractValidationDiagnostic.class));
       Assert.assertEquals(0, diagnotics.size());
     } catch (Throwable _e) {
@@ -1811,6 +1852,10 @@ public class TestValidation {
       _builder_2.append("location \"locationURI1\"");
       _builder_2.newLine();
       final TargetPlatform tpc = this.parser.parse(_builder_2, URI.createURI("tmp:/c.tpd"), resourceSet);
+      Resource _eResource = tpb.eResource();
+      final LazyLinkingResource lazyResourceTpb = ((LazyLinkingResource) _eResource);
+      Resource _eResource_1 = tpc.eResource();
+      final LazyLinkingResource lazyResourceTpc = ((LazyLinkingResource) _eResource_1);
       Assert.assertTrue(tpa.eResource().getErrors().isEmpty());
       tester.validator().checkSameIDForAllLocationWithSameURI(tpa);
       List<AbstractValidationDiagnostic> diagnotics = IterableExtensions.<AbstractValidationDiagnostic>toList(Iterables.<AbstractValidationDiagnostic>filter(tester.diagnose().getAllDiagnostics(), AbstractValidationDiagnostic.class));
@@ -1834,8 +1879,10 @@ public class TestValidation {
         }
       };
       diagnotics.forEach(_function_1);
-      Assert.assertTrue(tpb.eResource().getErrors().isEmpty());
-      tester.validator().checkSameIDForAllLocationWithSameURI(tpb);
+      EObject _head = IterableExtensions.<EObject>head(lazyResourceTpb.getContents());
+      final TargetPlatform updatedTpb = ((TargetPlatform) _head);
+      Assert.assertTrue(updatedTpb.eResource().getErrors().isEmpty());
+      tester.validator().checkSameIDForAllLocationWithSameURI(updatedTpb);
       diagnotics = IterableExtensions.<AbstractValidationDiagnostic>toList(Iterables.<AbstractValidationDiagnostic>filter(tester.diagnose().getAllDiagnostics(), AbstractValidationDiagnostic.class));
       Assert.assertEquals(1, diagnotics.size());
       final Function1<AbstractValidationDiagnostic, Boolean> _function_2 = new Function1<AbstractValidationDiagnostic, Boolean>() {
@@ -1857,8 +1904,10 @@ public class TestValidation {
         }
       };
       diagnotics.forEach(_function_3);
-      Assert.assertTrue(tpc.eResource().getErrors().isEmpty());
-      tester.validator().checkSameIDForAllLocationWithSameURI(tpc);
+      EObject _head_1 = IterableExtensions.<EObject>head(lazyResourceTpc.getContents());
+      final TargetPlatform updatedTpc = ((TargetPlatform) _head_1);
+      Assert.assertTrue(updatedTpc.eResource().getErrors().isEmpty());
+      tester.validator().checkSameIDForAllLocationWithSameURI(updatedTpc);
       diagnotics = IterableExtensions.<AbstractValidationDiagnostic>toList(Iterables.<AbstractValidationDiagnostic>filter(tester.diagnose().getAllDiagnostics(), AbstractValidationDiagnostic.class));
       Assert.assertEquals(0, diagnotics.size());
     } catch (Throwable _e) {
@@ -1938,6 +1987,8 @@ public class TestValidation {
       _builder_1.append("include \"a.tpd\"");
       _builder_1.newLine();
       final TargetPlatform tpb = this.parser.parse(_builder_1, URI.createURI("tmp:/b.tpd"), resourceSet);
+      Resource _eResource = tpb.eResource();
+      final LazyLinkingResource lazyResourceTpb = ((LazyLinkingResource) _eResource);
       Assert.assertTrue(tpa.eResource().getErrors().isEmpty());
       tester.validator().checkImportCycle(tpa);
       final List<AbstractValidationDiagnostic> diagnoticsa = IterableExtensions.<AbstractValidationDiagnostic>toList(Iterables.<AbstractValidationDiagnostic>filter(tester.diagnose().getAllDiagnostics(), AbstractValidationDiagnostic.class));
@@ -1959,8 +2010,10 @@ public class TestValidation {
         }
       };
       diagnoticsa.forEach(_function_1);
-      Assert.assertTrue(tpb.eResource().getErrors().isEmpty());
-      tester.validator().checkImportCycle(tpb);
+      EObject _head = IterableExtensions.<EObject>head(lazyResourceTpb.getContents());
+      final TargetPlatform updatedTpb = ((TargetPlatform) _head);
+      Assert.assertTrue(updatedTpb.eResource().getErrors().isEmpty());
+      tester.validator().checkImportCycle(updatedTpb);
       final List<AbstractValidationDiagnostic> diagnoticsb = IterableExtensions.<AbstractValidationDiagnostic>toList(Iterables.<AbstractValidationDiagnostic>filter(tester.diagnose().getAllDiagnostics(), AbstractValidationDiagnostic.class));
       Assert.assertEquals(1, diagnoticsb.size());
       final Function1<AbstractValidationDiagnostic, Boolean> _function_2 = new Function1<AbstractValidationDiagnostic, Boolean>() {
@@ -2008,6 +2061,8 @@ public class TestValidation {
       _builder_2.append("include \"a.tpd\"");
       _builder_2.newLine();
       final TargetPlatform tpc = this.parser.parse(_builder_2, URI.createURI("tmp:/c.tpd"), resourceSet);
+      Resource _eResource = tpb.eResource();
+      final LazyLinkingResource lazyResourceTpb = ((LazyLinkingResource) _eResource);
       final Resource tpcResource = tpc.eResource();
       Assert.assertTrue(tpa.eResource().getErrors().isEmpty());
       tester.validator().checkImportCycle(tpa);
@@ -2030,8 +2085,10 @@ public class TestValidation {
         }
       };
       diagnotics.forEach(_function_1);
-      Assert.assertTrue(tpb.eResource().getErrors().isEmpty());
-      tester.validator().checkImportCycle(tpb);
+      EObject _head = IterableExtensions.<EObject>head(lazyResourceTpb.getContents());
+      final TargetPlatform updatedTpb = ((TargetPlatform) _head);
+      Assert.assertTrue(updatedTpb.eResource().getErrors().isEmpty());
+      tester.validator().checkImportCycle(updatedTpb);
       diagnotics = IterableExtensions.<AbstractValidationDiagnostic>toList(Iterables.<AbstractValidationDiagnostic>filter(tester.diagnose().getAllDiagnostics(), AbstractValidationDiagnostic.class));
       Assert.assertEquals(1, diagnotics.size());
       final Function1<AbstractValidationDiagnostic, Boolean> _function_2 = new Function1<AbstractValidationDiagnostic, Boolean>() {
@@ -2051,8 +2108,8 @@ public class TestValidation {
         }
       };
       diagnotics.forEach(_function_3);
-      EObject _head = IterableExtensions.<EObject>head(tpcResource.getContents());
-      final TargetPlatform tpcUpdated = ((TargetPlatform) _head);
+      EObject _head_1 = IterableExtensions.<EObject>head(tpcResource.getContents());
+      final TargetPlatform tpcUpdated = ((TargetPlatform) _head_1);
       Assert.assertTrue(tpcUpdated.eResource().getErrors().isEmpty());
       tester.validator().checkImportCycle(tpcUpdated);
       diagnotics = IterableExtensions.<AbstractValidationDiagnostic>toList(Iterables.<AbstractValidationDiagnostic>filter(tester.diagnose().getAllDiagnostics(), AbstractValidationDiagnostic.class));

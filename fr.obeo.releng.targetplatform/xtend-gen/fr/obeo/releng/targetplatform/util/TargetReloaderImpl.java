@@ -11,13 +11,12 @@ import org.eclipse.xtext.xbase.lib.IterableExtensions;
 @SuppressWarnings("all")
 public class TargetReloaderImpl implements TargetReloader {
   @Override
-  public TargetPlatform forceReloadTarget(final TargetPlatform targetPlatformBase, final TargetPlatform importedTargetPlatform) {
-    TargetPlatform ret = null;
-    final Resource context = targetPlatformBase.eResource();
-    final String importTargetUri = importedTargetPlatform.eResource().getURI().toString();
-    final Resource resource = EcoreUtil2.getResource(context, importTargetUri);
-    resource.unload();
-    final Resource resourceUpdated = EcoreUtil2.getResource(context, importTargetUri);
+  public TargetPlatform forceReload(final TargetPlatform targetPlatform) {
+    TargetPlatform reloadedTarget = null;
+    final Resource selfContext = targetPlatform.eResource();
+    final String importTargetUri = targetPlatform.eResource().getURI().toString();
+    selfContext.unload();
+    final Resource resourceUpdated = EcoreUtil2.getResource(selfContext, importTargetUri);
     EList<EObject> _contents = null;
     if (resourceUpdated!=null) {
       _contents=resourceUpdated.getContents();
@@ -28,8 +27,8 @@ public class TargetReloaderImpl implements TargetReloader {
     }
     EObject root = _head;
     if ((root instanceof TargetPlatform)) {
-      ret = ((TargetPlatform) root);
+      reloadedTarget = ((TargetPlatform) root);
     }
-    return ret;
+    return reloadedTarget;
   }
 }

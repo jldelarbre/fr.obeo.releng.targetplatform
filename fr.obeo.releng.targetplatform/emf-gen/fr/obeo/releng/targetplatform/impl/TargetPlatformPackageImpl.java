@@ -20,6 +20,7 @@ import fr.obeo.releng.targetplatform.VarDefinitionContainer;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -41,6 +42,13 @@ import org.eclipse.jdt.launching.environments.IExecutionEnvironment;
  * @generated
  */
 public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPlatformPackage {
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass targetPlatformIncludeDeclarationEntryEClass = null;
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -236,6 +244,33 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getTargetPlatformIncludeDeclarationEntry() {
+		return targetPlatformIncludeDeclarationEntryEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getTargetPlatformIncludeDeclarationEntry_Value() {
+		return (EReference)targetPlatformIncludeDeclarationEntryEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getTargetPlatformIncludeDeclarationEntry_Key() {
+		return (EReference)targetPlatformIncludeDeclarationEntryEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getTargetPlatform() {
 		return targetPlatformEClass;
 	}
@@ -263,8 +298,8 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getTargetPlatform_Modified() {
-		return (EAttribute)targetPlatformEClass.getEStructuralFeatures().get(2);
+	public EReference getTargetPlatform_PreDefinedVarContainer() {
+		return (EReference)targetPlatformEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -272,8 +307,8 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getTargetPlatform_PreDefinedVarContainer() {
-		return (EReference)targetPlatformEClass.getEStructuralFeatures().get(3);
+	public EAttribute getTargetPlatform_InvalidateByEmfXtext() {
+		return (EAttribute)targetPlatformEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -299,7 +334,7 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getTargetPlatform_Includes() {
+	public EReference getTargetPlatform_ImportedTargetPlatforms() {
 		return (EReference)targetPlatformEClass.getEStructuralFeatures().get(6);
 	}
 
@@ -308,8 +343,17 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getTargetPlatform_Includes() {
+		return (EReference)targetPlatformEClass.getEStructuralFeatures().get(7);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EAttribute getTargetPlatform_Options() {
-		return (EAttribute)targetPlatformEClass.getEStructuralFeatures().get(7);
+		return (EAttribute)targetPlatformEClass.getEStructuralFeatures().get(8);
 	}
 
 	/**
@@ -318,15 +362,6 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 	 * @generated
 	 */
 	public EReference getTargetPlatform_Locations() {
-		return (EReference)targetPlatformEClass.getEStructuralFeatures().get(8);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getTargetPlatform_Environment() {
 		return (EReference)targetPlatformEClass.getEStructuralFeatures().get(9);
 	}
 
@@ -335,8 +370,17 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getTargetPlatform_VarDefinition() {
+	public EReference getTargetPlatform_Environment() {
 		return (EReference)targetPlatformEClass.getEStructuralFeatures().get(10);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getTargetPlatform_VarDefinition() {
+		return (EReference)targetPlatformEClass.getEStructuralFeatures().get(11);
 	}
 
 	/**
@@ -1177,13 +1221,18 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 		isCreated = true;
 
 		// Create classes and their features
+		targetPlatformIncludeDeclarationEntryEClass = createEClass(TARGET_PLATFORM_INCLUDE_DECLARATION_ENTRY);
+		createEReference(targetPlatformIncludeDeclarationEntryEClass, TARGET_PLATFORM_INCLUDE_DECLARATION_ENTRY__VALUE);
+		createEReference(targetPlatformIncludeDeclarationEntryEClass, TARGET_PLATFORM_INCLUDE_DECLARATION_ENTRY__KEY);
+
 		targetPlatformEClass = createEClass(TARGET_PLATFORM);
 		createEAttribute(targetPlatformEClass, TARGET_PLATFORM__NAME);
 		createEAttribute(targetPlatformEClass, TARGET_PLATFORM__COMPOSITE_ELEMENTS_RESOLVED);
-		createEAttribute(targetPlatformEClass, TARGET_PLATFORM__MODIFIED);
 		createEReference(targetPlatformEClass, TARGET_PLATFORM__PRE_DEFINED_VAR_CONTAINER);
+		createEAttribute(targetPlatformEClass, TARGET_PLATFORM__INVALIDATE_BY_EMF_XTEXT);
 		createEReference(targetPlatformEClass, TARGET_PLATFORM__VAR_DEF2_OVERRIDE_IN_IMPORTED_TARGET);
 		createEReference(targetPlatformEClass, TARGET_PLATFORM__CONTENTS);
+		createEReference(targetPlatformEClass, TARGET_PLATFORM__IMPORTED_TARGET_PLATFORMS);
 		createEReference(targetPlatformEClass, TARGET_PLATFORM__INCLUDES);
 		createEAttribute(targetPlatformEClass, TARGET_PLATFORM__OPTIONS);
 		createEReference(targetPlatformEClass, TARGET_PLATFORM__LOCATIONS);
@@ -1337,13 +1386,18 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 		includeDeclarationEClass.getESuperTypes().add(this.getTargetContent());
 
 		// Initialize classes, features, and operations; add parameters
+		initEClass(targetPlatformIncludeDeclarationEntryEClass, Map.Entry.class, "TargetPlatformIncludeDeclarationEntry", !IS_ABSTRACT, !IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getTargetPlatformIncludeDeclarationEntry_Value(), this.getTargetPlatform(), null, "value", null, 0, 1, Map.Entry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getTargetPlatformIncludeDeclarationEntry_Key(), this.getIncludeDeclaration(), null, "key", null, 0, 1, Map.Entry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
 		initEClass(targetPlatformEClass, TargetPlatform.class, "TargetPlatform", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getTargetPlatform_Name(), theEcorePackage.getEString(), "name", null, 0, 1, TargetPlatform.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getTargetPlatform_CompositeElementsResolved(), theEcorePackage.getEBoolean(), "compositeElementsResolved", "false", 0, 1, TargetPlatform.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getTargetPlatform_Modified(), theEcorePackage.getEBoolean(), "modified", "false", 0, 1, TargetPlatform.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getTargetPlatform_PreDefinedVarContainer(), this.getVarDefinitionContainer(), null, "preDefinedVarContainer", null, 0, 1, TargetPlatform.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getTargetPlatform_InvalidateByEmfXtext(), theEcorePackage.getEBoolean(), "invalidateByEmfXtext", "false", 0, 1, TargetPlatform.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getTargetPlatform_VarDef2OverrideInImportedTarget(), this.getVarDefinition(), null, "varDef2OverrideInImportedTarget", null, 0, -1, TargetPlatform.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getTargetPlatform_Contents(), this.getTargetContent(), this.getTargetContent_TargetPlatform(), "contents", null, 0, -1, TargetPlatform.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getTargetPlatform_ImportedTargetPlatforms(), this.getTargetPlatformIncludeDeclarationEntry(), null, "importedTargetPlatforms", null, 0, -1, TargetPlatform.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getTargetPlatform_Includes(), this.getIncludeDeclaration(), null, "includes", null, 0, -1, TargetPlatform.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 		initEAttribute(getTargetPlatform_Options(), this.getOption(), "options", null, 0, -1, TargetPlatform.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 		initEReference(getTargetPlatform_Locations(), this.getLocation(), null, "locations", null, 0, -1, TargetPlatform.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);

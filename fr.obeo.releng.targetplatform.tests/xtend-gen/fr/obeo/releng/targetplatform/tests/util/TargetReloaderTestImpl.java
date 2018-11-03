@@ -21,10 +21,10 @@ import org.eclipse.xtext.xbase.lib.IterableExtensions;
 @SuppressWarnings("all")
 public class TargetReloaderTestImpl implements TargetReloader {
   @Override
-  public TargetPlatform forceReloadTarget(final TargetPlatform targetPlatformBase, final TargetPlatform importedTargetPlatform) {
+  public TargetPlatform forceReload(final TargetPlatform targetPlatform) {
     try {
-      TargetPlatform ret = null;
-      Resource _eResource = importedTargetPlatform.eResource();
+      TargetPlatform reloadedTarget = null;
+      Resource _eResource = targetPlatform.eResource();
       final LazyLinkingResource xTextLazyResource = ((LazyLinkingResource) _eResource);
       final String targetFileContent = xTextLazyResource.getParseResult().getRootNode().getText();
       xTextLazyResource.unload();
@@ -40,9 +40,9 @@ public class TargetReloaderTestImpl implements TargetReloader {
       }
       EObject root = _head;
       if ((root instanceof TargetPlatform)) {
-        ret = ((TargetPlatform) root);
+        reloadedTarget = ((TargetPlatform) root);
       }
-      return ret;
+      return reloadedTarget;
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }

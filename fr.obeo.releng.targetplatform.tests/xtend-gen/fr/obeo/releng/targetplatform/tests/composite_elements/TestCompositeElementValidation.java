@@ -18,12 +18,14 @@ import java.util.function.Consumer;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.Constants;
 import org.eclipse.xtext.junit4.InjectWith;
 import org.eclipse.xtext.junit4.XtextRunner;
 import org.eclipse.xtext.junit4.util.ParseHelper;
 import org.eclipse.xtext.junit4.validation.ValidatorTester;
+import org.eclipse.xtext.linking.lazy.LazyLinkingResource;
 import org.eclipse.xtext.resource.XtextResourceSet;
 import org.eclipse.xtext.validation.AbstractValidationDiagnostic;
 import org.eclipse.xtext.validation.EValidatorRegistrar;
@@ -86,6 +88,8 @@ public class TestCompositeElementValidation {
       _builder_2.append("include \"../compositeIncludeTarget.tpd\"");
       _builder_2.newLine();
       final TargetPlatform subIncludeCircular = this.parser.parse(_builder_2, URI.createURI("tmp:/subdir/subInclude.tpd"), resourceSet);
+      Resource _eResource = subIncludeCircular.eResource();
+      final LazyLinkingResource lazyResourceSubIncludeCircular = ((LazyLinkingResource) _eResource);
       Assert.assertTrue(compositeIncludeTarget.eResource().getErrors().isEmpty());
       tester.validator().checkImportCycle(compositeIncludeTarget);
       List<AbstractValidationDiagnostic> diagnotics = IterableExtensions.<AbstractValidationDiagnostic>toList(Iterables.<AbstractValidationDiagnostic>filter(tester.diagnose().getAllDiagnostics(), AbstractValidationDiagnostic.class));
@@ -107,8 +111,10 @@ public class TestCompositeElementValidation {
         }
       };
       diagnotics.forEach(_function_1);
-      Assert.assertTrue(subIncludeCircular.eResource().getErrors().isEmpty());
-      tester.validator().checkImportCycle(subIncludeCircular);
+      EObject _head = IterableExtensions.<EObject>head(lazyResourceSubIncludeCircular.getContents());
+      final TargetPlatform updatedSubIncludeCircular = ((TargetPlatform) _head);
+      Assert.assertTrue(updatedSubIncludeCircular.eResource().getErrors().isEmpty());
+      tester.validator().checkImportCycle(updatedSubIncludeCircular);
       diagnotics = IterableExtensions.<AbstractValidationDiagnostic>toList(Iterables.<AbstractValidationDiagnostic>filter(tester.diagnose().getAllDiagnostics(), AbstractValidationDiagnostic.class));
       Assert.assertEquals(1, diagnotics.size());
       final Function1<AbstractValidationDiagnostic, Boolean> _function_2 = new Function1<AbstractValidationDiagnostic, Boolean>() {
@@ -162,6 +168,8 @@ public class TestCompositeElementValidation {
       _builder_2.append("include ${urlCyclicInclude}");
       _builder_2.newLine();
       final TargetPlatform subIncludeCircular = this.parser.parse(_builder_2, URI.createURI("tmp:/subdir/subInclude.tpd"), resourceSet);
+      Resource _eResource = subIncludeCircular.eResource();
+      final LazyLinkingResource lazyResourceSubIncludeCircular = ((LazyLinkingResource) _eResource);
       Assert.assertTrue(compositeIncludeTarget.eResource().getErrors().isEmpty());
       tester.validator().checkImportCycle(compositeIncludeTarget);
       List<AbstractValidationDiagnostic> diagnotics = IterableExtensions.<AbstractValidationDiagnostic>toList(Iterables.<AbstractValidationDiagnostic>filter(tester.diagnose().getAllDiagnostics(), AbstractValidationDiagnostic.class));
@@ -183,8 +191,10 @@ public class TestCompositeElementValidation {
         }
       };
       diagnotics.forEach(_function_1);
-      Assert.assertTrue(subIncludeCircular.eResource().getErrors().isEmpty());
-      tester.validator().checkImportCycle(subIncludeCircular);
+      EObject _head = IterableExtensions.<EObject>head(lazyResourceSubIncludeCircular.getContents());
+      final TargetPlatform updatedSubIncludeCircular = ((TargetPlatform) _head);
+      Assert.assertTrue(updatedSubIncludeCircular.eResource().getErrors().isEmpty());
+      tester.validator().checkImportCycle(updatedSubIncludeCircular);
       diagnotics = IterableExtensions.<AbstractValidationDiagnostic>toList(Iterables.<AbstractValidationDiagnostic>filter(tester.diagnose().getAllDiagnostics(), AbstractValidationDiagnostic.class));
       Assert.assertEquals(1, diagnotics.size());
       final Function1<AbstractValidationDiagnostic, Boolean> _function_2 = new Function1<AbstractValidationDiagnostic, Boolean>() {

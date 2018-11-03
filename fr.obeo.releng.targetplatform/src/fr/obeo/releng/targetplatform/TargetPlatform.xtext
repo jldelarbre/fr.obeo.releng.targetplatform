@@ -75,8 +75,8 @@ VersionRange hidden (WS):
 ;
 
 // Override annotation may cause trouble when generating the grammar: you can remove it just for this operation
-//@Override 
+@Override 
 terminal INT returns ecore::EInt: ('0'..'9')+;
-//@Override 
+@Override 
 terminal ID: '^'?('a'..'z'|'A'..'Z'|'_') ('.'? ('a'..'z'|'A'..'Z'|'^'|'_'|'-'|'0'..'9'))*;
 terminal QUALIFIER: ('a'..'z'|'A'..'Z'|'_'|'-'|'0'..'9')*;

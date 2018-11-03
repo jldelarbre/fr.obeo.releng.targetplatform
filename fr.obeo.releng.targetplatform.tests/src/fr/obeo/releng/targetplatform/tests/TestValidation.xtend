@@ -30,6 +30,7 @@ import org.eclipse.xtext.junit4.InjectWith
 import org.eclipse.xtext.junit4.XtextRunner
 import org.eclipse.xtext.junit4.util.ParseHelper
 import org.eclipse.xtext.junit4.validation.ValidatorTester
+import org.eclipse.xtext.linking.lazy.LazyLinkingResource
 import org.eclipse.xtext.resource.XtextResourceSet
 import org.eclipse.xtext.validation.AbstractValidationDiagnostic
 import org.eclipse.xtext.validation.EValidatorRegistrar
@@ -284,6 +285,8 @@ class TestValidation {
 			target "tp.b"
 			location A "locationURI2"
 		''', URI.createURI("tmp:/b.tpd"), resourceSet);
+		
+		val lazyResourceTpb = tpb.eResource as LazyLinkingResource
 
 		assertTrue(tpa.eResource.errors.empty)
 		tester.validator.checkIDUniqueOnAllLocations(tpa)
@@ -298,8 +301,11 @@ class TestValidation {
 		assertEquals(TargetPlatformValidator::CHECK__LOCATION_ID_UNIQNESS, diagnotics.get(1).issueCode)
 		assertEquals("b.tpd", (diagnotics.get(1).sourceEObject as IncludeDeclaration).importURI)
 		
-		assertTrue(tpb.eResource.errors.empty)
-		tester.validator.checkIDUniqueOnAllLocations(tpb)
+		// Reload tpb because TargetReloader which force to reload targets
+		val updatedTpb = lazyResourceTpb.contents.head as TargetPlatform
+		
+		assertTrue(updatedTpb.eResource.errors.empty)
+		tester.validator.checkIDUniqueOnAllLocations(updatedTpb)
 		diagnotics = tester.diagnose.allDiagnostics.filter(typeof(AbstractValidationDiagnostic)).toList
 		assertEquals(0, diagnotics.size)
 	}
@@ -317,14 +323,19 @@ class TestValidation {
 			target "tp.b"
 			location A "locationURI1"
 		''', URI.createURI("tmp:/b.tpd"), resourceSet);
+		
+		val lazyResourceTpb = tpb.eResource as LazyLinkingResource
 
 		assertTrue(tpa.eResource.errors.empty)
 		tester.validator.checkIDUniqueOnAllLocations(tpa)
 		var diagnotics = tester.diagnose.allDiagnostics.filter(typeof(AbstractValidationDiagnostic)).toList
 		assertEquals(0, diagnotics.size)
 		
-		assertTrue(tpb.eResource.errors.empty)
-		tester.validator.checkIDUniqueOnAllLocations(tpb)
+		// Reload tpb because TargetReloader which force to reload targets
+		val updatedTpb = lazyResourceTpb.contents.head as TargetPlatform
+		
+		assertTrue(updatedTpb.eResource.errors.empty)
+		tester.validator.checkIDUniqueOnAllLocations(updatedTpb)
 		diagnotics = tester.diagnose.allDiagnostics.filter(typeof(AbstractValidationDiagnostic)).toList
 		assertEquals(0, diagnotics.size)
 	}
@@ -913,6 +924,9 @@ class TestValidation {
 			target "tp.c"
 			location C "locationURI1"
 		''', URI.createURI("tmp:/c.tpd"), resourceSet);
+		
+		val lazyResourceTpb = tpb.eResource as LazyLinkingResource
+		val lazyResourceTpc = tpc.eResource as LazyLinkingResource
 
 		assertTrue(tpa.eResource.errors.empty)
 		tester.validator.checkSameIDForAllLocationWithSameURI(tpa)
@@ -925,8 +939,11 @@ class TestValidation {
 			assertEquals("tmp:/a.tpd", (it.sourceEObject as IncludeDeclaration).eResource.URI.toString)
 		]
 		
-		assertTrue(tpb.eResource.errors.empty)
-		tester.validator.checkSameIDForAllLocationWithSameURI(tpb)
+		// Reload tpb because TargetReloader which force to reload targets
+		val updatedTpb = lazyResourceTpb.contents.head as TargetPlatform
+		
+		assertTrue(updatedTpb.eResource.errors.empty)
+		tester.validator.checkSameIDForAllLocationWithSameURI(updatedTpb)
 		diagnotics = tester.diagnose.allDiagnostics.filter(typeof(AbstractValidationDiagnostic)).toList
 		assertEquals(1, diagnotics.size)
 		assertTrue(diagnotics.forall[sourceEObject instanceof Location])
@@ -936,8 +953,10 @@ class TestValidation {
 			assertEquals("tmp:/b.tpd", (it.sourceEObject as Location).eResource.URI.toString)
 		]
 		
-		assertTrue(tpc.eResource.errors.empty)
-		tester.validator.checkSameIDForAllLocationWithSameURI(tpc)
+		val updatedTpc = lazyResourceTpc.contents.head as TargetPlatform
+		
+		assertTrue(updatedTpc.eResource.errors.empty)
+		tester.validator.checkSameIDForAllLocationWithSameURI(updatedTpc)
 		diagnotics = tester.diagnose.allDiagnostics.filter(typeof(AbstractValidationDiagnostic)).toList
 		assertEquals(0, diagnotics.size)
 	}
@@ -960,6 +979,9 @@ class TestValidation {
 			target "tp.c"
 			location A "locationURI1"
 		''', URI.createURI("tmp:/c.tpd"), resourceSet);
+		
+		val lazyResourceTpb = tpb.eResource as LazyLinkingResource
+		val lazyResourceTpc = tpc.eResource as LazyLinkingResource
 
 		assertTrue(tpa.eResource.errors.empty)
 		tester.validator.checkSameIDForAllLocationWithSameURI(tpa)
@@ -972,8 +994,11 @@ class TestValidation {
 			assertEquals("tmp:/a.tpd", (it.sourceEObject as IncludeDeclaration).eResource.URI.toString)
 		]
 		
-		assertTrue(tpb.eResource.errors.empty)
-		tester.validator.checkSameIDForAllLocationWithSameURI(tpb)
+		// Reload tpb because TargetReloader which force to reload targets
+		val updatedTpb = lazyResourceTpb.contents.head as TargetPlatform
+		
+		assertTrue(updatedTpb.eResource.errors.empty)
+		tester.validator.checkSameIDForAllLocationWithSameURI(updatedTpb)
 		diagnotics = tester.diagnose.allDiagnostics.filter(typeof(AbstractValidationDiagnostic)).toList
 		assertEquals(1, diagnotics.size)
 		assertTrue(diagnotics.forall[sourceEObject instanceof Location])
@@ -983,8 +1008,10 @@ class TestValidation {
 			assertEquals("tmp:/b.tpd", (it.sourceEObject as Location).eResource.URI.toString)
 		]
 		
-		assertTrue(tpc.eResource.errors.empty)
-		tester.validator.checkSameIDForAllLocationWithSameURI(tpc)
+		val updatedTpc = lazyResourceTpc.contents.head as TargetPlatform
+		
+		assertTrue(updatedTpc.eResource.errors.empty)
+		tester.validator.checkSameIDForAllLocationWithSameURI(updatedTpc)
 		diagnotics = tester.diagnose.allDiagnostics.filter(typeof(AbstractValidationDiagnostic)).toList
 		assertEquals(0, diagnotics.size)
 	}
@@ -1007,6 +1034,9 @@ class TestValidation {
 			target "tp.c"
 			location "locationURI1"
 		''', URI.createURI("tmp:/c.tpd"), resourceSet);
+		
+		val lazyResourceTpb = tpb.eResource as LazyLinkingResource
+		val lazyResourceTpc = tpc.eResource as LazyLinkingResource
 
 		assertTrue(tpa.eResource.errors.empty)
 		tester.validator.checkSameIDForAllLocationWithSameURI(tpa)
@@ -1019,8 +1049,11 @@ class TestValidation {
 			assertEquals("tmp:/a.tpd", (it.sourceEObject as IncludeDeclaration).eResource.URI.toString)
 		]
 		
-		assertTrue(tpb.eResource.errors.empty)
-		tester.validator.checkSameIDForAllLocationWithSameURI(tpb)
+		// Reload tpb because TargetReloader which force to reload targets
+		val updatedTpb = lazyResourceTpb.contents.head as TargetPlatform
+		
+		assertTrue(updatedTpb.eResource.errors.empty)
+		tester.validator.checkSameIDForAllLocationWithSameURI(updatedTpb)
 		diagnotics = tester.diagnose.allDiagnostics.filter(typeof(AbstractValidationDiagnostic)).toList
 		assertEquals(1, diagnotics.size)
 		assertTrue(diagnotics.forall[sourceEObject instanceof Location])
@@ -1030,8 +1063,10 @@ class TestValidation {
 			assertEquals("tmp:/b.tpd", (it.sourceEObject as Location).eResource.URI.toString)
 		]
 		
-		assertTrue(tpc.eResource.errors.empty)
-		tester.validator.checkSameIDForAllLocationWithSameURI(tpc)
+		val updatedTpc = lazyResourceTpc.contents.head as TargetPlatform
+		
+		assertTrue(updatedTpc.eResource.errors.empty)
+		tester.validator.checkSameIDForAllLocationWithSameURI(updatedTpc)
 		diagnotics = tester.diagnose.allDiagnostics.filter(typeof(AbstractValidationDiagnostic)).toList
 		assertEquals(0, diagnotics.size)
 	}
@@ -1079,6 +1114,9 @@ class TestValidation {
 			target "tp.c"
 			location C "locationURI1"
 		''', URI.createURI("tmp:/c.tpd"), resourceSet);
+		
+		val lazyResourceTpb = tpb.eResource as LazyLinkingResource
+		val lazyResourceTpc = tpc.eResource as LazyLinkingResource
 
 		assertTrue(tpa.eResource.errors.empty)
 		tester.validator.checkSameIDForAllLocationWithSameURI(tpa)
@@ -1091,8 +1129,11 @@ class TestValidation {
 			assertEquals("tmp:/a.tpd", (it.sourceEObject as IncludeDeclaration).eResource.URI.toString)
 		]
 		
-		assertTrue(tpb.eResource.errors.empty)
-		tester.validator.checkSameIDForAllLocationWithSameURI(tpb)
+		// Reload tpb because TargetReloader which force to reload targets
+		val updatedTpb = lazyResourceTpb.contents.head as TargetPlatform
+		
+		assertTrue(updatedTpb.eResource.errors.empty)
+		tester.validator.checkSameIDForAllLocationWithSameURI(updatedTpb)
 		diagnotics = tester.diagnose.allDiagnostics.filter(typeof(AbstractValidationDiagnostic)).toList
 		assertEquals(1, diagnotics.size)
 		assertTrue(diagnotics.forall[sourceEObject instanceof Location])
@@ -1102,8 +1143,10 @@ class TestValidation {
 			assertEquals("tmp:/b.tpd", (it.sourceEObject as Location).eResource.URI.toString)
 		]
 		
-		assertTrue(tpc.eResource.errors.empty)
-		tester.validator.checkSameIDForAllLocationWithSameURI(tpc)
+		val updatedTpc = lazyResourceTpc.contents.head as TargetPlatform
+		
+		assertTrue(updatedTpc.eResource.errors.empty)
+		tester.validator.checkSameIDForAllLocationWithSameURI(updatedTpc)
 		diagnotics = tester.diagnose.allDiagnostics.filter(typeof(AbstractValidationDiagnostic)).toList
 		assertEquals(0, diagnotics.size)
 	}
@@ -1126,6 +1169,9 @@ class TestValidation {
 			target "tp.c"
 			location "locationURI1"
 		''', URI.createURI("tmp:/c.tpd"), resourceSet);
+		
+		val lazyResourceTpb = tpb.eResource as LazyLinkingResource
+		val lazyResourceTpc = tpc.eResource as LazyLinkingResource
 
 		assertTrue(tpa.eResource.errors.empty)
 		tester.validator.checkSameIDForAllLocationWithSameURI(tpa)
@@ -1138,8 +1184,11 @@ class TestValidation {
 			assertEquals("tmp:/a.tpd", (it.sourceEObject as IncludeDeclaration).eResource.URI.toString)
 		]
 		
-		assertTrue(tpb.eResource.errors.empty)
-		tester.validator.checkSameIDForAllLocationWithSameURI(tpb)
+		// Reload tpb because TargetReloader which force to reload targets
+		val updatedTpb = lazyResourceTpb.contents.head as TargetPlatform
+		
+		assertTrue(updatedTpb.eResource.errors.empty)
+		tester.validator.checkSameIDForAllLocationWithSameURI(updatedTpb)
 		diagnotics = tester.diagnose.allDiagnostics.filter(typeof(AbstractValidationDiagnostic)).toList
 		assertEquals(1, diagnotics.size)
 		assertTrue(diagnotics.forall[sourceEObject instanceof Location])
@@ -1149,8 +1198,10 @@ class TestValidation {
 			assertEquals("tmp:/b.tpd", (it.sourceEObject as Location).eResource.URI.toString)
 		]
 		
-		assertTrue(tpc.eResource.errors.empty)
-		tester.validator.checkSameIDForAllLocationWithSameURI(tpc)
+		val updatedTpc = lazyResourceTpc.contents.head as TargetPlatform
+		
+		assertTrue(updatedTpc.eResource.errors.empty)
+		tester.validator.checkSameIDForAllLocationWithSameURI(updatedTpc)
 		diagnotics = tester.diagnose.allDiagnostics.filter(typeof(AbstractValidationDiagnostic)).toList
 		assertEquals(0, diagnotics.size)
 	}
@@ -1199,6 +1250,8 @@ class TestValidation {
 			target "tp.b"
 			include "a.tpd"
 		''', URI.createURI("tmp:/b.tpd"), resourceSet);
+		
+		val lazyResourceTpb = tpb.eResource as LazyLinkingResource
 
 		assertTrue(tpa.eResource.errors.empty)
 		tester.validator.checkImportCycle(tpa)
@@ -1210,8 +1263,11 @@ class TestValidation {
 			assertEquals("b.tpd", (it.sourceEObject as IncludeDeclaration).importURI)
 		]
 		
-		assertTrue(tpb.eResource.errors.empty)
-		tester.validator.checkImportCycle(tpb)
+		// Reload tpb because TargetReloader which force to reload targets
+		val updatedTpb = lazyResourceTpb.contents.head as TargetPlatform
+		
+		assertTrue(updatedTpb.eResource.errors.empty)
+		tester.validator.checkImportCycle(updatedTpb)
 		val diagnoticsb = tester.diagnose.allDiagnostics.filter(typeof(AbstractValidationDiagnostic)).toList
 		assertEquals(1, diagnoticsb.size)
 		assertTrue(diagnoticsb.forall[sourceEObject instanceof IncludeDeclaration])
@@ -1238,6 +1294,8 @@ class TestValidation {
 			include "a.tpd"
 		''', URI.createURI("tmp:/c.tpd"), resourceSet);
 		
+		val lazyResourceTpb = tpb.eResource as LazyLinkingResource
+		
 		val tpcResource = tpc.eResource
 		
 		assertTrue(tpa.eResource.errors.empty)
@@ -1250,8 +1308,11 @@ class TestValidation {
 			assertEquals("b.tpd", (it.sourceEObject as IncludeDeclaration).importURI)
 		]
 		
-		assertTrue(tpb.eResource.errors.empty)
-		tester.validator.checkImportCycle(tpb)
+		// Reload tpb because TargetReloader which force to reload targets
+		val updatedTpb = lazyResourceTpb.contents.head as TargetPlatform
+		
+		assertTrue(updatedTpb.eResource.errors.empty)
+		tester.validator.checkImportCycle(updatedTpb)
 		diagnotics = tester.diagnose.allDiagnostics.filter(typeof(AbstractValidationDiagnostic)).toList
 		assertEquals(1, diagnotics.size)
 		assertTrue(diagnotics.forall[sourceEObject instanceof IncludeDeclaration])

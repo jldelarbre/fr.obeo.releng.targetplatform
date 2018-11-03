@@ -4,7 +4,7 @@ import fr.obeo.releng.targetplatform.TargetPlatform
 
 interface TargetReloader {
 	/**
-	 * The need to reload the target platform comes from the following case under eclipse:
+	 * The first need to reload the target platform comes from the following case under eclipse:
 	 * Let the 3 nested targets:
 	 * 
 	 * -------------------------------------------------------------------------------------
@@ -28,8 +28,10 @@ interface TargetReloader {
 	 * any imported target when we do a build.
 	 * 
 	 * The same consideration applies with other declarations like "include" as with "define"
+	 * 
+	 * 
+	 * forceReload is also useful when have different override of variable definition to apply
+	 * from different importer target
 	 */
-	def TargetPlatform getUpToDateTarget(TargetPlatform targetPlatformBase, TargetPlatform importedTargetPlatform)
-	
-//	def void registerTargetPlatform(TargetPlatform targetPlatform)
+	def TargetPlatform forceReload(TargetPlatform targetPlatform)
 }

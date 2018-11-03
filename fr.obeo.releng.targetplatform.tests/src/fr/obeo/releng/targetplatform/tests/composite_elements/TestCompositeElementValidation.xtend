@@ -25,6 +25,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 import static org.junit.Assert.*
+import org.eclipse.xtext.linking.lazy.LazyLinkingResource
 
 @InjectWith(typeof(CustomTargetPlatformInjectorProviderTargetReloader))
 @RunWith(typeof(XtextRunner))
@@ -70,6 +71,8 @@ class TestCompositeElementValidation {
 			include "../compositeIncludeTarget.tpd"
 		''', URI.createURI("tmp:/subdir/subInclude.tpd"), resourceSet)
 		
+		val lazyResourceSubIncludeCircular = subIncludeCircular.eResource as LazyLinkingResource
+		
 		assertTrue(compositeIncludeTarget.eResource.errors.empty)
 		tester.validator.checkImportCycle(compositeIncludeTarget)
 		var diagnotics = tester.diagnose.allDiagnostics.filter(typeof(AbstractValidationDiagnostic)).toList
@@ -80,8 +83,11 @@ class TestCompositeElementValidation {
 			assertEquals("subdir/subInclude.tpd", (it.sourceEObject as IncludeDeclaration).importURI)
 		]
 		
-		assertTrue(subIncludeCircular.eResource.errors.empty)
-		tester.validator.checkImportCycle(subIncludeCircular)
+		// Reload tpb because TargetReloader which force to reload targets
+		val updatedSubIncludeCircular = lazyResourceSubIncludeCircular.contents.head as TargetPlatform
+		
+		assertTrue(updatedSubIncludeCircular.eResource.errors.empty)
+		tester.validator.checkImportCycle(updatedSubIncludeCircular)
 		diagnotics = tester.diagnose.allDiagnostics.filter(typeof(AbstractValidationDiagnostic)).toList
 		assertEquals(1, diagnotics.size)
 		assertTrue(diagnotics.forall[sourceEObject instanceof IncludeDeclaration])
@@ -114,6 +120,8 @@ class TestCompositeElementValidation {
 			include ${urlCyclicInclude}
 		''', URI.createURI("tmp:/subdir/subInclude.tpd"), resourceSet)
 		
+		val lazyResourceSubIncludeCircular = subIncludeCircular.eResource as LazyLinkingResource
+		
 		assertTrue(compositeIncludeTarget.eResource.errors.empty)
 		tester.validator.checkImportCycle(compositeIncludeTarget)
 		var diagnotics = tester.diagnose.allDiagnostics.filter(typeof(AbstractValidationDiagnostic)).toList
@@ -124,8 +132,11 @@ class TestCompositeElementValidation {
 			assertEquals("subdir/subInclude.tpd", (it.sourceEObject as IncludeDeclaration).importURI)
 		]
 		
-		assertTrue(subIncludeCircular.eResource.errors.empty)
-		tester.validator.checkImportCycle(subIncludeCircular)
+		// Reload tpb because TargetReloader which force to reload targets
+		val updatedSubIncludeCircular = lazyResourceSubIncludeCircular.contents.head as TargetPlatform
+		
+		assertTrue(updatedSubIncludeCircular.eResource.errors.empty)
+		tester.validator.checkImportCycle(updatedSubIncludeCircular)
 		diagnotics = tester.diagnose.allDiagnostics.filter(typeof(AbstractValidationDiagnostic)).toList
 		assertEquals(1, diagnotics.size)
 		assertTrue(diagnotics.forall[sourceEObject instanceof IncludeDeclaration])

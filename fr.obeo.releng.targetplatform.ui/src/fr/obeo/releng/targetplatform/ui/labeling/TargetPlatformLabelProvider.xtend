@@ -33,9 +33,6 @@ import org.eclipse.xtext.ui.label.DefaultEObjectLabelProvider
  */
 class TargetPlatformLabelProvider extends DefaultEObjectLabelProvider {
 
-//	@Inject
-//	CompositeElementResolver compositeElementResolver
-
 	@Inject
 	new(AdapterFactoryLabelProvider delegate) {
 		super(delegate);
@@ -43,10 +40,6 @@ class TargetPlatformLabelProvider extends DefaultEObjectLabelProvider {
 
 	def text(Location object) {
 		val ss = new StyledString();
-//		if (object.uri === null) {
-//			compositeElementResolver.resolveCompositeElements(object.eContainer as TargetPlatform)
-//			object.resolveUri
-//		}
 		if (object.getID() !== null) {
 			ss.append(object.getID() + " - ", StyledString.DECORATIONS_STYLER);
 		}
@@ -77,9 +70,6 @@ class TargetPlatformLabelProvider extends DefaultEObjectLabelProvider {
 	}
 
 	def text(TargetPlatform object) {
-//		if (!object.compositeElementsResolved) {
-//			compositeElementResolver.resolveCompositeElements(object)
-//		}
 		object.getName();
 	}
 
@@ -89,10 +79,6 @@ class TargetPlatformLabelProvider extends DefaultEObjectLabelProvider {
 
 	def text(IncludeDeclaration object) {
 		val ss = new StyledString()
-//		if (object.importURI === null) {
-//			compositeElementResolver.resolveCompositeElements(object.eContainer as TargetPlatform)
-//			object.generateImportURI
-//		}
 		ss.append(object.compositeImportURI.computeActualString + " - " + object.importURI)
 		ss
 	}
@@ -138,10 +124,6 @@ class TargetPlatformLabelProvider extends DefaultEObjectLabelProvider {
 	}
 
 	def text(VarDefinition object) {
-//		val targetPlatform = object.eContainer as TargetPlatform
-//		if (targetPlatform.compositeElementsResolved == false) {
-//			compositeElementResolver.resolveCompositeElements(targetPlatform)
-//		}
 		object.name + " - (effective value = " + object.effectiveValue + ")"
 	}
 

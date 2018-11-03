@@ -183,7 +183,7 @@ class MockMetadataRepository implements IMetadataRepository {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	
-	override getAdapter(Class adapter) {
+	override <T> T getAdapter(Class<T> adapter) {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	

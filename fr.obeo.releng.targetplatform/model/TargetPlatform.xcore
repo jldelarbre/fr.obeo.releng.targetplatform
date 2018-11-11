@@ -169,6 +169,8 @@ class VarDefinition extends TargetContent {
 	UUID _sourceUUID //if a varDefinition is imported from a target and hence copied, it gets the UUID of the original verDef
 	boolean diamondInherit = "false"
 	
+	boolean dirty = "false"
+	
 	/**
 	 * return true if the variable is wholly defined inside the target where it is declared.
 	 * 

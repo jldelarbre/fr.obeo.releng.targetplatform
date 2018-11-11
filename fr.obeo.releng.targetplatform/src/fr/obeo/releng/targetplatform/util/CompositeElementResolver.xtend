@@ -1,8 +1,8 @@
 package fr.obeo.releng.targetplatform.util
 
 import com.google.inject.Inject
+import fr.obeo.releng.targetplatform.CompositeString
 import fr.obeo.releng.targetplatform.IncludeDeclaration
-import fr.obeo.releng.targetplatform.TargetContent
 import fr.obeo.releng.targetplatform.TargetPlatform
 import fr.obeo.releng.targetplatform.TargetPlatformFactory
 import fr.obeo.releng.targetplatform.VarCall
@@ -11,7 +11,6 @@ import java.util.HashSet
 import java.util.List
 import java.util.Map
 import java.util.Set
-import org.eclipse.emf.common.util.EList
 
 class CompositeElementResolver {
 
@@ -29,16 +28,32 @@ class CompositeElementResolver {
 
 	/* Composite elements are string defined by a concatenation of static string and variable call:
 	 * "string1" + ${var1} + "aaa" + ${var2} +... */
-	def void resolveCompositeElements(TargetPlatform pTargetPlatform) {
-		var targetPlatform = pTargetPlatform
+	def void resolveCompositeElements(TargetPlatform targetPlatform) {
 		if (targetPlatform.compositeElementsResolved == true) {
 			return
 		}
 		
-		val importedVarDef = targetPlatform.varDefinition.findFirst[
-			it.imported
+		if (checkTargetPlatformDirty(targetPlatform)) {
+//			return
+		}
+
+		searchAndAppendDefineFromIncludedTpd(targetPlatform)
+		resolveLocations(targetPlatform)
+		val importedTargetPlatforms = locationIndexBuilder.
+			getImportedTargetPlatformsDoNotResolveCompositeElement(targetPlatform)
+		importedTargetPlatforms.forEach [
+			resolveLocations(it)
+			it.compositeElementsResolved = true
 		]
-		if (importedVarDef !== null) {
+		targetPlatform.compositeElementsResolved = true
+	}
+	
+	private def boolean checkTargetPlatformDirty(TargetPlatform targetPlatform) {
+		val previouslyImportedVarDef = targetPlatform.varDefinition.filter[
+			it.imported
+		].toList
+		val targetDirty = !previouslyImportedVarDef.empty && !targetPlatform.compositeElementsResolved
+		if (targetDirty) {
 			//targetPlatform.compositeElementsResolved == false -> The targetPlatform seems to have not been resolved
 			//But it exists some imported varDefinition -> It has already been resolved
 			//
@@ -74,20 +89,13 @@ class CompositeElementResolver {
 			//
 			// targetPlatform = targetReloader.getUpToDateTarget(null, targetPlatform)
 
-			//Put an error on target: see TargetPlatformValidator.xtend			
-			targetPlatform.invalidateByEmfXtext = true
-			return
-		}
+			//Put an error on target: see TargetPlatformValidator.xtend
+//			targetPlatform.invalidateByEmfXtext = true
 
-		searchAndAppendDefineFromIncludedTpd(targetPlatform)
-		resolveLocations(targetPlatform)
-		val importedTargetPlatforms = locationIndexBuilder.
-			getImportedTargetPlatformsDoNotResolveCompositeElement(targetPlatform)
-		importedTargetPlatforms.forEach [
-			resolveLocations(it)
-			it.compositeElementsResolved = true
-		]
-		targetPlatform.compositeElementsResolved = true
+			previouslyImportedVarDef.forEach[it.dirty = true]
+			targetPlatform.contents.removeAll(previouslyImportedVarDef)
+		}
+		targetDirty
 	}
 
 	/* Override value of variable definition with command line or environment variable */
@@ -106,9 +114,17 @@ class CompositeElementResolver {
 
 	/* Resolve location ("location" directive) means resolve variable call used in location declaration */
 	private def resolveLocations(TargetPlatform targetPlatform) {
+		cleanDirtyLocations(targetPlatform)
 		targetPlatform.locations.forEach [
 			it.resolveUri
 			it.resolveIUsVersion
+		]
+	}
+	
+	private def cleanDirtyLocations(TargetPlatform targetPlatform) {
+		targetPlatform.locations.forEach[
+			it.uri = null
+			cleanDirtyCompositeStrings(it.compositeUri, targetPlatform, newHashSet)
 		]
 	}
 
@@ -119,8 +135,7 @@ class CompositeElementResolver {
 
 	/* Search and append to the list of "define": variable definition of the current tpd file (targetPlatform)
 	 * the list of "define" found in sub tpd: imported with "include" directive */
-	private def void searchAndAppendDefineFromIncludedTpd(TargetPlatform targetPlatform,
-		Set<TargetPlatform> alreadyVisitedTarget) {
+	private def void searchAndAppendDefineFromIncludedTpd(TargetPlatform targetPlatform, Set<TargetPlatform> alreadyVisitedTarget) {
 		val ImportedDefineFromSubTpd = newHashSet()
 		val processedTargetPlatform = newHashMap()
 
@@ -181,8 +196,7 @@ class CompositeElementResolver {
 	 * 
 	 * In this case varA of targetB will be override with the value "valA"
 	 */
-	private def overrideImportedTargetVariable(TargetPlatform importedTargetPlatform,
-		TargetPlatform importerTargetPlatform) {
+	private def overrideImportedTargetVariable(TargetPlatform importedTargetPlatform, TargetPlatform importerTargetPlatform) {
 		val varDefImporter = importerTargetPlatform.varDefinition
 		varDefImporter.filter [
 			!it.imported
@@ -204,6 +218,7 @@ class CompositeElementResolver {
 
 	private def overrideCurrentVarDef(TargetPlatform importedTargetPlatform, String varDef4OverridingName,
 		String varDef4OverridingValue) {
+		
 		val varDef2Override = importedTargetPlatform.varDefinition.findFirst[it.name.equals(varDef4OverridingName)]
 		if (varDef2Override !== null) {
 			if (!varDef2Override.constant) {
@@ -220,9 +235,42 @@ class CompositeElementResolver {
 	/* Targets that are directly imported, with an "include" directive present in the current
 	 * target: "targetPlatform". Do not look for target imported through an imported target */
 	private def Map<IncludeDeclaration, TargetPlatform> searchDirectlyImportedTpd(TargetPlatform targetPlatform) {
+		cleanDirtyIncludes(targetPlatform)
 		targetPlatform.includes.filter[it.isResolved].toInvertedMap [
 			locationIndexBuilder.getImportedTargetPlatform(targetPlatform.eResource, it)
 		].filter[p1, p2|null !== p2]
+	}
+	
+	private def cleanDirtyIncludes(TargetPlatform targetPlatform) {
+		targetPlatform.includes.forEach[
+			cleanDirtyCompositeStrings(it.compositeImportURI, targetPlatform, newHashSet)
+		]
+	}
+	
+	private def void cleanDirtyCompositeStrings(CompositeString compositeString, TargetPlatform targetPlatform,
+		Set<CompositeString> alreadyVisitedCP) {
+		
+		if (compositeString === null || !alreadyVisitedCP.add(compositeString)) {
+			return
+		}
+		compositeString.stringParts.filter[
+			it instanceof VarCall
+		].forEach[
+			val varCall = it as VarCall
+			if (varCall.varName.dirty) {
+				varCall.varName.value = null
+				val searchVarDefName = varCall.varName.name
+				val cleanVarDef = targetPlatform.varDefinition.findFirst[
+					!it.dirty && it.name.equals(searchVarDefName)
+				]
+				if (cleanVarDef !== null) {
+					varCall.varName = cleanVarDef
+				}
+			}
+			else {
+				cleanDirtyCompositeStrings(varCall.varName.value, targetPlatform, newHashSet(alreadyVisitedCP))
+			}
+		]
 	}
 
 	/*
@@ -230,13 +278,10 @@ class CompositeElementResolver {
 	 */
 	private def mergeImportedDefine(TargetPlatform targetPlatform, Set<VarDefinition> ImportedDefineFromSubTpd) {
 		val toBeAddedDefine = newHashSet()
-		val targetContent = targetPlatform.contents
 		ImportedDefineFromSubTpd.forEach [
 			val currentImportedDefine = it
-			var boolean toBeAdded = targetContent.filter [
-				it instanceof VarDefinition
-			].forall [
-				val alreadyExistingDefine = it as VarDefinition
+			var boolean toBeAdded = targetPlatform.varDefinition.forall [
+				val alreadyExistingDefine = it
 				val varName = alreadyExistingDefine.name
 				!currentImportedDefine.name.equals(varName)
 			]
@@ -255,8 +300,8 @@ class CompositeElementResolver {
 				}
 			}
 		]
-		targetContent.addAll(toBeAddedDefine)
-		updateVariableDefinition(targetContent)
+		targetPlatform.contents.addAll(toBeAddedDefine)
+		updateVariableDefinition(targetPlatform)
 	}
 
 	private def VarDefinition searchAlreadyIncludeVarDef(VarDefinition varDef2Find,
@@ -278,6 +323,7 @@ class CompositeElementResolver {
 		currentImportedDefineCopy.importedValues.add(currentImportedDefine.value.computeActualString)
 		currentImportedDefineCopy._sourceUUID = currentImportedDefine.sourceUUID
 		currentImportedDefineCopy.constant = currentImportedDefine.constant
+		currentImportedDefineCopy.dirty = currentImportedDefine.dirty
 		currentImportedDefineCopy
 	}
 
@@ -311,29 +357,25 @@ class CompositeElementResolver {
 	 * the value "value2Sub" instead of "value2" => We have to update the newly created var2 in
 	 * "mainTpd" to make it refer to var2b of "mainTpd"
 	 */
-	private def updateVariableDefinition(EList<TargetContent> targetContent) {
-		for (varDef : targetContent) {
-			if (varDef instanceof VarDefinition) {
-				if (varDef.value !== null) {
-					// varDef.value == null: Same case as in "TargetPlatform.xcore: VarDefinition.checkVarCycle"
-					for (stringPart : varDef.value.stringParts) {
-						if (stringPart instanceof VarCall) {
-							var varCall = stringPart as VarCall
-							updateVariableCall(varCall, targetContent)
-						}
+	private def updateVariableDefinition(TargetPlatform targetPlatform) {
+		for (varDef : targetPlatform.varDefinition) {
+			if (varDef.value !== null) {
+				// varDef.value == null: Same case as in "TargetPlatform.xcore: VarDefinition.checkVarCycle"
+				for (stringPart : varDef.value.stringParts) {
+					if (stringPart instanceof VarCall) {
+						var varCall = stringPart as VarCall
+						updateVariableCall(varCall, targetPlatform)
 					}
 				}
 			}
 		}
 	}
 
-	private def updateVariableCall(VarCall varCall, EList<TargetContent> targetContent) {
-		for (varDef : targetContent) {
-			if (varDef instanceof VarDefinition) {
-				if (varCall.varName.name == varDef.name) {
-					varCall.originalVarName = varCall.varName
-					varCall.varName = varDef
-				}
+	private def updateVariableCall(VarCall varCall, TargetPlatform targetPlatform) {
+		for (varDef : targetPlatform.varDefinition) {
+			if (varCall.varName.name == varDef.name) {
+				varCall.originalVarName = varCall.varName
+				varCall.varName = varDef
 			}
 		}
 	}

@@ -26,6 +26,7 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link fr.obeo.releng.targetplatform.VarDefinition#getImportedValues <em>Imported Values</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.VarDefinition#get_sourceUUID <em>source UUID</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.VarDefinition#isDiamondInherit <em>Diamond Inherit</em>}</li>
+ *   <li>{@link fr.obeo.releng.targetplatform.VarDefinition#isDirty <em>Dirty</em>}</li>
  * </ul>
  *
  * @see fr.obeo.releng.targetplatform.TargetPlatformPackage#getVarDefinition()
@@ -286,6 +287,33 @@ public interface VarDefinition extends TargetContent {
 	 * @generated
 	 */
 	void setDiamondInherit(boolean value);
+
+	/**
+	 * Returns the value of the '<em><b>Dirty</b></em>' attribute.
+	 * The default value is <code>"false"</code>.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Dirty</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Dirty</em>' attribute.
+	 * @see #setDirty(boolean)
+	 * @see fr.obeo.releng.targetplatform.TargetPlatformPackage#getVarDefinition_Dirty()
+	 * @model default="false" unique="false"
+	 * @generated
+	 */
+	boolean isDirty();
+
+	/**
+	 * Sets the value of the '{@link fr.obeo.releng.targetplatform.VarDefinition#isDirty <em>Dirty</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Dirty</em>' attribute.
+	 * @see #isDirty()
+	 * @generated
+	 */
+	void setDirty(boolean value);
 
 	/**
 	 * <!-- begin-user-doc -->

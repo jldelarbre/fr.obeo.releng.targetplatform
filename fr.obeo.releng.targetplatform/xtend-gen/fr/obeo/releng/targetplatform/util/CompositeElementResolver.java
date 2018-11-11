@@ -7,7 +7,6 @@ import fr.obeo.releng.targetplatform.CompositeString;
 import fr.obeo.releng.targetplatform.CompositeStringPart;
 import fr.obeo.releng.targetplatform.IncludeDeclaration;
 import fr.obeo.releng.targetplatform.Location;
-import fr.obeo.releng.targetplatform.TargetContent;
 import fr.obeo.releng.targetplatform.TargetPlatform;
 import fr.obeo.releng.targetplatform.TargetPlatformFactory;
 import fr.obeo.releng.targetplatform.VarCall;
@@ -49,37 +48,53 @@ public class CompositeElementResolver {
    * Composite elements are string defined by a concatenation of static string and variable call:
    * "string1" + ${var1} + "aaa" + ${var2} +...
    */
-  public void resolveCompositeElements(final TargetPlatform pTargetPlatform) {
-    TargetPlatform targetPlatform = pTargetPlatform;
+  public void resolveCompositeElements(final TargetPlatform targetPlatform) {
     boolean _isCompositeElementsResolved = targetPlatform.isCompositeElementsResolved();
     boolean _equals = (_isCompositeElementsResolved == true);
     if (_equals) {
       return;
     }
-    final Function1<VarDefinition, Boolean> _function = new Function1<VarDefinition, Boolean>() {
-      @Override
-      public Boolean apply(final VarDefinition it) {
-        return Boolean.valueOf(it.isImported());
-      }
-    };
-    final VarDefinition importedVarDef = IterableExtensions.<VarDefinition>findFirst(targetPlatform.getVarDefinition(), _function);
-    boolean _tripleNotEquals = (importedVarDef != null);
-    if (_tripleNotEquals) {
-      targetPlatform.setInvalidateByEmfXtext(true);
-      return;
+    boolean _checkTargetPlatformDirty = this.checkTargetPlatformDirty(targetPlatform);
+    if (_checkTargetPlatformDirty) {
     }
     this.searchAndAppendDefineFromIncludedTpd(targetPlatform);
     this.resolveLocations(targetPlatform);
     final LinkedList<TargetPlatform> importedTargetPlatforms = this.locationIndexBuilder.getImportedTargetPlatformsDoNotResolveCompositeElement(targetPlatform);
-    final Consumer<TargetPlatform> _function_1 = new Consumer<TargetPlatform>() {
+    final Consumer<TargetPlatform> _function = new Consumer<TargetPlatform>() {
       @Override
       public void accept(final TargetPlatform it) {
         CompositeElementResolver.this.resolveLocations(it);
         it.setCompositeElementsResolved(true);
       }
     };
-    importedTargetPlatforms.forEach(_function_1);
+    importedTargetPlatforms.forEach(_function);
     targetPlatform.setCompositeElementsResolved(true);
+  }
+  
+  private boolean checkTargetPlatformDirty(final TargetPlatform targetPlatform) {
+    boolean _xblockexpression = false;
+    {
+      final Function1<VarDefinition, Boolean> _function = new Function1<VarDefinition, Boolean>() {
+        @Override
+        public Boolean apply(final VarDefinition it) {
+          return Boolean.valueOf(it.isImported());
+        }
+      };
+      final List<VarDefinition> previouslyImportedVarDef = IterableExtensions.<VarDefinition>toList(IterableExtensions.<VarDefinition>filter(targetPlatform.getVarDefinition(), _function));
+      final boolean targetDirty = ((!previouslyImportedVarDef.isEmpty()) && (!targetPlatform.isCompositeElementsResolved()));
+      if (targetDirty) {
+        final Consumer<VarDefinition> _function_1 = new Consumer<VarDefinition>() {
+          @Override
+          public void accept(final VarDefinition it) {
+            it.setDirty(true);
+          }
+        };
+        previouslyImportedVarDef.forEach(_function_1);
+        targetPlatform.getContents().removeAll(previouslyImportedVarDef);
+      }
+      _xblockexpression = targetDirty;
+    }
+    return _xblockexpression;
   }
   
   /**
@@ -105,11 +120,23 @@ public class CompositeElementResolver {
    * Resolve location ("location" directive) means resolve variable call used in location declaration
    */
   private void resolveLocations(final TargetPlatform targetPlatform) {
+    this.cleanDirtyLocations(targetPlatform);
     final Consumer<Location> _function = new Consumer<Location>() {
       @Override
       public void accept(final Location it) {
         it.resolveUri();
         it.resolveIUsVersion();
+      }
+    };
+    targetPlatform.getLocations().forEach(_function);
+  }
+  
+  private void cleanDirtyLocations(final TargetPlatform targetPlatform) {
+    final Consumer<Location> _function = new Consumer<Location>() {
+      @Override
+      public void accept(final Location it) {
+        it.setUri(null);
+        CompositeElementResolver.this.cleanDirtyCompositeStrings(it.getCompositeUri(), targetPlatform, CollectionLiterals.<CompositeString>newHashSet());
       }
     };
     targetPlatform.getLocations().forEach(_function);
@@ -277,25 +304,78 @@ public class CompositeElementResolver {
    * target: "targetPlatform". Do not look for target imported through an imported target
    */
   private Map<IncludeDeclaration, TargetPlatform> searchDirectlyImportedTpd(final TargetPlatform targetPlatform) {
-    final Function1<IncludeDeclaration, Boolean> _function = new Function1<IncludeDeclaration, Boolean>() {
+    Map<IncludeDeclaration, TargetPlatform> _xblockexpression = null;
+    {
+      this.cleanDirtyIncludes(targetPlatform);
+      final Function1<IncludeDeclaration, Boolean> _function = new Function1<IncludeDeclaration, Boolean>() {
+        @Override
+        public Boolean apply(final IncludeDeclaration it) {
+          return Boolean.valueOf(it.isResolved());
+        }
+      };
+      final Function1<IncludeDeclaration, TargetPlatform> _function_1 = new Function1<IncludeDeclaration, TargetPlatform>() {
+        @Override
+        public TargetPlatform apply(final IncludeDeclaration it) {
+          return CompositeElementResolver.this.locationIndexBuilder.getImportedTargetPlatform(targetPlatform.eResource(), it);
+        }
+      };
+      final Function2<IncludeDeclaration, TargetPlatform, Boolean> _function_2 = new Function2<IncludeDeclaration, TargetPlatform, Boolean>() {
+        @Override
+        public Boolean apply(final IncludeDeclaration p1, final TargetPlatform p2) {
+          return Boolean.valueOf((null != p2));
+        }
+      };
+      _xblockexpression = MapExtensions.<IncludeDeclaration, TargetPlatform>filter(IterableExtensions.<IncludeDeclaration, TargetPlatform>toInvertedMap(IterableExtensions.<IncludeDeclaration>filter(targetPlatform.getIncludes(), _function), _function_1), _function_2);
+    }
+    return _xblockexpression;
+  }
+  
+  private void cleanDirtyIncludes(final TargetPlatform targetPlatform) {
+    final Consumer<IncludeDeclaration> _function = new Consumer<IncludeDeclaration>() {
       @Override
-      public Boolean apply(final IncludeDeclaration it) {
-        return Boolean.valueOf(it.isResolved());
+      public void accept(final IncludeDeclaration it) {
+        CompositeElementResolver.this.cleanDirtyCompositeStrings(it.getCompositeImportURI(), targetPlatform, CollectionLiterals.<CompositeString>newHashSet());
       }
     };
-    final Function1<IncludeDeclaration, TargetPlatform> _function_1 = new Function1<IncludeDeclaration, TargetPlatform>() {
+    targetPlatform.getIncludes().forEach(_function);
+  }
+  
+  private void cleanDirtyCompositeStrings(final CompositeString compositeString, final TargetPlatform targetPlatform, final Set<CompositeString> alreadyVisitedCP) {
+    if (((compositeString == null) || (!alreadyVisitedCP.add(compositeString)))) {
+      return;
+    }
+    final Function1<CompositeStringPart, Boolean> _function = new Function1<CompositeStringPart, Boolean>() {
       @Override
-      public TargetPlatform apply(final IncludeDeclaration it) {
-        return CompositeElementResolver.this.locationIndexBuilder.getImportedTargetPlatform(targetPlatform.eResource(), it);
+      public Boolean apply(final CompositeStringPart it) {
+        return Boolean.valueOf((it instanceof VarCall));
       }
     };
-    final Function2<IncludeDeclaration, TargetPlatform, Boolean> _function_2 = new Function2<IncludeDeclaration, TargetPlatform, Boolean>() {
+    final Consumer<CompositeStringPart> _function_1 = new Consumer<CompositeStringPart>() {
       @Override
-      public Boolean apply(final IncludeDeclaration p1, final TargetPlatform p2) {
-        return Boolean.valueOf((null != p2));
+      public void accept(final CompositeStringPart it) {
+        final VarCall varCall = ((VarCall) it);
+        boolean _isDirty = varCall.getVarName().isDirty();
+        if (_isDirty) {
+          VarDefinition _varName = varCall.getVarName();
+          _varName.setValue(null);
+          final String searchVarDefName = varCall.getVarName().getName();
+          final Function1<VarDefinition, Boolean> _function = new Function1<VarDefinition, Boolean>() {
+            @Override
+            public Boolean apply(final VarDefinition it) {
+              return Boolean.valueOf(((!it.isDirty()) && it.getName().equals(searchVarDefName)));
+            }
+          };
+          final VarDefinition cleanVarDef = IterableExtensions.<VarDefinition>findFirst(targetPlatform.getVarDefinition(), _function);
+          boolean _tripleNotEquals = (cleanVarDef != null);
+          if (_tripleNotEquals) {
+            varCall.setVarName(cleanVarDef);
+          }
+        } else {
+          CompositeElementResolver.this.cleanDirtyCompositeStrings(varCall.getVarName().getValue(), targetPlatform, CollectionLiterals.<CompositeString>newHashSet(((CompositeString[])Conversions.unwrapArray(alreadyVisitedCP, CompositeString.class))));
+        }
       }
     };
-    return MapExtensions.<IncludeDeclaration, TargetPlatform>filter(IterableExtensions.<IncludeDeclaration, TargetPlatform>toInvertedMap(IterableExtensions.<IncludeDeclaration>filter(targetPlatform.getIncludes(), _function), _function_1), _function_2);
+    IterableExtensions.<CompositeStringPart>filter(compositeString.getStringParts(), _function).forEach(_function_1);
   }
   
   /**
@@ -303,23 +383,16 @@ public class CompositeElementResolver {
    */
   private void mergeImportedDefine(final TargetPlatform targetPlatform, final Set<VarDefinition> ImportedDefineFromSubTpd) {
     final HashSet<VarDefinition> toBeAddedDefine = CollectionLiterals.<VarDefinition>newHashSet();
-    final EList<TargetContent> targetContent = targetPlatform.getContents();
     final Consumer<VarDefinition> _function = new Consumer<VarDefinition>() {
       @Override
       public void accept(final VarDefinition it) {
         final VarDefinition currentImportedDefine = it;
-        final Function1<TargetContent, Boolean> _function = new Function1<TargetContent, Boolean>() {
+        final Function1<VarDefinition, Boolean> _function = new Function1<VarDefinition, Boolean>() {
           @Override
-          public Boolean apply(final TargetContent it) {
-            return Boolean.valueOf((it instanceof VarDefinition));
-          }
-        };
-        final Function1<TargetContent, Boolean> _function_1 = new Function1<TargetContent, Boolean>() {
-          @Override
-          public Boolean apply(final TargetContent it) {
+          public Boolean apply(final VarDefinition it) {
             boolean _xblockexpression = false;
             {
-              final VarDefinition alreadyExistingDefine = ((VarDefinition) it);
+              final VarDefinition alreadyExistingDefine = it;
               final String varName = alreadyExistingDefine.getName();
               boolean _equals = currentImportedDefine.getName().equals(varName);
               _xblockexpression = (!_equals);
@@ -327,7 +400,7 @@ public class CompositeElementResolver {
             return Boolean.valueOf(_xblockexpression);
           }
         };
-        boolean toBeAdded = IterableExtensions.<TargetContent>forall(IterableExtensions.<TargetContent>filter(targetContent, _function), _function_1);
+        boolean toBeAdded = IterableExtensions.<VarDefinition>forall(targetPlatform.getVarDefinition(), _function);
         if (toBeAdded) {
           boolean _varDefNeverInclude = CompositeElementResolver.this.varDefNeverInclude(currentImportedDefine, toBeAddedDefine);
           if (_varDefNeverInclude) {
@@ -346,8 +419,8 @@ public class CompositeElementResolver {
       }
     };
     ImportedDefineFromSubTpd.forEach(_function);
-    targetContent.addAll(toBeAddedDefine);
-    this.updateVariableDefinition(targetContent);
+    targetPlatform.getContents().addAll(toBeAddedDefine);
+    this.updateVariableDefinition(targetPlatform);
   }
   
   private VarDefinition searchAlreadyIncludeVarDef(final VarDefinition varDef2Find, final HashSet<VarDefinition> alreadyAddedVarDefs) {
@@ -383,6 +456,7 @@ public class CompositeElementResolver {
       currentImportedDefineCopy.getImportedValues().add(currentImportedDefine.getValue().computeActualString());
       currentImportedDefineCopy.set_sourceUUID(currentImportedDefine.getSourceUUID());
       currentImportedDefineCopy.setConstant(currentImportedDefine.isConstant());
+      currentImportedDefineCopy.setDirty(currentImportedDefine.isDirty());
       _xblockexpression = currentImportedDefineCopy;
     }
     return _xblockexpression;
@@ -432,34 +506,32 @@ public class CompositeElementResolver {
    * the value "value2Sub" instead of "value2" => We have to update the newly created var2 in
    * "mainTpd" to make it refer to var2b of "mainTpd"
    */
-  private void updateVariableDefinition(final EList<TargetContent> targetContent) {
-    for (final TargetContent varDef : targetContent) {
-      if ((varDef instanceof VarDefinition)) {
-        CompositeString _value = ((VarDefinition)varDef).getValue();
-        boolean _tripleNotEquals = (_value != null);
-        if (_tripleNotEquals) {
-          EList<CompositeStringPart> _stringParts = ((VarDefinition)varDef).getValue().getStringParts();
-          for (final CompositeStringPart stringPart : _stringParts) {
-            if ((stringPart instanceof VarCall)) {
-              VarCall varCall = ((VarCall) stringPart);
-              this.updateVariableCall(varCall, targetContent);
-            }
+  private void updateVariableDefinition(final TargetPlatform targetPlatform) {
+    EList<VarDefinition> _varDefinition = targetPlatform.getVarDefinition();
+    for (final VarDefinition varDef : _varDefinition) {
+      CompositeString _value = varDef.getValue();
+      boolean _tripleNotEquals = (_value != null);
+      if (_tripleNotEquals) {
+        EList<CompositeStringPart> _stringParts = varDef.getValue().getStringParts();
+        for (final CompositeStringPart stringPart : _stringParts) {
+          if ((stringPart instanceof VarCall)) {
+            VarCall varCall = ((VarCall) stringPart);
+            this.updateVariableCall(varCall, targetPlatform);
           }
         }
       }
     }
   }
   
-  private void updateVariableCall(final VarCall varCall, final EList<TargetContent> targetContent) {
-    for (final TargetContent varDef : targetContent) {
-      if ((varDef instanceof VarDefinition)) {
-        String _name = varCall.getVarName().getName();
-        String _name_1 = ((VarDefinition)varDef).getName();
-        boolean _equals = Objects.equal(_name, _name_1);
-        if (_equals) {
-          varCall.setOriginalVarName(varCall.getVarName());
-          varCall.setVarName(((VarDefinition)varDef));
-        }
+  private void updateVariableCall(final VarCall varCall, final TargetPlatform targetPlatform) {
+    EList<VarDefinition> _varDefinition = targetPlatform.getVarDefinition();
+    for (final VarDefinition varDef : _varDefinition) {
+      String _name = varCall.getVarName().getName();
+      String _name_1 = varDef.getName();
+      boolean _equals = Objects.equal(_name, _name_1);
+      if (_equals) {
+        varCall.setOriginalVarName(varCall.getVarName());
+        varCall.setVarName(varDef);
       }
     }
   }

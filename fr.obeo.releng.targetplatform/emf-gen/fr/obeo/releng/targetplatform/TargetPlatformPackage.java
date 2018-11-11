@@ -526,13 +526,22 @@ public interface TargetPlatformPackage extends EPackage {
 	int VAR_DEFINITION__DIAMOND_INHERIT = TARGET_CONTENT_FEATURE_COUNT + 9;
 
 	/**
+	 * The feature id for the '<em><b>Dirty</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VAR_DEFINITION__DIRTY = TARGET_CONTENT_FEATURE_COUNT + 10;
+
+	/**
 	 * The number of structural features of the '<em>Var Definition</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int VAR_DEFINITION_FEATURE_COUNT = TARGET_CONTENT_FEATURE_COUNT + 10;
+	int VAR_DEFINITION_FEATURE_COUNT = TARGET_CONTENT_FEATURE_COUNT + 11;
 
 	/**
 	 * The operation id for the '<em>Is Wholly Defined By Target</em>' operation.
@@ -1801,6 +1810,17 @@ public interface TargetPlatformPackage extends EPackage {
 	EAttribute getVarDefinition_DiamondInherit();
 
 	/**
+	 * Returns the meta object for the attribute '{@link fr.obeo.releng.targetplatform.VarDefinition#isDirty <em>Dirty</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Dirty</em>'.
+	 * @see fr.obeo.releng.targetplatform.VarDefinition#isDirty()
+	 * @see #getVarDefinition()
+	 * @generated
+	 */
+	EAttribute getVarDefinition_Dirty();
+
+	/**
 	 * Returns the meta object for the '{@link fr.obeo.releng.targetplatform.VarDefinition#isWhollyDefinedByTarget() <em>Is Wholly Defined By Target</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2848,6 +2868,14 @@ public interface TargetPlatformPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute VAR_DEFINITION__DIAMOND_INHERIT = eINSTANCE.getVarDefinition_DiamondInherit();
+
+		/**
+		 * The meta object literal for the '<em><b>Dirty</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute VAR_DEFINITION__DIRTY = eINSTANCE.getVarDefinition_Dirty();
 
 		/**
 		 * The meta object literal for the '<em><b>Is Wholly Defined By Target</b></em>' operation.

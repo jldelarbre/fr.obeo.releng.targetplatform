@@ -586,6 +586,15 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getVarDefinition_Dirty() {
+		return (EAttribute)varDefinitionEClass.getEStructuralFeatures().get(10);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EOperation getVarDefinition__IsWhollyDefinedByTarget() {
 		return varDefinitionEClass.getEOperations().get(0);
 	}
@@ -1264,6 +1273,7 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 		createEAttribute(varDefinitionEClass, VAR_DEFINITION__IMPORTED_VALUES);
 		createEAttribute(varDefinitionEClass, VAR_DEFINITION__SOURCE_UUID);
 		createEAttribute(varDefinitionEClass, VAR_DEFINITION__DIAMOND_INHERIT);
+		createEAttribute(varDefinitionEClass, VAR_DEFINITION__DIRTY);
 		createEOperation(varDefinitionEClass, VAR_DEFINITION___IS_WHOLLY_DEFINED_BY_TARGET);
 		createEOperation(varDefinitionEClass, VAR_DEFINITION___IS_WHOLLY_DEFINED_BY_TARGET_NO_CYCLE_CHECKED);
 		createEOperation(varDefinitionEClass, VAR_DEFINITION___CHECK_VAR_CYCLE);
@@ -1429,6 +1439,7 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 		initEAttribute(getVarDefinition_ImportedValues(), theEcorePackage.getEString(), "importedValues", null, 0, -1, VarDefinition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getVarDefinition__sourceUUID(), this.getUUID(), "_sourceUUID", null, 0, 1, VarDefinition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getVarDefinition_DiamondInherit(), theEcorePackage.getEBoolean(), "diamondInherit", "false", 0, 1, VarDefinition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getVarDefinition_Dirty(), theEcorePackage.getEBoolean(), "dirty", "false", 0, 1, VarDefinition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEOperation(getVarDefinition__IsWhollyDefinedByTarget(), theEcorePackage.getEBoolean(), "isWhollyDefinedByTarget", 0, 1, !IS_UNIQUE, IS_ORDERED);
 

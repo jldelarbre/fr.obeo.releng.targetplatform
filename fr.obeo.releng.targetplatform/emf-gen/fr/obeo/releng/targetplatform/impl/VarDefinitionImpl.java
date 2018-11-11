@@ -61,6 +61,7 @@ import org.eclipse.xtext.xbase.lib.IterableExtensions;
  *   <li>{@link fr.obeo.releng.targetplatform.impl.VarDefinitionImpl#getImportedValues <em>Imported Values</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.impl.VarDefinitionImpl#get_sourceUUID <em>source UUID</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.impl.VarDefinitionImpl#isDiamondInherit <em>Diamond Inherit</em>}</li>
+ *   <li>{@link fr.obeo.releng.targetplatform.impl.VarDefinitionImpl#isDirty <em>Dirty</em>}</li>
  * </ul>
  *
  * @generated
@@ -235,6 +236,26 @@ public class VarDefinitionImpl extends MinimalEObjectImpl.Container implements V
 	 * @ordered
 	 */
 	protected boolean diamondInherit = DIAMOND_INHERIT_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #isDirty() <em>Dirty</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isDirty()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean DIRTY_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isDirty() <em>Dirty</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isDirty()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean dirty = DIRTY_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -534,6 +555,27 @@ public class VarDefinitionImpl extends MinimalEObjectImpl.Container implements V
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public boolean isDirty() {
+		return dirty;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setDirty(boolean newDirty) {
+		boolean oldDirty = dirty;
+		dirty = newDirty;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TargetPlatformPackage.VAR_DEFINITION__DIRTY, oldDirty, dirty));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public boolean isWhollyDefinedByTarget() {
 		this.checkVarCycle();
 		boolean _isVariableDefinitionCycleDetected = this.isVariableDefinitionCycleDetected();
@@ -771,6 +813,8 @@ public class VarDefinitionImpl extends MinimalEObjectImpl.Container implements V
 				return get_sourceUUID();
 			case TargetPlatformPackage.VAR_DEFINITION__DIAMOND_INHERIT:
 				return isDiamondInherit();
+			case TargetPlatformPackage.VAR_DEFINITION__DIRTY:
+				return isDirty();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -818,6 +862,9 @@ public class VarDefinitionImpl extends MinimalEObjectImpl.Container implements V
 			case TargetPlatformPackage.VAR_DEFINITION__DIAMOND_INHERIT:
 				setDiamondInherit((Boolean)newValue);
 				return;
+			case TargetPlatformPackage.VAR_DEFINITION__DIRTY:
+				setDirty((Boolean)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -863,6 +910,9 @@ public class VarDefinitionImpl extends MinimalEObjectImpl.Container implements V
 			case TargetPlatformPackage.VAR_DEFINITION__DIAMOND_INHERIT:
 				setDiamondInherit(DIAMOND_INHERIT_EDEFAULT);
 				return;
+			case TargetPlatformPackage.VAR_DEFINITION__DIRTY:
+				setDirty(DIRTY_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -897,6 +947,8 @@ public class VarDefinitionImpl extends MinimalEObjectImpl.Container implements V
 				return _SOURCE_UUID_EDEFAULT == null ? _sourceUUID != null : !_SOURCE_UUID_EDEFAULT.equals(_sourceUUID);
 			case TargetPlatformPackage.VAR_DEFINITION__DIAMOND_INHERIT:
 				return diamondInherit != DIAMOND_INHERIT_EDEFAULT;
+			case TargetPlatformPackage.VAR_DEFINITION__DIRTY:
+				return dirty != DIRTY_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}

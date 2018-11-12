@@ -53,6 +53,9 @@ class TargetPlatformLabelProvider extends DefaultEObjectLabelProvider {
 	}
 
 	def image(Location object) {
+		if (object.discardState !== null && object.discardState.actualString.compareToIgnoreCase("true") == 0) {
+			return "obj16/location_obj_discard.gif";
+		}
 		"obj16/location_obj.gif";
 	}
 

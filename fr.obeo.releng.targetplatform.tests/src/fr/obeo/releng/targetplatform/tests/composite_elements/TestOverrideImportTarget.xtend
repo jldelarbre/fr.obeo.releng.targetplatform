@@ -14,6 +14,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 import static org.junit.Assert.*
+import fr.obeo.releng.targetplatform.util.ImportVariableManager
 
 @InjectWith(typeof(CustomTargetPlatformInjectorProviderTargetReloader))
 @RunWith(typeof(XtextRunner))
@@ -27,6 +28,9 @@ class TestOverrideImportTarget {
 	
 	@Inject
 	LocationIndexBuilder indexBuilder
+	
+	@Inject
+	ImportVariableManager importVariableManager;
 	
 	@Test
 	def testOverrideVarOnly() {
@@ -717,5 +721,38 @@ class TestOverrideImportTarget {
 		val varDefB = bTargetPlatform.varDefinition.get(1)
 		assertEquals("b", varDefB.name)
 		assertEquals("overrideVal", varDefB.value.stringParts.head.actualString)
+	}
+	
+	@Test
+	def testOverrideFromCommandLineOverImporterTarget() {
+		val String[] args = #["aTarget.tpd", ImportVariableManager.OVERRIDE, "a=overrideValCmdLine"]
+		importVariableManager.processCommandLineArguments(args)
+		
+		val resourceSet = resourceSetProvider.get
+		val aTarget = parser.parse('''
+			target "aTarget"
+			include "bTarget.tpd"
+			define a = "overrideVal"
+		''', URI.createURI("tmp:/aTarget.tpd"), resourceSet)
+		parser.parse('''
+			target "bTarget"
+			define a = "baseVal"
+			define b = ${a}
+		''', URI.createURI("tmp:/bTarget.tpd"), resourceSet)
+		
+		val importedTargetPlatforms = indexBuilder.getImportedTargetPlatforms(aTarget)
+		assertEquals(1, importedTargetPlatforms.length)
+		
+		val bTargetPlatform = importedTargetPlatforms.first
+		
+		val varDefA = bTargetPlatform.varDefinition.head
+		assertEquals("a", varDefA.name)
+		assertEquals("overrideValCmdLine", varDefA.overrideValue)
+		
+		val varDefB = bTargetPlatform.varDefinition.get(1)
+		assertEquals("b", varDefB.name)
+		assertEquals("overrideValCmdLine", varDefB.value.stringParts.head.actualString)
+		
+		importVariableManager.clear
 	}
 }

@@ -479,4 +479,62 @@ class TestCompositeLocation {
 		assertEquals("org.eclipse.emf.sdk.feature.group", iu.ID);
 		assertEquals("[2.10.0,3.0.0)", iu.version);
 	}
+	
+	@Test
+	def testDiscardLocation1() {
+		val resourceSet = resourceSetProvider.get
+		val discardLocationTarget = parser.parse('''
+			target "discardLocationTarget"
+			location discard = "true" "http://download.eclipse.org/modeling/emf/emf/updates/2.9.x/core/R201402030812/" {
+				org.eclipse.emf.sdk.feature.group
+			}
+		''', URI.createURI("tmp:/discardLocationTarget.tpd"), resourceSet)
+		
+		val locationIndex = indexBuilder.getLocationIndex(discardLocationTarget)
+		assertEquals(0, locationIndex.size)
+	}
+	
+	@Test
+	def testDiscardLocation2() {
+		val resourceSet = resourceSetProvider.get
+		val discardLocationTarget = parser.parse('''
+			target "discardLocationTarget"
+			location discard = "false" "http://download.eclipse.org/modeling/emf/emf/updates/2.9.x/core/R201402030812/" {
+				org.eclipse.emf.sdk.feature.group
+			}
+		''', URI.createURI("tmp:/discardLocationTarget.tpd"), resourceSet)
+		
+		val locationIndex = indexBuilder.getLocationIndex(discardLocationTarget)
+		assertEquals(1, locationIndex.size)
+	}
+	
+	@Test
+	def testDiscardLocation3() {
+		val resourceSet = resourceSetProvider.get
+		val discardLocationTarget = parser.parse('''
+			target "discardLocationTarget"
+			define discardState = "true"
+			location discard = ${discardState} "http://download.eclipse.org/modeling/emf/emf/updates/2.9.x/core/R201402030812/" {
+				org.eclipse.emf.sdk.feature.group
+			}
+		''', URI.createURI("tmp:/discardLocationTarget.tpd"), resourceSet)
+		
+		val locationIndex = indexBuilder.getLocationIndex(discardLocationTarget)
+		assertEquals(0, locationIndex.size)
+	}
+	
+	@Test
+	def testDiscardLocation4() {
+		val resourceSet = resourceSetProvider.get
+		val discardLocationTarget = parser.parse('''
+			target "discardLocationTarget"
+			define discardState = "false"
+			location discard = ${discardState} "http://download.eclipse.org/modeling/emf/emf/updates/2.9.x/core/R201402030812/" {
+				org.eclipse.emf.sdk.feature.group
+			}
+		''', URI.createURI("tmp:/discardLocationTarget.tpd"), resourceSet)
+		
+		val locationIndex = indexBuilder.getLocationIndex(discardLocationTarget)
+		assertEquals(1, locationIndex.size)
+	}
 }

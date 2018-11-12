@@ -127,7 +127,32 @@ Then, the most recent version of the given IU within this range will be selected
 
 bq. You can use the special keyword @lazy@ as version to state that you don't want the generator to select the version to put in the @.target@ file. Instead, it puts @0.0.0@ which is interpreted by PDE during the resolution of the @.target@.
 
-h3. TPD file with variables
+A location could be discarded from the output target by using the @discard@ keyword with value set to @true@.
+
+<pre>
+location myId discard = "true" "http://download.eclipse.org/releases/juno/" {
+    ...
+}
+</pre>
+
+or
+
+<pre>
+location discard = "true" "http://download.eclipse.org/releases/juno/" {
+    ...
+}
+</pre>
+
+It is really usefull when you use it with a "variable call":#TPDWithVariables:
+
+
+<pre>
+location discard = ${someVariableTrueOrFalse} "http://download.eclipse.org/releases/juno/" {
+    ...
+}
+</pre>
+
+h3(#TPDWithVariables). TPD file with variables
 
 h4. Define a variable
 
@@ -223,6 +248,14 @@ location ${baseURL} + ${pathURL} + "something" {
     ...
 }
 location "http://" + ${serverName} + "urlEnd" {
+    ...
+}
+</pre>
+
+* @location discard state@
+
+<pre>
+location discard = ${someVariableTrueOrFalse} "someURL" {
     ...
 }
 </pre>

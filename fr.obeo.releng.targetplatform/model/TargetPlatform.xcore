@@ -454,6 +454,7 @@ class Location extends TargetContent {
 	String ID
 	String uri
 	contains CompositeString compositeUri
+	contains CompositeStringPart discardState
 	Option[] options
 	contains IU[] ius opposite location
 	

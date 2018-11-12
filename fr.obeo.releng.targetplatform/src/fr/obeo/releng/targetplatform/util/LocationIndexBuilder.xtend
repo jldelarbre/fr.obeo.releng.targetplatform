@@ -80,7 +80,12 @@ class LocationIndexBuilder {
 				includes.clear
 			}
 		]
-		return locations
+		
+		val locationsOut = locations.filter[
+			it.discardState === null || it.discardState.actualString.compareToIgnoreCase("true") != 0
+		]
+		.toList
+		return locationsOut
 	}
 
 	private def getLocationFromVisitedIncludes(TargetPlatform parent, List<IncludeDeclaration> includes,

@@ -9,6 +9,7 @@ import fr.obeo.releng.targetplatform.Location;
 import fr.obeo.releng.targetplatform.TargetPlatform;
 import fr.obeo.releng.targetplatform.VarDefinition;
 import fr.obeo.releng.targetplatform.tests.util.CustomTargetPlatformInjectorProviderTargetReloader;
+import fr.obeo.releng.targetplatform.util.ImportVariableManager;
 import fr.obeo.releng.targetplatform.util.LocationIndexBuilder;
 import java.util.LinkedList;
 import org.eclipse.emf.common.util.EList;
@@ -37,6 +38,9 @@ public class TestOverrideImportTarget {
   
   @Inject
   private LocationIndexBuilder indexBuilder;
+  
+  @Inject
+  private ImportVariableManager importVariableManager;
   
   @Test
   public void testOverrideVarOnly() {
@@ -929,6 +933,43 @@ public class TestOverrideImportTarget {
       final VarDefinition varDefB = bTargetPlatform.getVarDefinition().get(1);
       Assert.assertEquals("b", varDefB.getName());
       Assert.assertEquals("overrideVal", IterableExtensions.<CompositeStringPart>head(varDefB.getValue().getStringParts()).getActualString());
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void testOverrideFromCommandLineOverImporterTarget() {
+    try {
+      final String[] args = { "aTarget.tpd", ImportVariableManager.OVERRIDE, "a=overrideValCmdLine" };
+      this.importVariableManager.processCommandLineArguments(args);
+      final XtextResourceSet resourceSet = this.resourceSetProvider.get();
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("target \"aTarget\"");
+      _builder.newLine();
+      _builder.append("include \"bTarget.tpd\"");
+      _builder.newLine();
+      _builder.append("define a = \"overrideVal\"");
+      _builder.newLine();
+      final TargetPlatform aTarget = this.parser.parse(_builder, URI.createURI("tmp:/aTarget.tpd"), resourceSet);
+      StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("target \"bTarget\"");
+      _builder_1.newLine();
+      _builder_1.append("define a = \"baseVal\"");
+      _builder_1.newLine();
+      _builder_1.append("define b = ${a}");
+      _builder_1.newLine();
+      this.parser.parse(_builder_1, URI.createURI("tmp:/bTarget.tpd"), resourceSet);
+      final LinkedList<TargetPlatform> importedTargetPlatforms = this.indexBuilder.getImportedTargetPlatforms(aTarget);
+      Assert.assertEquals(1, ((Object[])Conversions.unwrapArray(importedTargetPlatforms, Object.class)).length);
+      final TargetPlatform bTargetPlatform = importedTargetPlatforms.getFirst();
+      final VarDefinition varDefA = IterableExtensions.<VarDefinition>head(bTargetPlatform.getVarDefinition());
+      Assert.assertEquals("a", varDefA.getName());
+      Assert.assertEquals("overrideValCmdLine", varDefA.getOverrideValue());
+      final VarDefinition varDefB = bTargetPlatform.getVarDefinition().get(1);
+      Assert.assertEquals("b", varDefB.getName());
+      Assert.assertEquals("overrideValCmdLine", IterableExtensions.<CompositeStringPart>head(varDefB.getValue().getStringParts()).getActualString());
+      this.importVariableManager.clear();
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }

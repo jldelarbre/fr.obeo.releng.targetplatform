@@ -62,7 +62,14 @@ public class TargetPlatformLabelProvider extends DefaultEObjectLabelProvider {
   }
   
   public String image(final Location object) {
-    return "obj16/location_obj.gif";
+    String _xblockexpression = null;
+    {
+      if (((object.getDiscardState() != null) && (object.getDiscardState().getActualString().compareToIgnoreCase("true") == 0))) {
+        return "obj16/location_obj_discard.gif";
+      }
+      _xblockexpression = "obj16/location_obj.gif";
+    }
+    return _xblockexpression;
   }
   
   public StyledString text(final IU object) {

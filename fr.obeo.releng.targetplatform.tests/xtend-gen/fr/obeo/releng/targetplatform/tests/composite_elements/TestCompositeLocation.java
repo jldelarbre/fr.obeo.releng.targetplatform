@@ -652,4 +652,96 @@ public class TestCompositeLocation {
       throw Exceptions.sneakyThrow(_e);
     }
   }
+  
+  @Test
+  public void testDiscardLocation1() {
+    try {
+      final XtextResourceSet resourceSet = this.resourceSetProvider.get();
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("target \"discardLocationTarget\"");
+      _builder.newLine();
+      _builder.append("location discard = \"true\" \"http://download.eclipse.org/modeling/emf/emf/updates/2.9.x/core/R201402030812/\" {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("org.eclipse.emf.sdk.feature.group");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final TargetPlatform discardLocationTarget = this.parser.parse(_builder, URI.createURI("tmp:/discardLocationTarget.tpd"), resourceSet);
+      final ListMultimap<String, Location> locationIndex = this.indexBuilder.getLocationIndex(discardLocationTarget);
+      Assert.assertEquals(0, locationIndex.size());
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void testDiscardLocation2() {
+    try {
+      final XtextResourceSet resourceSet = this.resourceSetProvider.get();
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("target \"discardLocationTarget\"");
+      _builder.newLine();
+      _builder.append("location discard = \"false\" \"http://download.eclipse.org/modeling/emf/emf/updates/2.9.x/core/R201402030812/\" {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("org.eclipse.emf.sdk.feature.group");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final TargetPlatform discardLocationTarget = this.parser.parse(_builder, URI.createURI("tmp:/discardLocationTarget.tpd"), resourceSet);
+      final ListMultimap<String, Location> locationIndex = this.indexBuilder.getLocationIndex(discardLocationTarget);
+      Assert.assertEquals(1, locationIndex.size());
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void testDiscardLocation3() {
+    try {
+      final XtextResourceSet resourceSet = this.resourceSetProvider.get();
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("target \"discardLocationTarget\"");
+      _builder.newLine();
+      _builder.append("define discardState = \"true\"");
+      _builder.newLine();
+      _builder.append("location discard = ${discardState} \"http://download.eclipse.org/modeling/emf/emf/updates/2.9.x/core/R201402030812/\" {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("org.eclipse.emf.sdk.feature.group");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final TargetPlatform discardLocationTarget = this.parser.parse(_builder, URI.createURI("tmp:/discardLocationTarget.tpd"), resourceSet);
+      final ListMultimap<String, Location> locationIndex = this.indexBuilder.getLocationIndex(discardLocationTarget);
+      Assert.assertEquals(0, locationIndex.size());
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void testDiscardLocation4() {
+    try {
+      final XtextResourceSet resourceSet = this.resourceSetProvider.get();
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("target \"discardLocationTarget\"");
+      _builder.newLine();
+      _builder.append("define discardState = \"false\"");
+      _builder.newLine();
+      _builder.append("location discard = ${discardState} \"http://download.eclipse.org/modeling/emf/emf/updates/2.9.x/core/R201402030812/\" {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("org.eclipse.emf.sdk.feature.group");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final TargetPlatform discardLocationTarget = this.parser.parse(_builder, URI.createURI("tmp:/discardLocationTarget.tpd"), resourceSet);
+      final ListMultimap<String, Location> locationIndex = this.indexBuilder.getLocationIndex(discardLocationTarget);
+      Assert.assertEquals(1, locationIndex.size());
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
 }

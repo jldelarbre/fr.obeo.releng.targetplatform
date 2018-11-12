@@ -12,3 +12,9 @@
 /.ReferenceResolvingErrorClearer.java._trace
 /.PredefinedVariableGenerator.java._trace
 /.Asdfq.java._trace
+/.PredefinedVariableGenerator.xtendbin
+/.TargetReloader.xtendbin
+/.TargetReloaderImpl.xtendbin
+/PredefinedVariableGenerator.java
+/TargetReloader.java
+/TargetReloaderImpl.java

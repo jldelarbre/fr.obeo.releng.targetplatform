@@ -1144,13 +1144,22 @@ public interface TargetPlatformPackage extends EPackage {
 	int LOCATION__COMPOSITE_URI = TARGET_CONTENT_FEATURE_COUNT + 2;
 
 	/**
+	 * The feature id for the '<em><b>Discard State</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LOCATION__DISCARD_STATE = TARGET_CONTENT_FEATURE_COUNT + 3;
+
+	/**
 	 * The feature id for the '<em><b>Options</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int LOCATION__OPTIONS = TARGET_CONTENT_FEATURE_COUNT + 3;
+	int LOCATION__OPTIONS = TARGET_CONTENT_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Ius</b></em>' containment reference list.
@@ -1159,7 +1168,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LOCATION__IUS = TARGET_CONTENT_FEATURE_COUNT + 4;
+	int LOCATION__IUS = TARGET_CONTENT_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of structural features of the '<em>Location</em>' class.
@@ -1168,7 +1177,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LOCATION_FEATURE_COUNT = TARGET_CONTENT_FEATURE_COUNT + 5;
+	int LOCATION_FEATURE_COUNT = TARGET_CONTENT_FEATURE_COUNT + 6;
 
 	/**
 	 * The operation id for the '<em>Resolve Uri</em>' operation.
@@ -2318,6 +2327,17 @@ public interface TargetPlatformPackage extends EPackage {
 	EReference getLocation_CompositeUri();
 
 	/**
+	 * Returns the meta object for the containment reference '{@link fr.obeo.releng.targetplatform.Location#getDiscardState <em>Discard State</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Discard State</em>'.
+	 * @see fr.obeo.releng.targetplatform.Location#getDiscardState()
+	 * @see #getLocation()
+	 * @generated
+	 */
+	EReference getLocation_DiscardState();
+
+	/**
 	 * Returns the meta object for the attribute list '{@link fr.obeo.releng.targetplatform.Location#getOptions <em>Options</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3272,6 +3292,14 @@ public interface TargetPlatformPackage extends EPackage {
 		 * @generated
 		 */
 		EReference LOCATION__COMPOSITE_URI = eINSTANCE.getLocation_CompositeUri();
+
+		/**
+		 * The meta object literal for the '<em><b>Discard State</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference LOCATION__DISCARD_STATE = eINSTANCE.getLocation_DiscardState();
 
 		/**
 		 * The meta object literal for the '<em><b>Options</b></em>' attribute list feature.

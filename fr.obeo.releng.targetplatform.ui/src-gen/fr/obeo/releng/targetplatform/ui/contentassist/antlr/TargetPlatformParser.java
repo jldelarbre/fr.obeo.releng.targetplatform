@@ -57,6 +57,7 @@ public class TargetPlatformParser extends AbstractContentAssistParser {
 					put(grammarAccess.getVarCallAccess().getGroup(), "rule__VarCall__Group__0");
 					put(grammarAccess.getIncludeDeclarationAccess().getGroup(), "rule__IncludeDeclaration__Group__0");
 					put(grammarAccess.getLocationAccess().getGroup(), "rule__Location__Group__0");
+					put(grammarAccess.getLocationAccess().getGroup_1_1(), "rule__Location__Group_1_1__0");
 					put(grammarAccess.getLocationAccess().getGroup_2(), "rule__Location__Group_2__0");
 					put(grammarAccess.getLocationAccess().getGroup_2_1(), "rule__Location__Group_2_1__0");
 					put(grammarAccess.getLocationAccess().getGroup_2_1_2(), "rule__Location__Group_2_1_2__0");
@@ -83,7 +84,8 @@ public class TargetPlatformParser extends AbstractContentAssistParser {
 					put(grammarAccess.getStaticStringAccess().getValueAssignment(), "rule__StaticString__ValueAssignment");
 					put(grammarAccess.getIncludeDeclarationAccess().getCompositeImportURIAssignment_1(), "rule__IncludeDeclaration__CompositeImportURIAssignment_1");
 					put(grammarAccess.getLocationAccess().getIDAssignment_1_0(), "rule__Location__IDAssignment_1_0");
-					put(grammarAccess.getLocationAccess().getCompositeUriAssignment_1_1(), "rule__Location__CompositeUriAssignment_1_1");
+					put(grammarAccess.getLocationAccess().getDiscardStateAssignment_1_1_2(), "rule__Location__DiscardStateAssignment_1_1_2");
+					put(grammarAccess.getLocationAccess().getCompositeUriAssignment_1_2(), "rule__Location__CompositeUriAssignment_1_2");
 					put(grammarAccess.getLocationAccess().getOptionsAssignment_2_1_1(), "rule__Location__OptionsAssignment_2_1_1");
 					put(grammarAccess.getLocationAccess().getOptionsAssignment_2_1_2_1(), "rule__Location__OptionsAssignment_2_1_2_1");
 					put(grammarAccess.getLocationAccess().getIusAssignment_2_2(), "rule__Location__IusAssignment_2_2");

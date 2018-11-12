@@ -53,7 +53,8 @@ public class TargetPlatformFormatter extends AbstractDeclarativeFormatter {
       }
     }
     c.setNoLinewrap().around(this._targetPlatformGrammarAccess.getLocationAccess().getIDAssignment_1_0());
-    c.setNoLinewrap().around(this._targetPlatformGrammarAccess.getLocationAccess().getCompositeUriAssignment_1_1());
+    c.setNoLinewrap().around(this._targetPlatformGrammarAccess.getLocationAccess().getDiscardStateAssignment_1_1_2());
+    c.setNoLinewrap().around(this._targetPlatformGrammarAccess.getLocationAccess().getCompositeUriAssignment_1_2());
     c.setLinewrap(1, 1, 2).before(this._targetPlatformGrammarAccess.getIncludeDeclarationAccess().getIncludeKeyword_0());
     c.setLinewrap(1, 2, 2).before(this._targetPlatformGrammarAccess.getLocationAccess().getLocationKeyword_0());
     c.setLinewrap(1, 1, 2).before(this._targetPlatformGrammarAccess.getLocationAccess().getWithKeyword_2_1_0());

@@ -16,6 +16,7 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link fr.obeo.releng.targetplatform.Location#getID <em>ID</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.Location#getUri <em>Uri</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.Location#getCompositeUri <em>Composite Uri</em>}</li>
+ *   <li>{@link fr.obeo.releng.targetplatform.Location#getDiscardState <em>Discard State</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.Location#getOptions <em>Options</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.Location#getIus <em>Ius</em>}</li>
  * </ul>
@@ -102,6 +103,32 @@ public interface Location extends TargetContent {
 	 * @generated
 	 */
 	void setCompositeUri(CompositeString value);
+
+	/**
+	 * Returns the value of the '<em><b>Discard State</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Discard State</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Discard State</em>' containment reference.
+	 * @see #setDiscardState(CompositeStringPart)
+	 * @see fr.obeo.releng.targetplatform.TargetPlatformPackage#getLocation_DiscardState()
+	 * @model containment="true"
+	 * @generated
+	 */
+	CompositeStringPart getDiscardState();
+
+	/**
+	 * Sets the value of the '{@link fr.obeo.releng.targetplatform.Location#getDiscardState <em>Discard State</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Discard State</em>' containment reference.
+	 * @see #getDiscardState()
+	 * @generated
+	 */
+	void setDiscardState(CompositeStringPart value);
 
 	/**
 	 * Returns the value of the '<em><b>Options</b></em>' attribute list.

@@ -131,7 +131,14 @@ public class LocationIndexBuilder {
       }
     };
     toBeVisited.forEach(_function);
-    return locations;
+    final Function1<Location, Boolean> _function_1 = new Function1<Location, Boolean>() {
+      @Override
+      public Boolean apply(final Location it) {
+        return Boolean.valueOf(((it.getDiscardState() == null) || (it.getDiscardState().getActualString().compareToIgnoreCase("true") != 0)));
+      }
+    };
+    final List<Location> locationsOut = IterableExtensions.<Location>toList(IterableExtensions.<Location>filter(locations, _function_1));
+    return locationsOut;
   }
   
   private List<Location> getLocationFromVisitedIncludes(final TargetPlatform parent, final List<IncludeDeclaration> includes, final Set<TargetPlatform> visited) {

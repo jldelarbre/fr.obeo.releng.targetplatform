@@ -3,15 +3,16 @@
 ')'=15
 '+'=27
 ','=23
-'.'=35
-';'=33
+'.'=36
+';'=34
 '='=26
 '['=14
 ']'=16
 'allEnvironments'=18
 'configurePhase'=20
-'const'=36
+'const'=37
 'define'=25
+'discard'=32
 'environment'=24
 'include'=30
 'lazy'=12
@@ -19,9 +20,9 @@
 'requirements'=17
 'source'=19
 'target'=21
-'version'=34
+'version'=35
 'with'=22
-'{'=32
+'{'=33
 '}'=29
 RULE_ANY_OTHER=11
 RULE_ID=4
@@ -56,3 +57,4 @@ T__33=33
 T__34=34
 T__35=35
 T__36=36
+T__37=37

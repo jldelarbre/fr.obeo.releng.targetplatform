@@ -1027,8 +1027,17 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getLocation_DiscardState() {
+		return (EReference)locationEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EAttribute getLocation_Options() {
-		return (EAttribute)locationEClass.getEStructuralFeatures().get(3);
+		return (EAttribute)locationEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -1037,7 +1046,7 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 	 * @generated
 	 */
 	public EReference getLocation_Ius() {
-		return (EReference)locationEClass.getEStructuralFeatures().get(4);
+		return (EReference)locationEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
@@ -1328,6 +1337,7 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 		createEAttribute(locationEClass, LOCATION__ID);
 		createEAttribute(locationEClass, LOCATION__URI);
 		createEReference(locationEClass, LOCATION__COMPOSITE_URI);
+		createEReference(locationEClass, LOCATION__DISCARD_STATE);
 		createEAttribute(locationEClass, LOCATION__OPTIONS);
 		createEReference(locationEClass, LOCATION__IUS);
 		createEOperation(locationEClass, LOCATION___RESOLVE_URI);
@@ -1524,6 +1534,7 @@ public class TargetPlatformPackageImpl extends EPackageImpl implements TargetPla
 		initEAttribute(getLocation_ID(), theEcorePackage.getEString(), "ID", null, 0, 1, Location.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getLocation_Uri(), theEcorePackage.getEString(), "uri", null, 0, 1, Location.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getLocation_CompositeUri(), this.getCompositeString(), null, "compositeUri", null, 0, 1, Location.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getLocation_DiscardState(), this.getCompositeStringPart(), null, "discardState", null, 0, 1, Location.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getLocation_Options(), this.getOption(), "options", null, 0, -1, Location.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getLocation_Ius(), this.getIU(), this.getIU_Location(), "ius", null, 0, -1, Location.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 

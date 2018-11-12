@@ -3,6 +3,7 @@
 package fr.obeo.releng.targetplatform.impl;
 
 import fr.obeo.releng.targetplatform.CompositeString;
+import fr.obeo.releng.targetplatform.CompositeStringPart;
 import fr.obeo.releng.targetplatform.IU;
 import fr.obeo.releng.targetplatform.Location;
 import fr.obeo.releng.targetplatform.Option;
@@ -42,6 +43,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link fr.obeo.releng.targetplatform.impl.LocationImpl#getID <em>ID</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.impl.LocationImpl#getUri <em>Uri</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.impl.LocationImpl#getCompositeUri <em>Composite Uri</em>}</li>
+ *   <li>{@link fr.obeo.releng.targetplatform.impl.LocationImpl#getDiscardState <em>Discard State</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.impl.LocationImpl#getOptions <em>Options</em>}</li>
  *   <li>{@link fr.obeo.releng.targetplatform.impl.LocationImpl#getIus <em>Ius</em>}</li>
  * </ul>
@@ -98,6 +100,16 @@ public class LocationImpl extends MinimalEObjectImpl.Container implements Locati
 	 * @ordered
 	 */
 	protected CompositeString compositeUri;
+
+	/**
+	 * The cached value of the '{@link #getDiscardState() <em>Discard State</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDiscardState()
+	 * @generated
+	 * @ordered
+	 */
+	protected CompositeStringPart discardState;
 
 	/**
 	 * The cached value of the '{@link #getOptions() <em>Options</em>}' attribute list.
@@ -279,6 +291,49 @@ public class LocationImpl extends MinimalEObjectImpl.Container implements Locati
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public CompositeStringPart getDiscardState() {
+		return discardState;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetDiscardState(CompositeStringPart newDiscardState, NotificationChain msgs) {
+		CompositeStringPart oldDiscardState = discardState;
+		discardState = newDiscardState;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, TargetPlatformPackage.LOCATION__DISCARD_STATE, oldDiscardState, newDiscardState);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setDiscardState(CompositeStringPart newDiscardState) {
+		if (newDiscardState != discardState) {
+			NotificationChain msgs = null;
+			if (discardState != null)
+				msgs = ((InternalEObject)discardState).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - TargetPlatformPackage.LOCATION__DISCARD_STATE, null, msgs);
+			if (newDiscardState != null)
+				msgs = ((InternalEObject)newDiscardState).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - TargetPlatformPackage.LOCATION__DISCARD_STATE, null, msgs);
+			msgs = basicSetDiscardState(newDiscardState, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TargetPlatformPackage.LOCATION__DISCARD_STATE, newDiscardState, newDiscardState));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EList<Option> getOptions() {
 		if (options == null) {
 			options = new EDataTypeEList<Option>(Option.class, this, TargetPlatformPackage.LOCATION__OPTIONS);
@@ -360,6 +415,8 @@ public class LocationImpl extends MinimalEObjectImpl.Container implements Locati
 				return basicSetTargetPlatform(null, msgs);
 			case TargetPlatformPackage.LOCATION__COMPOSITE_URI:
 				return basicSetCompositeUri(null, msgs);
+			case TargetPlatformPackage.LOCATION__DISCARD_STATE:
+				return basicSetDiscardState(null, msgs);
 			case TargetPlatformPackage.LOCATION__IUS:
 				return ((InternalEList<?>)getIus()).basicRemove(otherEnd, msgs);
 		}
@@ -397,6 +454,8 @@ public class LocationImpl extends MinimalEObjectImpl.Container implements Locati
 				return getUri();
 			case TargetPlatformPackage.LOCATION__COMPOSITE_URI:
 				return getCompositeUri();
+			case TargetPlatformPackage.LOCATION__DISCARD_STATE:
+				return getDiscardState();
 			case TargetPlatformPackage.LOCATION__OPTIONS:
 				return getOptions();
 			case TargetPlatformPackage.LOCATION__IUS:
@@ -425,6 +484,9 @@ public class LocationImpl extends MinimalEObjectImpl.Container implements Locati
 				return;
 			case TargetPlatformPackage.LOCATION__COMPOSITE_URI:
 				setCompositeUri((CompositeString)newValue);
+				return;
+			case TargetPlatformPackage.LOCATION__DISCARD_STATE:
+				setDiscardState((CompositeStringPart)newValue);
 				return;
 			case TargetPlatformPackage.LOCATION__OPTIONS:
 				getOptions().clear();
@@ -458,6 +520,9 @@ public class LocationImpl extends MinimalEObjectImpl.Container implements Locati
 			case TargetPlatformPackage.LOCATION__COMPOSITE_URI:
 				setCompositeUri((CompositeString)null);
 				return;
+			case TargetPlatformPackage.LOCATION__DISCARD_STATE:
+				setDiscardState((CompositeStringPart)null);
+				return;
 			case TargetPlatformPackage.LOCATION__OPTIONS:
 				getOptions().clear();
 				return;
@@ -484,6 +549,8 @@ public class LocationImpl extends MinimalEObjectImpl.Container implements Locati
 				return URI_EDEFAULT == null ? uri != null : !URI_EDEFAULT.equals(uri);
 			case TargetPlatformPackage.LOCATION__COMPOSITE_URI:
 				return compositeUri != null;
+			case TargetPlatformPackage.LOCATION__DISCARD_STATE:
+				return discardState != null;
 			case TargetPlatformPackage.LOCATION__OPTIONS:
 				return options != null && !options.isEmpty();
 			case TargetPlatformPackage.LOCATION__IUS:

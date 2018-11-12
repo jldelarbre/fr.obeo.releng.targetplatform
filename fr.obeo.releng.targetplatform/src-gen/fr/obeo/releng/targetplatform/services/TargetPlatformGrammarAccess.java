@@ -349,8 +349,13 @@ public class TargetPlatformGrammarAccess extends AbstractGrammarElementFinder {
 		private final UnorderedGroup cUnorderedGroup_1 = (UnorderedGroup)cGroup.eContents().get(1);
 		private final Assignment cIDAssignment_1_0 = (Assignment)cUnorderedGroup_1.eContents().get(0);
 		private final RuleCall cIDIDTerminalRuleCall_1_0_0 = (RuleCall)cIDAssignment_1_0.eContents().get(0);
-		private final Assignment cCompositeUriAssignment_1_1 = (Assignment)cUnorderedGroup_1.eContents().get(1);
-		private final RuleCall cCompositeUriCompositeStringParserRuleCall_1_1_0 = (RuleCall)cCompositeUriAssignment_1_1.eContents().get(0);
+		private final Group cGroup_1_1 = (Group)cUnorderedGroup_1.eContents().get(1);
+		private final Keyword cDiscardKeyword_1_1_0 = (Keyword)cGroup_1_1.eContents().get(0);
+		private final Keyword cEqualsSignKeyword_1_1_1 = (Keyword)cGroup_1_1.eContents().get(1);
+		private final Assignment cDiscardStateAssignment_1_1_2 = (Assignment)cGroup_1_1.eContents().get(2);
+		private final RuleCall cDiscardStateCompositeStringPartParserRuleCall_1_1_2_0 = (RuleCall)cDiscardStateAssignment_1_1_2.eContents().get(0);
+		private final Assignment cCompositeUriAssignment_1_2 = (Assignment)cUnorderedGroup_1.eContents().get(2);
+		private final RuleCall cCompositeUriCompositeStringParserRuleCall_1_2_0 = (RuleCall)cCompositeUriAssignment_1_2.eContents().get(0);
 		private final Group cGroup_2 = (Group)cGroup.eContents().get(2);
 		private final Keyword cLeftCurlyBracketKeyword_2_0 = (Keyword)cGroup_2.eContents().get(0);
 		private final Group cGroup_2_1 = (Group)cGroup_2.eContents().get(1);
@@ -366,17 +371,18 @@ public class TargetPlatformGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cRightCurlyBracketKeyword_2_3 = (Keyword)cGroup_2.eContents().get(3);
 		
 		//Location:
-		//	"location" (ID=ID? & compositeUri=CompositeString) ("{" ("with" options+=Option (","? options+=Option)*)? ius+=IU*
-		//	"}")?;
+		//	"location" (ID=ID? & ("discard" "=" discardState=CompositeStringPart)? & compositeUri=CompositeString) ("{" ("with"
+		//	options+=Option (","? options+=Option)*)? ius+=IU* "}")?;
 		public ParserRule getRule() { return rule; }
 
-		//"location" (ID=ID? & compositeUri=CompositeString) ("{" ("with" options+=Option (","? options+=Option)*)? ius+=IU* "}")?
+		//"location" (ID=ID? & ("discard" "=" discardState=CompositeStringPart)? & compositeUri=CompositeString) ("{" ("with"
+		//options+=Option (","? options+=Option)*)? ius+=IU* "}")?
 		public Group getGroup() { return cGroup; }
 
 		//"location"
 		public Keyword getLocationKeyword_0() { return cLocationKeyword_0; }
 
-		//ID=ID? & compositeUri=CompositeString
+		//ID=ID? & ("discard" "=" discardState=CompositeStringPart)? & compositeUri=CompositeString
 		public UnorderedGroup getUnorderedGroup_1() { return cUnorderedGroup_1; }
 
 		//ID=ID?
@@ -385,11 +391,26 @@ public class TargetPlatformGrammarAccess extends AbstractGrammarElementFinder {
 		//ID
 		public RuleCall getIDIDTerminalRuleCall_1_0_0() { return cIDIDTerminalRuleCall_1_0_0; }
 
+		//("discard" "=" discardState=CompositeStringPart)?
+		public Group getGroup_1_1() { return cGroup_1_1; }
+
+		//"discard"
+		public Keyword getDiscardKeyword_1_1_0() { return cDiscardKeyword_1_1_0; }
+
+		//"="
+		public Keyword getEqualsSignKeyword_1_1_1() { return cEqualsSignKeyword_1_1_1; }
+
+		//discardState=CompositeStringPart
+		public Assignment getDiscardStateAssignment_1_1_2() { return cDiscardStateAssignment_1_1_2; }
+
+		//CompositeStringPart
+		public RuleCall getDiscardStateCompositeStringPartParserRuleCall_1_1_2_0() { return cDiscardStateCompositeStringPartParserRuleCall_1_1_2_0; }
+
 		//compositeUri=CompositeString
-		public Assignment getCompositeUriAssignment_1_1() { return cCompositeUriAssignment_1_1; }
+		public Assignment getCompositeUriAssignment_1_2() { return cCompositeUriAssignment_1_2; }
 
 		//CompositeString
-		public RuleCall getCompositeUriCompositeStringParserRuleCall_1_1_0() { return cCompositeUriCompositeStringParserRuleCall_1_1_0; }
+		public RuleCall getCompositeUriCompositeStringParserRuleCall_1_2_0() { return cCompositeUriCompositeStringParserRuleCall_1_2_0; }
 
 		//("{" ("with" options+=Option (","? options+=Option)*)? ius+=IU* "}")?
 		public Group getGroup_2() { return cGroup_2; }
@@ -850,8 +871,8 @@ public class TargetPlatformGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//Location:
-	//	"location" (ID=ID? & compositeUri=CompositeString) ("{" ("with" options+=Option (","? options+=Option)*)? ius+=IU*
-	//	"}")?;
+	//	"location" (ID=ID? & ("discard" "=" discardState=CompositeStringPart)? & compositeUri=CompositeString) ("{" ("with"
+	//	options+=Option (","? options+=Option)*)? ius+=IU* "}")?;
 	public LocationElements getLocationAccess() {
 		return pLocation;
 	}

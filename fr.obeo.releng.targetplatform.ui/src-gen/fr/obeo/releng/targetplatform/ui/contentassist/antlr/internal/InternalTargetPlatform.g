@@ -1749,6 +1749,102 @@ finally {
 
 
 
+rule__Location__Group_1_1__0
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+	rule__Location__Group_1_1__0__Impl
+	rule__Location__Group_1_1__1
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__Location__Group_1_1__0__Impl
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+(
+{ before(grammarAccess.getLocationAccess().getDiscardKeyword_1_1_0()); }
+
+	'discard' 
+
+{ after(grammarAccess.getLocationAccess().getDiscardKeyword_1_1_0()); }
+)
+
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+
+rule__Location__Group_1_1__1
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+	rule__Location__Group_1_1__1__Impl
+	rule__Location__Group_1_1__2
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__Location__Group_1_1__1__Impl
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+(
+{ before(grammarAccess.getLocationAccess().getEqualsSignKeyword_1_1_1()); }
+
+	'=' 
+
+{ after(grammarAccess.getLocationAccess().getEqualsSignKeyword_1_1_1()); }
+)
+
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+
+rule__Location__Group_1_1__2
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+	rule__Location__Group_1_1__2__Impl
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__Location__Group_1_1__2__Impl
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+(
+{ before(grammarAccess.getLocationAccess().getDiscardStateAssignment_1_1_2()); }
+(rule__Location__DiscardStateAssignment_1_1_2)
+{ after(grammarAccess.getLocationAccess().getDiscardStateAssignment_1_1_2()); }
+)
+
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+
+
+
+
+
+
+
 rule__Location__Group_2__0
     @init {
 		int stackSize = keepStackSize();
@@ -2774,9 +2870,26 @@ rule__Location__UnorderedGroup_1__Impl
 	 				}
 					(
 					
-						{ before(grammarAccess.getLocationAccess().getCompositeUriAssignment_1_1()); }
-						(rule__Location__CompositeUriAssignment_1_1)
-						{ after(grammarAccess.getLocationAccess().getCompositeUriAssignment_1_1()); }
+						{ before(grammarAccess.getLocationAccess().getGroup_1_1()); }
+						(rule__Location__Group_1_1__0)
+						{ after(grammarAccess.getLocationAccess().getGroup_1_1()); }
+					)
+ 				)
+			)  |
+
+			( 
+				{getUnorderedGroupHelper().canSelect(grammarAccess.getLocationAccess().getUnorderedGroup_1(), 2)}?=>(
+					{ 
+	 				  getUnorderedGroupHelper().select(grammarAccess.getLocationAccess().getUnorderedGroup_1(), 2);
+	 				}
+	 				{
+	 				  selected = true;
+	 				}
+					(
+					
+						{ before(grammarAccess.getLocationAccess().getCompositeUriAssignment_1_2()); }
+						(rule__Location__CompositeUriAssignment_1_2)
+						{ after(grammarAccess.getLocationAccess().getCompositeUriAssignment_1_2()); }
 					)
  				)
 			)  
@@ -2809,10 +2922,25 @@ rule__Location__UnorderedGroup_1__1
     }
 :
 	rule__Location__UnorderedGroup_1__Impl
+	rule__Location__UnorderedGroup_1__2?
 ;
 finally {
 	restoreStackSize(stackSize);
 }
+
+
+rule__Location__UnorderedGroup_1__2
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+	rule__Location__UnorderedGroup_1__Impl
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+
 
 
 
@@ -3056,14 +3184,29 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__Location__CompositeUriAssignment_1_1
+rule__Location__DiscardStateAssignment_1_1_2
     @init {
 		int stackSize = keepStackSize();
     }
 :
 (
-{ before(grammarAccess.getLocationAccess().getCompositeUriCompositeStringParserRuleCall_1_1_0()); }
-	ruleCompositeString{ after(grammarAccess.getLocationAccess().getCompositeUriCompositeStringParserRuleCall_1_1_0()); }
+{ before(grammarAccess.getLocationAccess().getDiscardStateCompositeStringPartParserRuleCall_1_1_2_0()); }
+	ruleCompositeStringPart{ after(grammarAccess.getLocationAccess().getDiscardStateCompositeStringPartParserRuleCall_1_1_2_0()); }
+)
+
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__Location__CompositeUriAssignment_1_2
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+(
+{ before(grammarAccess.getLocationAccess().getCompositeUriCompositeStringParserRuleCall_1_2_0()); }
+	ruleCompositeString{ after(grammarAccess.getLocationAccess().getCompositeUriCompositeStringParserRuleCall_1_2_0()); }
 )
 
 ;

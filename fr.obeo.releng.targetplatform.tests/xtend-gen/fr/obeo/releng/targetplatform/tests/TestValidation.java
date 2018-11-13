@@ -2137,6 +2137,56 @@ public class TestValidation {
   }
   
   @Test
+  public void checkImportCycle5() {
+    try {
+      final ValidatorTester<TargetPlatformValidator> tester = new ValidatorTester<TargetPlatformValidator>(this.validator, this.validatorRegistrar, this.languageName);
+      final XtextResourceSet resourceSet = this.resourceSetProvider.get();
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("target \"tp.a\"");
+      _builder.newLine();
+      _builder.append("include \"b.tpd\"");
+      _builder.newLine();
+      final TargetPlatform tpa = this.parser.parse(_builder, URI.createURI("tmp:/a.tpd"), resourceSet);
+      StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("target \"tp.b\"");
+      _builder_1.newLine();
+      _builder_1.append("include \"c.tpd\"");
+      _builder_1.newLine();
+      this.parser.parse(_builder_1, URI.createURI("tmp:/b.tpd"), resourceSet);
+      StringConcatenation _builder_2 = new StringConcatenation();
+      _builder_2.append("target \"tp.c\"");
+      _builder_2.newLine();
+      _builder_2.append("include \"b.tpd\"");
+      _builder_2.newLine();
+      this.parser.parse(_builder_2, URI.createURI("tmp:/c.tpd"), resourceSet);
+      Assert.assertTrue(tpa.eResource().getErrors().isEmpty());
+      tester.validator().checkImportCycle(tpa);
+      List<AbstractValidationDiagnostic> diagnotics = IterableExtensions.<AbstractValidationDiagnostic>toList(Iterables.<AbstractValidationDiagnostic>filter(tester.diagnose().getAllDiagnostics(), AbstractValidationDiagnostic.class));
+      Assert.assertEquals(1, diagnotics.size());
+      final Function1<AbstractValidationDiagnostic, Boolean> _function = new Function1<AbstractValidationDiagnostic, Boolean>() {
+        @Override
+        public Boolean apply(final AbstractValidationDiagnostic it) {
+          EObject _sourceEObject = it.getSourceEObject();
+          return Boolean.valueOf((_sourceEObject instanceof IncludeDeclaration));
+        }
+      };
+      Assert.assertTrue(IterableExtensions.<AbstractValidationDiagnostic>forall(diagnotics, _function));
+      final Consumer<AbstractValidationDiagnostic> _function_1 = new Consumer<AbstractValidationDiagnostic>() {
+        @Override
+        public void accept(final AbstractValidationDiagnostic it) {
+          Assert.assertEquals(TargetPlatformValidator.CHECK__INCLUDE_CYCLE, it.getIssueCode());
+          EObject _sourceEObject = it.getSourceEObject();
+          Assert.assertEquals("b.tpd", ((IncludeDeclaration) _sourceEObject).getImportURI());
+          Assert.assertEquals("Cycle detected in the included target platforms. Cycle is \'tmp:/b.tpd\'\' -> \'tmp:/c.tpd\'\' -> \'tmp:/b.tpd\'.", it.getMessage());
+        }
+      };
+      diagnotics.forEach(_function_1);
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
   public void checkIUIDAndRange1() {
     try {
       final ValidatorTester<TargetPlatformValidator> tester = new ValidatorTester<TargetPlatformValidator>(this.validator, this.validatorRegistrar, this.languageName);

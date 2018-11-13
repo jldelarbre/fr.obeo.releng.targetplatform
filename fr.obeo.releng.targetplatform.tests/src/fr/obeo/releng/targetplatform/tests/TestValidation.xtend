@@ -1339,6 +1339,35 @@ class TestValidation {
 	}
 	
 	@Test
+	def checkImportCycle5() {
+		val tester = new ValidatorTester(validator, validatorRegistrar, languageName)
+		val resourceSet = resourceSetProvider.get;
+		val tpa = parser.parse('''
+			target "tp.a"
+			include "b.tpd"
+		''', URI.createURI("tmp:/a.tpd"), resourceSet);
+		parser.parse('''
+			target "tp.b"
+			include "c.tpd"
+		''', URI.createURI("tmp:/b.tpd"), resourceSet);
+		parser.parse('''
+			target "tp.c"
+			include "b.tpd"
+		''', URI.createURI("tmp:/c.tpd"), resourceSet);
+		
+		assertTrue(tpa.eResource.errors.empty)
+		tester.validator.checkImportCycle(tpa)
+		var diagnotics = tester.diagnose.allDiagnostics.filter(typeof(AbstractValidationDiagnostic)).toList
+		assertEquals(1, diagnotics.size)
+		assertTrue(diagnotics.forall[sourceEObject instanceof IncludeDeclaration])
+		diagnotics.forEach[
+			assertEquals(TargetPlatformValidator::CHECK__INCLUDE_CYCLE, issueCode)
+			assertEquals("b.tpd", (it.sourceEObject as IncludeDeclaration).importURI)
+			assertEquals("Cycle detected in the included target platforms. Cycle is 'tmp:/b.tpd'' -> 'tmp:/c.tpd'' -> 'tmp:/b.tpd'.", it.message)
+		]
+	}
+	
+	@Test
 	def checkIUIDAndRange1() {
 		val tester = new ValidatorTester(validator, validatorRegistrar, languageName)
 		val targetPlatform = parser.parse('''

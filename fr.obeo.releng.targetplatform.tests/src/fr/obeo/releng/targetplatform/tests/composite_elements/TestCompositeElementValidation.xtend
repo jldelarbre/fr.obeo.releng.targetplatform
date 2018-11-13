@@ -149,6 +149,74 @@ class TestCompositeElementValidation {
 	}
 	
 	@Test
+	def checkImportCycleDueToVariableDefinition2() {
+		val tester = new ValidatorTester(validator, validatorRegistrar, languageName)
+		val resourceSet = resourceSetProvider.get;
+		val compositeIncludeTarget = parser.parse('''
+			target "compositeIncludeTarget"
+			include "subTpd.tpd"
+		''', URI.createURI("tmp:/compositeIncludeTarget.tpd"), resourceSet)
+		parser.parse('''
+			target "subTpd"
+			include "subInclude.tpd"
+			include ${includeCircularURL}
+		''', URI.createURI("tmp:/subTpd.tpd"), resourceSet);
+		parser.parse('''
+			target "subInclude"
+			define includeCircularURL = "subSubTpd.tpd"
+		''', URI.createURI("tmp:/subInclude.tpd"), resourceSet)
+		parser.parse('''
+			target "subSubTpd"
+			include "subTpd.tpd"
+		''', URI.createURI("tmp:/subSubTpd.tpd"), resourceSet)
+		
+		assertTrue(compositeIncludeTarget.eResource.errors.empty)
+		tester.validator.checkImportCycle(compositeIncludeTarget)
+		var diagnotics = tester.diagnose.allDiagnostics.filter(typeof(AbstractValidationDiagnostic)).toList
+		assertEquals(1, diagnotics.size)
+		assertTrue(diagnotics.forall[sourceEObject instanceof IncludeDeclaration])
+		diagnotics.forEach[
+			assertEquals(TargetPlatformValidator::CHECK__INCLUDE_CYCLE, issueCode)
+			assertEquals("subTpd.tpd", (it.sourceEObject as IncludeDeclaration).importURI)
+			assertEquals("Cycle detected in the included target platforms. Cycle is 'tmp:/subTpd.tpd'' -> 'tmp:/subSubTpd.tpd'' -> 'tmp:/subTpd.tpd'.", it.message)
+		]
+	}
+	
+	@Test
+	def checkImportCycleDueToVariableOverrideFromImporterTarget() {
+		val tester = new ValidatorTester(validator, validatorRegistrar, languageName)
+		val resourceSet = resourceSetProvider.get;
+		val compositeIncludeTarget = parser.parse('''
+			target "a"
+			include "b.tpd"
+		''', URI.createURI("tmp:/a.tpd"), resourceSet)
+		parser.parse('''
+			target "b"
+			include "c.tpd"
+			define includeURL = "b.tpd"
+		''', URI.createURI("tmp:/b.tpd"), resourceSet);
+		parser.parse('''
+			target "c"
+			define includeURL = "d.tpd"
+			include ${includeURL}
+		''', URI.createURI("tmp:/c.tpd"), resourceSet)
+		parser.parse('''
+			target "d"
+		''', URI.createURI("tmp:/d.tpd"), resourceSet)
+		
+		assertTrue(compositeIncludeTarget.eResource.errors.empty)
+		tester.validator.checkImportCycle(compositeIncludeTarget)
+		var diagnotics = tester.diagnose.allDiagnostics.filter(typeof(AbstractValidationDiagnostic)).toList
+		assertEquals(1, diagnotics.size)
+		assertTrue(diagnotics.forall[sourceEObject instanceof IncludeDeclaration])
+		diagnotics.forEach[
+			assertEquals(TargetPlatformValidator::CHECK__INCLUDE_CYCLE, issueCode)
+			assertEquals("b.tpd", (it.sourceEObject as IncludeDeclaration).importURI)
+			assertEquals("Cycle detected in the included target platforms. Cycle is 'tmp:/b.tpd'' -> 'tmp:/c.tpd'' -> 'tmp:/b.tpd'.", it.message)
+		]
+	}
+	
+	@Test
 	def checkVariableDefinitionCycle1() {
 		val tester = new ValidatorTester(validator, validatorRegistrar, languageName)
 		val resourceSet = resourceSetProvider.get;

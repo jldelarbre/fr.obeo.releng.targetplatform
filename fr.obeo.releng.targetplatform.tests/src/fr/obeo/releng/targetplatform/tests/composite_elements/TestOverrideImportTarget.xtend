@@ -4,6 +4,7 @@ import com.google.inject.Inject
 import com.google.inject.Provider
 import fr.obeo.releng.targetplatform.TargetPlatform
 import fr.obeo.releng.targetplatform.tests.util.CustomTargetPlatformInjectorProviderTargetReloader
+import fr.obeo.releng.targetplatform.util.ImportVariableManager
 import fr.obeo.releng.targetplatform.util.LocationIndexBuilder
 import org.eclipse.emf.common.util.URI
 import org.eclipse.xtext.junit4.InjectWith
@@ -14,7 +15,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 import static org.junit.Assert.*
-import fr.obeo.releng.targetplatform.util.ImportVariableManager
 
 @InjectWith(typeof(CustomTargetPlatformInjectorProviderTargetReloader))
 @RunWith(typeof(XtextRunner))
@@ -665,6 +665,46 @@ class TestOverrideImportTarget {
 		val varDefB = bTargetPlatform.varDefinition.get(1)
 		assertEquals("b", varDefB.name)
 		assertEquals("baseVal", varDefB.value.stringParts.head.actualString)
+	}
+	
+	@Test
+	def testOverrideConstAndVarReference() {
+		val resourceSet = resourceSetProvider.get
+		val aTarget = parser.parse('''
+			target "aTarget"
+			include "bTarget.tpd"
+			define const varConst = "subDirA"
+			define varA = ${varB}
+		''', URI.createURI("tmp:/aTarget.tpd"), resourceSet)
+		parser.parse('''
+			target "bTarget"
+			define const varConst = "subDirB"
+			define varB = ${varConst}
+			include ${varB} + "/cTarget.tpd"
+			location ${varB}
+		''', URI.createURI("tmp:/bTarget.tpd"), resourceSet)
+		parser.parse('''
+			target "cTarget"
+		''', URI.createURI("tmp:/subDirB/cTarget.tpd"), resourceSet)
+		
+		val importedTargetPlatforms = indexBuilder.getImportedTargetPlatforms(aTarget)
+		assertEquals(2, importedTargetPlatforms.length)
+		
+		val bTargetPlatform = importedTargetPlatforms.first
+		
+		val varDefA = bTargetPlatform.varDefinition.head
+		assertEquals("varConst", varDefA.name)
+		assertEquals(null, varDefA.overrideValue)
+		
+		val varDefB = bTargetPlatform.varDefinition.get(1)
+		assertEquals("varB", varDefB.name)
+		assertEquals("subDirB", varDefB.value.stringParts.head.actualString)
+		
+		val include = bTargetPlatform.includes.head
+		assertEquals("subDirB/cTarget.tpd", include.importURI)
+		
+		val location = bTargetPlatform.locations.head
+		assertEquals("subDirB", location.uri)
 	}
 	
 	@Test

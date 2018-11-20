@@ -871,6 +871,54 @@ public class TestOverrideImportTarget {
   }
   
   @Test
+  public void testOverrideConstAndVarReference() {
+    try {
+      final XtextResourceSet resourceSet = this.resourceSetProvider.get();
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("target \"aTarget\"");
+      _builder.newLine();
+      _builder.append("include \"bTarget.tpd\"");
+      _builder.newLine();
+      _builder.append("define const varConst = \"subDirA\"");
+      _builder.newLine();
+      _builder.append("define varA = ${varB}");
+      _builder.newLine();
+      final TargetPlatform aTarget = this.parser.parse(_builder, URI.createURI("tmp:/aTarget.tpd"), resourceSet);
+      StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("target \"bTarget\"");
+      _builder_1.newLine();
+      _builder_1.append("define const varConst = \"subDirB\"");
+      _builder_1.newLine();
+      _builder_1.append("define varB = ${varConst}");
+      _builder_1.newLine();
+      _builder_1.append("include ${varB} + \"/cTarget.tpd\"");
+      _builder_1.newLine();
+      _builder_1.append("location ${varB}");
+      _builder_1.newLine();
+      this.parser.parse(_builder_1, URI.createURI("tmp:/bTarget.tpd"), resourceSet);
+      StringConcatenation _builder_2 = new StringConcatenation();
+      _builder_2.append("target \"cTarget\"");
+      _builder_2.newLine();
+      this.parser.parse(_builder_2, URI.createURI("tmp:/subDirB/cTarget.tpd"), resourceSet);
+      final LinkedList<TargetPlatform> importedTargetPlatforms = this.indexBuilder.getImportedTargetPlatforms(aTarget);
+      Assert.assertEquals(2, ((Object[])Conversions.unwrapArray(importedTargetPlatforms, Object.class)).length);
+      final TargetPlatform bTargetPlatform = importedTargetPlatforms.getFirst();
+      final VarDefinition varDefA = IterableExtensions.<VarDefinition>head(bTargetPlatform.getVarDefinition());
+      Assert.assertEquals("varConst", varDefA.getName());
+      Assert.assertEquals(null, varDefA.getOverrideValue());
+      final VarDefinition varDefB = bTargetPlatform.getVarDefinition().get(1);
+      Assert.assertEquals("varB", varDefB.getName());
+      Assert.assertEquals("subDirB", IterableExtensions.<CompositeStringPart>head(varDefB.getValue().getStringParts()).getActualString());
+      final IncludeDeclaration include = IterableExtensions.<IncludeDeclaration>head(bTargetPlatform.getIncludes());
+      Assert.assertEquals("subDirB/cTarget.tpd", include.getImportURI());
+      final Location location = IterableExtensions.<Location>head(bTargetPlatform.getLocations());
+      Assert.assertEquals("subDirB", location.getUri());
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
   public void testNotOverrideCstFromNotConst() {
     try {
       final XtextResourceSet resourceSet = this.resourceSetProvider.get();

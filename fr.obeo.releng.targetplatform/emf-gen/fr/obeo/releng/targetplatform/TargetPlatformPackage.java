@@ -144,22 +144,13 @@ public interface TargetPlatformPackage extends EPackage {
 	int TARGET_PLATFORM__PRE_DEFINED_VAR_CONTAINER = 2;
 
 	/**
-	 * The feature id for the '<em><b>Invalidate By Emf Xtext</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TARGET_PLATFORM__INVALIDATE_BY_EMF_XTEXT = 3;
-
-	/**
 	 * The feature id for the '<em><b>Var Def2 Override In Imported Target</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TARGET_PLATFORM__VAR_DEF2_OVERRIDE_IN_IMPORTED_TARGET = 4;
+	int TARGET_PLATFORM__VAR_DEF2_OVERRIDE_IN_IMPORTED_TARGET = 3;
 
 	/**
 	 * The feature id for the '<em><b>Contents</b></em>' containment reference list.
@@ -168,7 +159,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TARGET_PLATFORM__CONTENTS = 5;
+	int TARGET_PLATFORM__CONTENTS = 4;
 
 	/**
 	 * The feature id for the '<em><b>Imported Target Platforms</b></em>' map.
@@ -177,7 +168,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TARGET_PLATFORM__IMPORTED_TARGET_PLATFORMS = 6;
+	int TARGET_PLATFORM__IMPORTED_TARGET_PLATFORMS = 5;
 
 	/**
 	 * The feature id for the '<em><b>Includes</b></em>' reference list.
@@ -186,7 +177,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TARGET_PLATFORM__INCLUDES = 7;
+	int TARGET_PLATFORM__INCLUDES = 6;
 
 	/**
 	 * The feature id for the '<em><b>Options</b></em>' attribute list.
@@ -195,7 +186,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TARGET_PLATFORM__OPTIONS = 8;
+	int TARGET_PLATFORM__OPTIONS = 7;
 
 	/**
 	 * The feature id for the '<em><b>Locations</b></em>' reference list.
@@ -204,7 +195,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TARGET_PLATFORM__LOCATIONS = 9;
+	int TARGET_PLATFORM__LOCATIONS = 8;
 
 	/**
 	 * The feature id for the '<em><b>Environment</b></em>' reference.
@@ -213,7 +204,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TARGET_PLATFORM__ENVIRONMENT = 10;
+	int TARGET_PLATFORM__ENVIRONMENT = 9;
 
 	/**
 	 * The feature id for the '<em><b>Var Definition</b></em>' reference list.
@@ -222,7 +213,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TARGET_PLATFORM__VAR_DEFINITION = 11;
+	int TARGET_PLATFORM__VAR_DEFINITION = 10;
 
 	/**
 	 * The number of structural features of the '<em>Target Platform</em>' class.
@@ -231,7 +222,7 @@ public interface TargetPlatformPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TARGET_PLATFORM_FEATURE_COUNT = 12;
+	int TARGET_PLATFORM_FEATURE_COUNT = 11;
 
 	/**
 	 * The number of operations of the '<em>Target Platform</em>' class.
@@ -1482,17 +1473,6 @@ public interface TargetPlatformPackage extends EPackage {
 	EReference getTargetPlatform_PreDefinedVarContainer();
 
 	/**
-	 * Returns the meta object for the attribute '{@link fr.obeo.releng.targetplatform.TargetPlatform#isInvalidateByEmfXtext <em>Invalidate By Emf Xtext</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Invalidate By Emf Xtext</em>'.
-	 * @see fr.obeo.releng.targetplatform.TargetPlatform#isInvalidateByEmfXtext()
-	 * @see #getTargetPlatform()
-	 * @generated
-	 */
-	EAttribute getTargetPlatform_InvalidateByEmfXtext();
-
-	/**
 	 * Returns the meta object for the containment reference list '{@link fr.obeo.releng.targetplatform.TargetPlatform#getVarDef2OverrideInImportedTarget <em>Var Def2 Override In Imported Target</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2632,14 +2612,6 @@ public interface TargetPlatformPackage extends EPackage {
 		 * @generated
 		 */
 		EReference TARGET_PLATFORM__PRE_DEFINED_VAR_CONTAINER = eINSTANCE.getTargetPlatform_PreDefinedVarContainer();
-
-		/**
-		 * The meta object literal for the '<em><b>Invalidate By Emf Xtext</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute TARGET_PLATFORM__INVALIDATE_BY_EMF_XTEXT = eINSTANCE.getTargetPlatform_InvalidateByEmfXtext();
 
 		/**
 		 * The meta object literal for the '<em><b>Var Def2 Override In Imported Target</b></em>' containment reference list feature.

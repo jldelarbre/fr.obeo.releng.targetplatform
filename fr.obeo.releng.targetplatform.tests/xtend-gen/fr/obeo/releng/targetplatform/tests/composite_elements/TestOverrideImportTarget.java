@@ -913,6 +913,9 @@ public class TestOverrideImportTarget {
       Assert.assertEquals("subDirB/cTarget.tpd", include.getImportURI());
       final Location location = IterableExtensions.<Location>head(bTargetPlatform.getLocations());
       Assert.assertEquals("subDirB", location.getUri());
+      final VarDefinition varA = aTarget.getVarDefinition().get(1);
+      Assert.assertEquals("varA", varA.getName());
+      Assert.assertEquals("subDirA", varA.getValue().computeActualString());
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }

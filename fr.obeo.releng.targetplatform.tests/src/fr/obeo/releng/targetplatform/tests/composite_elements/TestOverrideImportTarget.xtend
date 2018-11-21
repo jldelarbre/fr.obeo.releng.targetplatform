@@ -705,6 +705,10 @@ class TestOverrideImportTarget {
 		
 		val location = bTargetPlatform.locations.head
 		assertEquals("subDirB", location.uri)
+		
+		val varA = aTarget.varDefinition.get(1)
+		assertEquals("varA", varA.name)
+		assertEquals("subDirA", varA.value.computeActualString)
 	}
 	
 	@Test

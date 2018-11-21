@@ -18,6 +18,21 @@ class TargetPlatformIncludeDeclarationEntry wraps Map.Entry {
 	refers IncludeDeclaration key
 }
 
+type ImporterTargetList wraps List<String>
+type ImporterTargetOverrideList wraps List<String>
+
+class OverrideInfo {
+	ImporterTargetList importerTargets
+	ImporterTargetOverrideList importerTargetOverrides
+}
+
+type OverrideInfos wraps List<OverrideInfo>
+
+class OverrideSummary {
+	boolean isConflicted = "false"
+	OverrideInfos overrideInfos
+}
+
 class TargetPlatform {
 	String name
 	
@@ -25,7 +40,9 @@ class TargetPlatform {
 	boolean compositeElementsResolved = "false"
 	
 	contains VarDefinitionContainer preDefinedVarContainer
-	
+
+	contains OverrideSummary overrideSummary
+
 	// To understand the usage of varDef2OverrideInImportedTarget see tests: TestOverrideImportTarget.testOverrideRecursive
 	// and TestOverrideImportTarget.testOverrideRecursiveWithJump
 	// In the second test, the intermediate tpd has no varDefinition, so we have to propagate them through the

@@ -1,7 +1,6 @@
 package fr.obeo.releng.targetplatform.util
 
 import com.google.inject.Inject
-import fr.obeo.releng.targetplatform.CompositeString
 import fr.obeo.releng.targetplatform.IncludeDeclaration
 import fr.obeo.releng.targetplatform.TargetPlatform
 import fr.obeo.releng.targetplatform.TargetPlatformFactory
@@ -32,10 +31,6 @@ class CompositeElementResolver {
 		if (targetPlatform.compositeElementsResolved == true) {
 			return
 		}
-		
-		if (checkTargetPlatformDirty(targetPlatform)) {
-//			return
-		}
 
 		searchAndAppendDefineFromIncludedTpd(targetPlatform)
 		resolveLocations(targetPlatform)
@@ -48,56 +43,6 @@ class CompositeElementResolver {
 		targetPlatform.compositeElementsResolved = true
 	}
 	
-	private def boolean checkTargetPlatformDirty(TargetPlatform targetPlatform) {
-		val previouslyImportedVarDef = targetPlatform.varDefinition.filter[
-			it.imported
-		].toList
-		val targetDirty = !previouslyImportedVarDef.empty && !targetPlatform.compositeElementsResolved
-		if (targetDirty) {
-			//targetPlatform.compositeElementsResolved == false -> The targetPlatform seems to have not been resolved
-			//But it exists some imported varDefinition -> It has already been resolved
-			//
-			//Minimal use case to reach this current problem:
-			//
-			//target "a"
-			//include "b.tpd"
-			//
-			//define zz = "xxx"
-			//location myLocId "someURL" {}//this line is not absolutely necessary
-			//
-			//-----------------
-			//
-			//target "b"
-			//define b1 = "yyy"
-			//define b2 = ${b1}
-			//
-			//-----------------
-			//
-			//When you first generate target "a" or modify it by entering a space character in the line between:
-			//include "b.tpd"     and      define zz = "xxx"
-			//All is OK: The imported varDef "b2" has: varCall.varName != null (in varDef_b2.value.stringParts)
-			//
-			//But if you modify either: "xxx" => "xxxx"     or      myLocId => myLocId2
-			//xText will not create a new instance of the main targetPlatform but will set
-			//targetPlatform.compositeElementsResolved to false and keep the previously imported varDefinition and change their state.
-			//Now you have: varCall.varName == null in varDef_b2.value.stringParts  ==> INCONSISTANT STATE, thank you EMF/xText
-			//
-			//==> CompositeElementResolver.updateVariableCall will raise nulPtrEx. And it's only the most visible problem !!! The whole
-			//resolution algorithm is corrupted !!!
-			
-			//It would be nice to reload the target but xtext will not know the new reference on it:
-			//
-			// targetPlatform = targetReloader.getUpToDateTarget(null, targetPlatform)
-
-			//Put an error on target: see TargetPlatformValidator.xtend
-//			targetPlatform.invalidateByEmfXtext = true
-
-			previouslyImportedVarDef.forEach[it.dirty = true]
-			targetPlatform.contents.removeAll(previouslyImportedVarDef)
-		}
-		targetDirty
-	}
-
 	/* Override value of variable definition with command line or environment variable */
 	private def void overrideVariableDefinition(TargetPlatform targetPlatform) {
 
@@ -114,20 +59,12 @@ class CompositeElementResolver {
 
 	/* Resolve location ("location" directive) means resolve variable call used in location declaration */
 	private def resolveLocations(TargetPlatform targetPlatform) {
-		cleanDirtyLocations(targetPlatform)
 		targetPlatform.locations.forEach [
 			it.resolveUri
 			it.resolveIUsVersion
 		]
 	}
 	
-	private def cleanDirtyLocations(TargetPlatform targetPlatform) {
-		targetPlatform.locations.forEach[
-			it.uri = null
-			cleanDirtyCompositeStrings(it.compositeUri, targetPlatform, newHashSet)
-		]
-	}
-
 	private def searchAndAppendDefineFromIncludedTpd(TargetPlatform targetPlatform) {
 		val alreadyVisitedTarget = newHashSet()
 		searchAndAppendDefineFromIncludedTpd(targetPlatform, alreadyVisitedTarget)
@@ -235,44 +172,11 @@ class CompositeElementResolver {
 	/* Targets that are directly imported, with an "include" directive present in the current
 	 * target: "targetPlatform". Do not look for target imported through an imported target */
 	private def Map<IncludeDeclaration, TargetPlatform> searchDirectlyImportedTpd(TargetPlatform targetPlatform) {
-		cleanDirtyIncludes(targetPlatform)
 		targetPlatform.includes.filter[it.isResolved].toInvertedMap [
 			locationIndexBuilder.getImportedTargetPlatform(targetPlatform.eResource, it)
 		].filter[p1, p2|null !== p2]
 	}
 	
-	private def cleanDirtyIncludes(TargetPlatform targetPlatform) {
-		targetPlatform.includes.forEach[
-			cleanDirtyCompositeStrings(it.compositeImportURI, targetPlatform, newHashSet)
-		]
-	}
-	
-	private def void cleanDirtyCompositeStrings(CompositeString compositeString, TargetPlatform targetPlatform,
-		Set<CompositeString> alreadyVisitedCP) {
-		
-		if (compositeString === null || !alreadyVisitedCP.add(compositeString)) {
-			return
-		}
-		compositeString.stringParts.filter[
-			it instanceof VarCall
-		].forEach[
-			val varCall = it as VarCall
-			if (varCall.varName.dirty) {
-				varCall.varName.value = null
-				val searchVarDefName = varCall.varName.name
-				val cleanVarDef = targetPlatform.varDefinition.findFirst[
-					!it.dirty && it.name.equals(searchVarDefName)
-				]
-				if (cleanVarDef !== null) {
-					varCall.varName = cleanVarDef
-				}
-			}
-			else {
-				cleanDirtyCompositeStrings(varCall.varName.value, targetPlatform, newHashSet(alreadyVisitedCP))
-			}
-		]
-	}
-
 	/*
 	 * "variable define" of deepest include are override by "define" of lowest level
 	 */

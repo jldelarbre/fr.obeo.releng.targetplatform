@@ -23,13 +23,8 @@ class TargetPlatform {
 	
 	// For optimisation purpose: Once composite element have been resolved, if the target is accessed again: we do not repeat the operation
 	boolean compositeElementsResolved = "false"
-//	// A target could be modified when resolving composite elements or by importing variable from included target
-//	// Used to determine if weather or not we have to force reload the target
-//	boolean modified = "false"
 	
 	contains VarDefinitionContainer preDefinedVarContainer
-	
-	boolean invalidateByEmfXtext = "false"
 	
 	// To understand the usage of varDef2OverrideInImportedTarget see tests: TestOverrideImportTarget.testOverrideRecursive
 	// and TestOverrideImportTarget.testOverrideRecursiveWithJump

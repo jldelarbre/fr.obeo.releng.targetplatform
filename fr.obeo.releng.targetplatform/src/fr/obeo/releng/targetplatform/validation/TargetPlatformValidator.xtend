@@ -101,15 +101,6 @@ class TargetPlatformValidator extends AbstractTargetPlatformValidator {
 	public static val CHECK__NO_DUPLICATED_IU = "CHECK__NO_DUPLICATED_IU"
 	public static val CHECK__NO_DUPLICATED_DEFINE = "CHECK__NO_DUPLICATED_DEFINE"
 	
-	@Check
-	def checkEmfXtextInvalidation(TargetPlatform targetPlatform) {
-		compositeElementResolver.resolveCompositeElements(targetPlatform)
-		if (targetPlatform.invalidateByEmfXtext) {
-			error("EMF/xText has killed my internal state. Please, append a new line at the end of file to make me fill better",
-				targetPlatform, TargetPlatformPackage.Literals.TARGET_PLATFORM__INVALIDATE_BY_EMF_XTEXT)
-		}
-	}
-	
 	@Check // TESTED
 	def checkAllEnvAndRequiredAreSelfExluding(TargetPlatform targetPlatform) {
 		val allOptions = targetPlatform.contents.filter(typeof(Options)).map[options].flatten.toSet
